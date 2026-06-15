@@ -1,0 +1,84 @@
+{
+  "name": "Upcycling Patterns",
+  "short_name": "UpCyc",
+  "description": "Erasmus+ KA210-SCH school partnership project on sustainability, climate awareness, and creative upcycling.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": [
+    "standalone",
+    "minimal-ui",
+    "browser"
+  ],
+  "orientation": "any",
+  "lang": "en",
+  "dir": "ltr",
+  "theme_color": "#2f7a43",
+  "background_color": "#f8fcf8",
+  "categories": [
+    "education",
+    "lifestyle",
+    "social"
+  ],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/images/pwa/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/pwa/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/pwa/icon-maskable-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/images/branding/logo.jpeg",
+      "type": "image/jpeg",
+      "sizes": "any",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Project News",
+      "short_name": "News",
+      "description": "Latest project news and announcements",
+      "url": "/#media"
+    },
+    {
+      "name": "Gallery",
+      "short_name": "Gallery",
+      "description": "Photos from workshops, meetings, and events",
+      "url": "/#media"
+    },
+    {
+      "name": "Partner Schools",
+      "short_name": "Partners",
+      "description": "Partner schools across Europe",
+      "url": "/#partners"
+    },
+    {
+      "name": "Contact",
+      "short_name": "Contact",
+      "description": "Get in touch with the project team",
+      "url": "/#contact"
+    },
+    {
+      "name": "Admin Panel",
+      "short_name": "Admin",
+      "description": "Open the secure content editor",
+      "url": "/admin/"
+    }
+  ],
+  "related_applications": []
+}

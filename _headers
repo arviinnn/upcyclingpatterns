@@ -1,0 +1,153 @@
+# =====================================================================
+#  _headers — Upcycling Patterns
+#  Erasmus+ KA210-SCH Project
+# ---------------------------------------------------------------------
+#  PRIMARY rules live in netlify.toml.
+#  This file is a defence-in-depth fallback for baseline security,
+#  cache, SEO, CMS and content-type headers.
+#
+#  Important:
+#    • Keep this file consistent with netlify.toml.
+#    • Do not add headers for files that do not exist yet.
+#    • /admin/config.yml must remain directly readable by Decap CMS.
+# =====================================================================
+
+
+# ---------------------------------------------------------------------
+#  GLOBAL SECURITY HEADERS
+# ---------------------------------------------------------------------
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  X-DNS-Prefetch-Control: on
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), accelerometer=(), gyroscope=(), magnetometer=(), interest-cohort=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-site
+
+
+# ---------------------------------------------------------------------
+#  ADMIN PANEL — Decap CMS
+# ---------------------------------------------------------------------
+/admin/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
+  X-Frame-Options: SAMEORIGIN
+  Cache-Control: public, max-age=0, must-revalidate
+  Cross-Origin-Resource-Policy: same-site
+
+
+# ---------------------------------------------------------------------
+#  ADMIN CONFIG FILES
+# ---------------------------------------------------------------------
+/admin/config.yml
+  Content-Type: text/yaml; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+
+/admin/config.yaml
+  Content-Type: text/yaml; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+
+
+# ---------------------------------------------------------------------
+#  CMS DATA — accessible to the site, hidden from search engines
+# ---------------------------------------------------------------------
+/data/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+  Access-Control-Allow-Origin: *
+
+
+# ---------------------------------------------------------------------
+#  HTML — always revalidate so CMS/site edits appear quickly
+# ---------------------------------------------------------------------
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+
+# ---------------------------------------------------------------------
+#  CSS / JS — revalidate during active development
+# ---------------------------------------------------------------------
+/style.css
+  Cache-Control: public, max-age=0, must-revalidate
+
+/script.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+
+# ---------------------------------------------------------------------
+#  IMAGES
+# ---------------------------------------------------------------------
+/images/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=86400
+  Access-Control-Allow-Origin: *
+
+/images/uploads/*
+  Cache-Control: public, max-age=0, must-revalidate
+  Access-Control-Allow-Origin: *
+
+/images/hero/*
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+/og-image.png
+  Cache-Control: public, max-age=86400, stale-while-revalidate=86400
+  Access-Control-Allow-Origin: *
+
+/favicon.ico
+  Cache-Control: public, max-age=86400, stale-while-revalidate=86400
+
+/favicon-48x48.png
+  Cache-Control: public, max-age=86400, stale-while-revalidate=86400
+  Content-Type: image/png
+
+/favicon-96x96.png
+  Cache-Control: public, max-age=86400, stale-while-revalidate=86400
+  Content-Type: image/png
+
+/apple-touch-icon.png
+  Cache-Control: public, max-age=86400, stale-while-revalidate=86400
+
+/reset-browser.html
+  Cache-Control: no-store, max-age=0
+  Clear-Site-Data: "cache", "cookies", "storage"
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/reset-browser
+  Cache-Control: no-store, max-age=0
+  Clear-Site-Data: "cache", "cookies", "storage"
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+
+# ---------------------------------------------------------------------
+#  PWA / SEO META FILES
+# ---------------------------------------------------------------------
+/manifest.json
+  Content-Type: application/manifest+json; charset=utf-8
+  Cache-Control: public, max-age=0, must-revalidate
+
+/robots.txt
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: public, max-age=86400, must-revalidate
+
+/sitemap.xml
+  Content-Type: application/xml; charset=utf-8
+  Cache-Control: public, max-age=86400, must-revalidate
+
+/sitemap.xsl
+  Content-Type: text/xsl; charset=utf-8
+  Cache-Control: public, max-age=86400, must-revalidate
+
+
+# ---------------------------------------------------------------------
+#  SERVICE WORKER — harmless if /sw.js does not exist yet
+# ---------------------------------------------------------------------
+/sw.js
+  Cache-Control: public, max-age=0, must-revalidate
+  Service-Worker-Allowed: /

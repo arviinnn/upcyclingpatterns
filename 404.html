@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <title>404 — Page Not Found | Upcycling Patterns</title>
+    <meta
+            id="metaDescription"
+            name="description"
+            content="The page you are looking for could not be found. Return to the Upcycling Patterns homepage."
+    />
+
+    <!-- Search engines: don't index 404s but DO follow links so the homepage is still discoverable. -->
+    <meta name="robots" content="noindex, follow, noarchive" />
+    <meta name="googlebot" content="noindex, follow, noarchive" />
+    <meta name="bingbot" content="noindex, follow, noarchive" />
+
+    <meta name="theme-color" content="#2f7a43" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1912" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="format-detection" content="telephone=no, email=no, address=no" />
+    <meta name="application-name" content="Upcycling Patterns" />
+    <meta name="apple-mobile-web-app-title" content="UpCyc" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <!--
+      Defence-in-depth security headers.
+      Primary CSP, HSTS, Permissions-Policy and full header set live in
+      netlify.toml and _headers. The two meta-equivs below are kept as
+      minimal fallback for non-Netlify previews and local development.
+    -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+
+    <!-- 404 page is noindex. Canonical is kept self-referencing for clarity. -->
+    <link rel="canonical" href="https://upcyclingpatterns.com/404.html" />
+    <link rel="alternate" hreflang="en" href="https://upcyclingpatterns.com/404.html" />
+    <link rel="alternate" hreflang="tr" href="https://upcyclingpatterns.com/404.html?lang=tr" />
+    <link rel="alternate" hreflang="x-default" href="https://upcyclingpatterns.com/404.html" />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Open Graph / Twitter — even 404 pages may be shared. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="404 — Page Not Found | Upcycling Patterns" />
+    <meta property="og:description" content="The page you are looking for could not be found. Return to the Upcycling Patterns homepage." />
+    <meta property="og:url" content="https://upcyclingpatterns.com/404.html" />
+    <meta property="og:site_name" content="Upcycling Patterns" />
+    <meta property="og:image" content="https://upcyclingpatterns.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content="Upcycling Patterns — Erasmus+ KA210-SCH project" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="404 — Page Not Found | Upcycling Patterns" />
+    <meta name="twitter:description" content="The page you are looking for could not be found." />
+    <meta name="twitter:image" content="https://upcyclingpatterns.com/og-image.png" />
+    <meta name="twitter:image:alt" content="Upcycling Patterns — Erasmus+ KA210-SCH project" />
+
+    <!--
+      NETLIFY IDENTITY TOKEN FIX
+      If a Netlify Identity invite or recovery email lands here with a token,
+      redirect it to /admin/ so the admin widget can consume the token.
+    -->
+    <script>
+        (function () {
+            "use strict";
+
+            try {
+                var hash = window.location.hash || "";
+                var search = window.location.search || "";
+
+                var TOKEN_NAMES = [
+                    "invite_token=",
+                    "recovery_token=",
+                    "confirmation_token=",
+                    "email_change_token=",
+                    "access_token="
+                ];
+
+                var hasIdentityToken = false;
+                for (var i = 0; i < TOKEN_NAMES.length; i++) {
+                    if (hash.indexOf(TOKEN_NAMES[i]) !== -1 || search.indexOf(TOKEN_NAMES[i]) !== -1) {
+                        hasIdentityToken = true;
+                        break;
+                    }
+                }
+
+                if (hasIdentityToken && window.location.pathname.toLowerCase().indexOf("/admin") !== 0) {
+                    var tokenPart = hash || search.replace("?", "#");
+                    window.location.replace("/admin/" + tokenPart);
+                }
+            } catch (e) {
+                /* defensive: never crash on the 404 page */
+            }
+        })();
+    </script>
+
+    <!--
+      Early theme detection (no FOUC).
+      Syncs with the main site's siteTheme localStorage key.
+    -->
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem("siteTheme");
+                var prefersDark = window.matchMedia &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches;
+                var theme = (saved === "dark" || saved === "light")
+                    ? saved
+                    : (prefersDark ? "dark" : "light");
+                document.documentElement.setAttribute("data-theme", theme);
+            } catch (e) {
+                document.documentElement.setAttribute("data-theme", "light");
+            }
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap"
+    />
+
+    <style>
+        :root {
+            --primary: #2f7a43;
+            --primary-light: #57b26c;
+            --primary-dark: #215732;
+            --accent: #b8ff7a;
+            --accent-bright: #95f053;
+            --text-main: #0f1b14;
+            --text-soft: #5a6b60;
+            --text-muted: #7a8b80;
+            --bg-1: #f8fcf8;
+            --bg-2: #eef6ef;
+            --bg-3: #e7f0e8;
+            --glass-border: rgba(255, 255, 255, 0.55);
+            --glass-fill-1: rgba(255, 255, 255, 0.8);
+            --glass-fill-2: rgba(255, 255, 255, 0.58);
+            --shadow-soft: 0 18px 48px rgba(15, 27, 20, 0.1);
+            --shadow-strong: 0 35px 90px rgba(10, 18, 14, 0.18);
+            --radius-round: 999px;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        html[data-theme="dark"] {
+            --primary-dark: #d4f5dd;
+            --text-main: #f0f7f1;
+            --text-soft: #b8c5bb;
+            --text-muted: #94a59b;
+            --bg-1: #0a120d;
+            --bg-2: #0f1912;
+            --bg-3: #142019;
+            --glass-border: rgba(184, 255, 122, 0.18);
+            --glass-fill-1: rgba(20, 32, 24, 0.82);
+            --glass-fill-2: rgba(20, 32, 24, 0.56);
+            --shadow-soft: 0 18px 48px rgba(0, 0, 0, 0.35);
+            --shadow-strong: 0 35px 90px rgba(0, 0, 0, 0.5);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background:
+                    radial-gradient(circle at top left, rgba(87, 178, 108, 0.18), transparent 28%),
+                    radial-gradient(circle at top right, rgba(184, 255, 122, 0.18), transparent 28%),
+                    radial-gradient(circle at bottom center, rgba(123, 219, 190, 0.15), transparent 35%),
+                    linear-gradient(180deg, var(--bg-1), var(--bg-2), var(--bg-3));
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        html[data-theme="dark"] body {
+            background:
+                    radial-gradient(circle at top left, rgba(87, 178, 108, 0.10), transparent 28%),
+                    radial-gradient(circle at top right, rgba(184, 255, 122, 0.08), transparent 28%),
+                    radial-gradient(circle at bottom center, rgba(123, 219, 190, 0.06), transparent 35%),
+                    linear-gradient(180deg, var(--bg-1), var(--bg-2), var(--bg-3));
+        }
+
+        a,
+        button {
+            font: inherit;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+        }
+
+        .skip-link {
+            position: fixed;
+            top: -100px;
+            left: 20px;
+            z-index: 999;
+            padding: 12px 18px;
+            border-radius: 14px;
+            background: var(--primary);
+            color: #ffffff;
+            font-weight: 800;
+            box-shadow: var(--shadow-soft);
+            transition: top 0.35s var(--ease-spring);
+        }
+
+        .skip-link:focus {
+            top: 18px;
+        }
+
+        .ambient {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(70px);
+            pointer-events: none;
+            z-index: -2;
+            animation: ambientFloat 18s ease-in-out infinite;
+        }
+
+        .ambient-1 {
+            width: 320px;
+            height: 320px;
+            top: 90px;
+            left: -80px;
+            background: rgba(87, 178, 108, 0.2);
+        }
+
+        .ambient-2 {
+            width: 340px;
+            height: 340px;
+            right: -70px;
+            bottom: 80px;
+            background: rgba(184, 255, 122, 0.16);
+            animation-delay: -5s;
+            animation-duration: 24s;
+        }
+
+        html[data-theme="dark"] .ambient-1 {
+            background: rgba(87, 178, 108, 0.10);
+        }
+
+        html[data-theme="dark"] .ambient-2 {
+            background: rgba(184, 255, 122, 0.08);
+        }
+
+        .grid-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            pointer-events: none;
+            background-image:
+                    linear-gradient(rgba(15, 27, 20, 0.035) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(15, 27, 20, 0.035) 1px, transparent 1px);
+            background-size: 34px 34px;
+            mask-image: radial-gradient(circle at center, black 42%, transparent 88%);
+            -webkit-mask-image: radial-gradient(circle at center, black 42%, transparent 88%);
+            animation: gridDrift 60s linear infinite;
+        }
+
+        html[data-theme="dark"] .grid-layer {
+            background-image:
+                    linear-gradient(rgba(184, 255, 122, 0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(184, 255, 122, 0.04) 1px, transparent 1px);
+        }
+
+        @keyframes ambientFloat {
+            0%,
+            100% {
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate3d(24px, -28px, 0) scale(1.08);
+            }
+        }
+
+        @keyframes gridDrift {
+            0% {
+                background-position: 0 0;
+            }
+
+            100% {
+                background-position: 34px 34px;
+            }
+        }
+
+        .page {
+            width: min(100%, 980px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .error-card {
+            position: relative;
+            overflow: hidden;
+            padding: clamp(30px, 6vw, 58px);
+            border-radius: clamp(28px, 5vw, 42px);
+            background: linear-gradient(180deg, var(--glass-fill-1), var(--glass-fill-2));
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-strong);
+            backdrop-filter: blur(22px) saturate(160%);
+            -webkit-backdrop-filter: blur(22px) saturate(160%);
+            text-align: center;
+            animation: cardEnter 0.9s var(--ease-out) both;
+        }
+
+        .error-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                    linear-gradient(130deg, rgba(255, 255, 255, 0.36), transparent 36%, transparent 62%, rgba(255, 255, 255, 0.18)),
+                    radial-gradient(circle at top center, rgba(184, 255, 122, 0.18), transparent 45%);
+        }
+
+        html[data-theme="dark"] .error-card::before {
+            background:
+                    linear-gradient(130deg, rgba(184, 255, 122, 0.12), transparent 36%, transparent 62%, rgba(184, 255, 122, 0.06)),
+                    radial-gradient(circle at top center, rgba(184, 255, 122, 0.10), transparent 45%);
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-wrap {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 20px;
+            display: grid;
+            place-items: center;
+            border-radius: 22px;
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 14px 32px rgba(47, 122, 67, 0.16);
+            overflow: hidden;
+        }
+
+        html[data-theme="dark"] .logo-wrap {
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .logo-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            padding: 9px 16px;
+            border-radius: var(--radius-round);
+            color: var(--primary);
+            background: rgba(87, 178, 108, 0.12);
+            font-size: 0.78rem;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        html[data-theme="dark"] .badge {
+            color: var(--accent-bright);
+            background: rgba(184, 255, 122, 0.10);
+        }
+
+        .badge::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            box-shadow: 0 0 14px var(--primary-light);
+        }
+
+        .error-code {
+            font-family: "Space Grotesk", "Inter", sans-serif;
+            font-size: clamp(4.8rem, 17vw, 10rem);
+            line-height: 0.9;
+            margin-bottom: 14px;
+            font-weight: 700;
+            letter-spacing: -0.08em;
+            background: linear-gradient(120deg, var(--primary-dark), var(--primary), var(--primary-light), var(--accent-bright));
+            background-size: 260% 260%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            animation: shimmerText 7s ease-in-out infinite;
+        }
+
+        .title {
+            font-family: "Space Grotesk", "Inter", sans-serif;
+            font-size: clamp(1.6rem, 4vw, 2.7rem);
+            line-height: 1.12;
+            margin-bottom: 14px;
+            font-weight: 700;
+            letter-spacing: -0.035em;
+        }
+
+        .description {
+            max-width: 680px;
+            margin: 0 auto 28px;
+            color: var(--text-soft);
+            font-size: clamp(0.98rem, 2vw, 1.08rem);
+            line-height: 1.75;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 26px;
+        }
+
+        .btn {
+            min-height: 56px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 0 24px;
+            border-radius: var(--radius-round);
+            font-weight: 900;
+            transition:
+                    transform 0.35s var(--ease-spring),
+                    box-shadow 0.35s var(--ease-out),
+                    background 0.35s var(--ease-out);
+        }
+
+        .btn-primary {
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            box-shadow: 0 18px 42px rgba(47, 122, 67, 0.28);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 24px 58px rgba(47, 122, 67, 0.36);
+        }
+
+        .btn-secondary {
+            color: var(--primary-dark);
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(47, 122, 67, 0.16);
+            box-shadow: var(--shadow-soft);
+        }
+
+        html[data-theme="dark"] .btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(184, 255, 122, 0.16);
+            color: var(--accent-bright);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 20px 48px rgba(15, 27, 20, 0.14);
+        }
+
+        html[data-theme="dark"] .btn-secondary:hover {
+            background: rgba(184, 255, 122, 0.12);
+        }
+
+        .quick-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-top: 4px;
+        }
+
+        .quick-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+            padding: 0 14px;
+            border-radius: var(--radius-round);
+            color: var(--text-soft);
+            background: rgba(87, 178, 108, 0.08);
+            border: 1px solid rgba(47, 122, 67, 0.1);
+            font-size: 0.9rem;
+            font-weight: 800;
+            transition:
+                    color 0.25s ease,
+                    background 0.25s ease,
+                    transform 0.25s ease;
+        }
+
+        html[data-theme="dark"] .quick-link {
+            background: rgba(184, 255, 122, 0.06);
+            border-color: rgba(184, 255, 122, 0.12);
+        }
+
+        .quick-link:hover {
+            color: var(--primary);
+            background: rgba(87, 178, 108, 0.15);
+            transform: translateY(-2px);
+        }
+
+        html[data-theme="dark"] .quick-link:hover {
+            color: var(--accent-bright);
+            background: rgba(184, 255, 122, 0.14);
+        }
+
+        .language-box {
+            margin-top: 24px;
+            display: inline-flex;
+            gap: 6px;
+            padding: 5px;
+            border-radius: var(--radius-round);
+            background: rgba(87, 178, 108, 0.08);
+            border: 1px solid rgba(47, 122, 67, 0.1);
+        }
+
+        html[data-theme="dark"] .language-box {
+            background: rgba(184, 255, 122, 0.06);
+            border-color: rgba(184, 255, 122, 0.12);
+        }
+
+        .lang-btn {
+            min-width: 44px;
+            height: 36px;
+            border-radius: var(--radius-round);
+            background: transparent;
+            color: var(--text-soft);
+            font-size: 0.85rem;
+            font-weight: 900;
+            transition:
+                    color 0.25s ease,
+                    background 0.25s ease,
+                    transform 0.25s ease;
+        }
+
+        .lang-btn:hover {
+            color: var(--primary);
+            background: rgba(255, 255, 255, 0.78);
+            transform: translateY(-1px);
+        }
+
+        html[data-theme="dark"] .lang-btn:hover {
+            color: var(--accent-bright);
+            background: rgba(184, 255, 122, 0.12);
+        }
+
+        .lang-btn.active {
+            color: #ffffff;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            box-shadow: 0 8px 18px rgba(47, 122, 67, 0.22);
+        }
+
+        .small-note {
+            margin-top: 18px;
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        :focus-visible {
+            outline: 3px solid rgba(87, 178, 108, 0.48);
+            outline-offset: 4px;
+            border-radius: 6px;
+        }
+
+        @keyframes cardEnter {
+            from {
+                opacity: 0;
+                transform: translateY(28px) scale(0.97);
+                filter: blur(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                filter: blur(0);
+            }
+        }
+
+        @keyframes shimmerText {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @media (max-width: 720px) {
+            body {
+                padding: 18px;
+            }
+
+            .error-card {
+                padding: 32px 20px;
+            }
+
+            .logo-wrap {
+                width: 62px;
+                height: 62px;
+                border-radius: 18px;
+            }
+
+            .actions {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .quick-links {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .quick-links {
+                grid-template-columns: 1fr;
+            }
+
+            .badge {
+                font-size: 0.7rem;
+                letter-spacing: 0.08em;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+
+            .ambient,
+            .grid-layer {
+                display: none !important;
+            }
+        }
+
+        @media print {
+            .ambient,
+            .grid-layer,
+            .skip-link,
+            .language-box {
+                display: none !important;
+            }
+
+            .error-card {
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                background: #fff !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<a href="#mainContent" class="skip-link" id="skipLink">Skip to content</a>
+
+<div class="ambient ambient-1" aria-hidden="true"></div>
+<div class="ambient ambient-2" aria-hidden="true"></div>
+<div class="grid-layer" aria-hidden="true"></div>
+
+<main class="page" id="mainContent" role="main">
+    <section class="error-card" aria-labelledby="title">
+        <div class="content">
+            <a href="/" class="logo-wrap" id="logoLink" aria-label="Upcycling Patterns Home">
+                <img
+                        src="/images/branding/logo.jpeg"
+                        alt="Upcycling Patterns logo"
+                        width="72"
+                        height="72"
+                        loading="eager"
+                        decoding="async"
+                />
+            </a>
+
+            <div class="badge">Upcycling Patterns</div>
+
+            <div class="error-code" aria-hidden="true">404</div>
+
+            <h1 class="title" id="title">Page Not Found</h1>
+
+            <p class="description" id="description">
+                The page you are looking for may have been moved, deleted, or the address may be incorrect.
+                You can return to the homepage and continue exploring the project.
+            </p>
+
+            <div class="actions" aria-label="Main actions">
+                <a href="/" class="btn btn-primary" id="backHome">
+                    <span id="backHomeText">Back to Homepage</span>
+                    <span aria-hidden="true">→</span>
+                </a>
+
+                <a href="/#contact" class="btn btn-secondary" id="contactLink">
+                    <span id="contactText">Contact</span>
+                </a>
+            </div>
+
+            <nav class="quick-links" aria-label="Useful links">
+                <a href="/#about" class="quick-link" id="aboutLink">About</a>
+                <a href="/#partners" class="quick-link" id="partnersLink">Partners</a>
+                <a href="/#media" class="quick-link" id="mediaLink">Media</a>
+                <a href="/#faq" class="quick-link" id="faqLink">FAQ</a>
+            </nav>
+
+            <div class="language-box" aria-label="Language Switcher" role="group">
+                <button type="button" class="lang-btn active" data-lang="en" aria-pressed="true" aria-label="Switch to English">EN</button>
+                <button type="button" class="lang-btn" data-lang="tr" aria-pressed="false" aria-label="Türkçe'ye geç">TR</button>
+            </div>
+
+            <p class="small-note" id="smallNote">
+                Error 404 means this address does not exist on the website.
+            </p>
+        </div>
+    </section>
+</main>
+
+<script>
+    (function () {
+        "use strict";
+
+        var SUPPORTED = ["en", "tr"];
+        var DEFAULT_LANG = "en";
+        var STORAGE_KEY = "siteLanguage";
+
+        var dictionary = {
+            en: {
+                pageTitle: "404 — Page Not Found | Upcycling Patterns",
+                metaDescription: "The page you are looking for could not be found. Return to the Upcycling Patterns homepage.",
+                skip: "Skip to content",
+                title: "Page Not Found",
+                description: "The page you are looking for may have been moved, deleted, or the address may be incorrect. You can return to the homepage and continue exploring the project.",
+                back: "Back to Homepage",
+                contact: "Contact",
+                about: "About",
+                partners: "Partners",
+                media: "Media",
+                faq: "FAQ",
+                note: "Error 404 means this address does not exist on the website.",
+                ogLocale: "en_US",
+                homeHref: "/",
+                contactHref: "/#contact",
+                aboutHref: "/#about",
+                partnersHref: "/#partners",
+                mediaHref: "/#media",
+                faqHref: "/#faq"
+            },
+            tr: {
+                pageTitle: "404 — Sayfa Bulunamadı | Upcycling Patterns",
+                metaDescription: "Aradığınız sayfa bulunamadı. Upcycling Patterns ana sayfasına geri dönebilirsiniz.",
+                skip: "İçeriğe geç",
+                title: "Sayfa Bulunamadı",
+                description: "Aradığınız sayfa taşınmış, silinmiş veya adres yanlış olabilir. Ana sayfaya dönerek projeyi keşfetmeye devam edebilirsiniz.",
+                back: "Ana Sayfaya Dön",
+                contact: "İletişim",
+                about: "Hakkında",
+                partners: "Ortaklar",
+                media: "Medya",
+                faq: "SSS",
+                note: "404 hatası, bu adresin web sitesinde bulunmadığı anlamına gelir.",
+                ogLocale: "tr_TR",
+                homeHref: "/tr/",
+                contactHref: "/tr/#contact",
+                aboutHref: "/tr/#about",
+                partnersHref: "/tr/#partners",
+                mediaHref: "/tr/#media",
+                faqHref: "/tr/#faq"
+            }
+        };
+
+        function safeGet(key) {
+            try {
+                return window.localStorage ? localStorage.getItem(key) : null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function safeSet(key, value) {
+            try {
+                if (window.localStorage) localStorage.setItem(key, value);
+            } catch (e) {
+                /* quota exceeded / disabled */
+            }
+        }
+
+        function detectLang() {
+            var path = window.location.pathname.toLowerCase();
+
+            if (path === "/tr" || path.indexOf("/tr/") === 0) {
+                return "tr";
+            }
+
+            try {
+                var urlLang = new URLSearchParams(window.location.search).get("lang");
+                if (urlLang && SUPPORTED.indexOf(urlLang.toLowerCase()) !== -1) {
+                    return urlLang.toLowerCase();
+                }
+            } catch (e) {
+                /* old browser without URLSearchParams */
+            }
+
+            var saved = safeGet(STORAGE_KEY);
+            if (saved && SUPPORTED.indexOf(saved) !== -1) {
+                return saved;
+            }
+
+            var nav = ((navigator.language || navigator.userLanguage || "en") + "").toLowerCase();
+            return nav.indexOf("tr") === 0 ? "tr" : DEFAULT_LANG;
+        }
+
+        function setText(id, value) {
+            var el = document.getElementById(id);
+            if (el && typeof value === "string") {
+                el.textContent = value;
+            }
+        }
+
+        function setHref(id, value) {
+            var el = document.getElementById(id);
+            if (el && typeof value === "string") {
+                el.setAttribute("href", value);
+            }
+        }
+
+        function setMeta(selector, attr, value) {
+            var el = document.querySelector(selector);
+            if (el && typeof value === "string") {
+                el.setAttribute(attr, value);
+            }
+        }
+
+        function updateUrl(lang) {
+            if (!window.history || !window.history.replaceState) return;
+
+            try {
+                var url = new URL(window.location.href);
+                var lcPath = url.pathname.toLowerCase();
+
+                if (lcPath.indexOf("/tr/") === 0 || lcPath === "/tr") return;
+
+                if (lang === "tr") {
+                    url.searchParams.set("lang", "tr");
+                } else {
+                    url.searchParams.delete("lang");
+                }
+
+                window.history.replaceState({}, "", url.toString());
+            } catch (e) {
+                /* URL API unavailable */
+            }
+        }
+
+        function applyLang(lang, shouldUpdateUrl) {
+            var currentLang = SUPPORTED.indexOf(lang) !== -1 ? lang : DEFAULT_LANG;
+            var d = dictionary[currentLang] || dictionary[DEFAULT_LANG];
+
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = "ltr";
+            document.title = d.pageTitle;
+
+            var meta = document.getElementById("metaDescription");
+            if (meta) meta.setAttribute("content", d.metaDescription);
+
+            setMeta('meta[property="og:title"]', 'content', d.pageTitle);
+            setMeta('meta[property="og:description"]', 'content', d.metaDescription);
+            setMeta('meta[property="og:locale"]', 'content', d.ogLocale);
+            setMeta('meta[name="twitter:title"]', 'content', d.pageTitle);
+            setMeta('meta[name="twitter:description"]', 'content', d.metaDescription);
+
+            setText("skipLink", d.skip);
+            setText("title", d.title);
+            setText("description", d.description);
+            setText("backHomeText", d.back);
+            setText("contactText", d.contact);
+            setText("aboutLink", d.about);
+            setText("partnersLink", d.partners);
+            setText("mediaLink", d.media);
+            setText("faqLink", d.faq);
+            setText("smallNote", d.note);
+
+            setHref("logoLink", d.homeHref);
+            setHref("backHome", d.homeHref);
+            setHref("contactLink", d.contactHref);
+            setHref("aboutLink", d.aboutHref);
+            setHref("partnersLink", d.partnersHref);
+            setHref("mediaLink", d.mediaHref);
+            setHref("faqLink", d.faqHref);
+
+            var buttons = document.querySelectorAll(".lang-btn");
+            for (var i = 0; i < buttons.length; i++) {
+                var btn = buttons[i];
+                var active = btn.getAttribute("data-lang") === currentLang;
+                btn.classList.toggle("active", active);
+                btn.setAttribute("aria-pressed", active ? "true" : "false");
+            }
+
+            safeSet(STORAGE_KEY, currentLang);
+
+            if (shouldUpdateUrl) updateUrl(currentLang);
+        }
+
+        function bindLanguageButtons() {
+            var buttons = document.querySelectorAll(".lang-btn");
+            for (var i = 0; i < buttons.length; i++) {
+                (function (btn) {
+                    btn.addEventListener("click", function () {
+                        var lang = btn.getAttribute("data-lang");
+                        applyLang(lang, true);
+                    });
+                })(buttons[i]);
+            }
+        }
+
+        function bindImageFallback() {
+            var logo = document.querySelector(".logo-wrap img");
+            if (!logo) return;
+
+            logo.addEventListener("error", function () {
+                logo.style.display = "none";
+            }, { once: true });
+        }
+
+        function bindStorageSync() {
+            window.addEventListener("storage", function (e) {
+                if (e.key === STORAGE_KEY && e.newValue && SUPPORTED.indexOf(e.newValue) !== -1) {
+                    applyLang(e.newValue, false);
+                }
+            });
+        }
+
+        function init() {
+            applyLang(detectLang(), false);
+            bindLanguageButtons();
+            bindImageFallback();
+            bindStorageSync();
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", init, { once: true });
+        } else {
+            init();
+        }
+    })();
+</script>
+</body>
+</html>

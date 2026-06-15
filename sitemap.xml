@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
+<!--
+  =====================================================================
+   sitemap.xml — Upcycling Patterns
+   Erasmus+ KA210-SCH Project
+  =====================================================================
+   Public, indexable URLs only.
+
+   Included:
+     • Homepage EN version
+     • Homepage TR version
+     • Public legal / information pages
+
+   Not included:
+     • /admin/*
+     • /data/*
+     • /404.html
+     • /success.html
+     • internal files
+     • section anchors such as #about, #partners, #contact
+
+   Canonical domain:
+     https://upcyclingpatterns.com/
+  =====================================================================
+-->
+<urlset
+        xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+>
+
+    <!-- ===============================================================
+         HOMEPAGE — English / default version
+         =============================================================== -->
+    <url>
+        <loc>https://upcyclingpatterns.com/</loc>
+        <lastmod>2026-06-14</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.00</priority>
+
+        <xhtml:link rel="alternate" hreflang="en" href="https://upcyclingpatterns.com/" />
+        <xhtml:link rel="alternate" hreflang="tr" href="https://upcyclingpatterns.com/tr/" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://upcyclingpatterns.com/" />
+
+        <image:image>
+            <image:loc>https://upcyclingpatterns.com/og-image.png</image:loc>
+            <image:title>Upcycling Patterns — Erasmus+ KA210-SCH Project</image:title>
+            <image:caption>Project social preview image showing sustainability and creative upcycling.</image:caption>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://upcyclingpatterns.com/images/hero/hero.webp</image:loc>
+            <image:title>Upcycling Patterns — Hero Visual</image:title>
+            <image:caption>Visual representation of the project's sustainability, climate awareness, and upcycling themes.</image:caption>
+        </image:image>
+
+        <image:image>
+            <image:loc>https://upcyclingpatterns.com/images/branding/logo.jpeg</image:loc>
+            <image:title>Upcycling Patterns — Project Logo</image:title>
+        </image:image>
+    </url>
+
+    <!-- ===============================================================
+         HOMEPAGE — Turkish version
+         =============================================================== -->
+    <url>
+        <loc>https://upcyclingpatterns.com/tr/</loc>
+        <lastmod>2026-06-14</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.95</priority>
+
+        <xhtml:link rel="alternate" hreflang="en" href="https://upcyclingpatterns.com/" />
+        <xhtml:link rel="alternate" hreflang="tr" href="https://upcyclingpatterns.com/tr/" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://upcyclingpatterns.com/" />
+    </url>
+
+    <!-- ===============================================================
+         PRIVACY POLICY
+         =============================================================== -->
+    <url>
+        <loc>https://upcyclingpatterns.com/privacy-policy.html</loc>
+        <lastmod>2026-06-07</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.40</priority>
+
+        <xhtml:link rel="alternate" hreflang="en" href="https://upcyclingpatterns.com/privacy-policy.html" />
+        <xhtml:link rel="alternate" hreflang="tr" href="https://upcyclingpatterns.com/privacy-policy.html?lang=tr" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://upcyclingpatterns.com/privacy-policy.html" />
+    </url>
+
+    <!-- ===============================================================
+         COOKIE POLICY
+         =============================================================== -->
+    <url>
+        <loc>https://upcyclingpatterns.com/cookie-policy.html</loc>
+        <lastmod>2026-06-07</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.40</priority>
+
+        <xhtml:link rel="alternate" hreflang="en" href="https://upcyclingpatterns.com/cookie-policy.html" />
+        <xhtml:link rel="alternate" hreflang="tr" href="https://upcyclingpatterns.com/cookie-policy.html?lang=tr" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://upcyclingpatterns.com/cookie-policy.html" />
+    </url>
+
+    <!-- ===============================================================
+         TERMS OF USE
+         =============================================================== -->
+    <url>
+        <loc>https://upcyclingpatterns.com/terms.html</loc>
+        <lastmod>2026-06-07</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.40</priority>
+
+        <xhtml:link rel="alternate" hreflang="en" href="https://upcyclingpatterns.com/terms.html" />
+        <xhtml:link rel="alternate" hreflang="tr" href="https://upcyclingpatterns.com/terms.html?lang=tr" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://upcyclingpatterns.com/terms.html" />
+    </url>
+
+    <!-- ===============================================================
+         ACCESSIBILITY STATEMENT
+         =============================================================== -->
+    <url>
+        <loc>https://upcyclingpatterns.com/accessibility.html</loc>
+        <lastmod>2026-06-07</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.40</priority>
+
+        <xhtml:link rel="alternate" hreflang="en" href="https://upcyclingpatterns.com/accessibility.html" />
+        <xhtml:link rel="alternate" hreflang="tr" href="https://upcyclingpatterns.com/accessibility.html?lang=tr" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://upcyclingpatterns.com/accessibility.html" />
+    </url>
+
+    <!-- ===============================================================
+         FUNDING DISCLAIMER
+         =============================================================== -->
+    <url>
+        <loc>https://upcyclingpatterns.com/funding-disclaimer.html</loc>
+        <lastmod>2026-06-07</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.50</priority>
+
+        <xhtml:link rel="alternate" hreflang="en" href="https://upcyclingpatterns.com/funding-disclaimer.html" />
+        <xhtml:link rel="alternate" hreflang="tr" href="https://upcyclingpatterns.com/funding-disclaimer.html?lang=tr" />
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://upcyclingpatterns.com/funding-disclaimer.html" />
+    </url>
+
+</urlset>

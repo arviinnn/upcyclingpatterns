@@ -1,0 +1,244 @@
+# =====================================================================
+#  .gitignore — Upcycling Patterns
+#  Erasmus+ KA210-SCH Project
+# ---------------------------------------------------------------------
+#  Keeps build artifacts, secrets, editor junk, and OS noise out of
+#  the repository. This is a static site, so the rules below are
+#  intentionally conservative — we don't want to accidentally exclude
+#  real content (images/uploads/, data/*.json, etc.).
+# =====================================================================
+
+# ─────────────────────────────────────────────────────────────────────
+#  DEPENDENCIES / PACKAGE MANAGERS
+# ─────────────────────────────────────────────────────────────────────
+node_modules/
+jspm_packages/
+bower_components/
+.pnp/
+.pnp.js
+.yarn/
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnpm-store/
+
+# ─────────────────────────────────────────────────────────────────────
+#  BUILD / OUTPUT DIRECTORIES
+# ─────────────────────────────────────────────────────────────────────
+dist/
+build/
+out/
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.vuepress/dist
+.docusaurus/
+.eleventy-temp/
+
+# ─────────────────────────────────────────────────────────────────────
+#  NETLIFY
+# ─────────────────────────────────────────────────────────────────────
+.netlify/
+.netlify/state.json
+.netlify/functions-serve/
+netlify/functions-internal/
+.runtime/
+
+# ─────────────────────────────────────────────────────────────────────
+#  DECAP CMS LOCAL BACKEND
+#  (created by `npx decap-server` during local CMS testing)
+# ─────────────────────────────────────────────────────────────────────
+.decap/
+.decap-server/
+
+# ─────────────────────────────────────────────────────────────────────
+#  LOGS
+# ─────────────────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ─────────────────────────────────────────────────────────────────────
+#  ENVIRONMENT / SECRETS
+#  Never commit real credentials. .env.example IS committed.
+# ─────────────────────────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+.env.staging
+!.env.example
+
+# Common secret-file names
+*.pem
+*.key
+secrets.json
+config.local.json
+service-account*.json
+
+# ─────────────────────────────────────────────────────────────────────
+#  PYTHON (in case anyone runs `python3 -m http.server` locally)
+# ─────────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+.venv/
+venv/
+env/
+ENV/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ─────────────────────────────────────────────────────────────────────
+#  OPERATING SYSTEM JUNK
+# ─────────────────────────────────────────────────────────────────────
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.DocumentRevisions-V100
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.stackdump
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ─────────────────────────────────────────────────────────────────────
+#  EDITORS / IDEs
+# ─────────────────────────────────────────────────────────────────────
+# JetBrains (WebStorm, PHPStorm, IntelliJ)
+.idea/
+*.iml
+*.iws
+*.ipr
+.idea_modules/
+out/
+
+# VS Code (keep workspace settings but ignore user-level)
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.history/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Atom
+.atom/
+
+# Vim / Neovim
+*.swp
+*.swo
+*.swn
+*~.un~
+.netrwhist
+Session.vim
+Sessionx.vim
+.vim/
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Eclipse
+.project
+.classpath
+.settings/
+.metadata/
+
+# ─────────────────────────────────────────────────────────────────────
+#  TEMPORARY / BACKUP FILES
+# ─────────────────────────────────────────────────────────────────────
+*.tmp
+*.temp
+*.bak
+*.backup
+*.orig
+*.rej
+*.old
+*.copy
+*.swp
+.~lock.*#
+
+# ─────────────────────────────────────────────────────────────────────
+#  IMAGE OPTIMISATION & MEDIA TOOL CACHES
+# ─────────────────────────────────────────────────────────────────────
+.imageoptim-cache/
+.sharp-cache/
+*.psd~
+
+# ─────────────────────────────────────────────────────────────────────
+#  ARCHIVES / DISTRIBUTION BUNDLES
+# ─────────────────────────────────────────────────────────────────────
+# We never commit zipped copies of the site itself.
+upcycling-patterns*.zip
+upcycling-website*.zip
+upcycling-patterns*.tar.gz
+*.tgz
+
+# ─────────────────────────────────────────────────────────────────────
+#  REPORTS / TEST ARTIFACTS
+# ─────────────────────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+lighthouse-report.html
+lighthouse-report.json
+*.lcov
+playwright-report/
+test-results/
+
+# ─────────────────────────────────────────────────────────────────────
+#  KEEP THESE — explicit allowlist (defensive)
+#  These look like things gitignore patterns might catch, but they're
+#  real project content that MUST be tracked.
+# ─────────────────────────────────────────────────────────────────────
+!images/uploads/.gitkeep
+!data/*.json
+!admin/config.yml
+!_headers
+!_redirects
+!netlify.toml
+!.gitignore

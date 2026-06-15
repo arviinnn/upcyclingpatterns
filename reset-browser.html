@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="tr" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive" />
+  <title>Site Bağlantısı Yenileniyor | Upcycling Patterns</title>
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: #f2f8f3;
+      color: #15351f;
+      font-family: Inter, system-ui, sans-serif;
+    }
+    main {
+      width: min(520px, 100%);
+      padding: 28px;
+      border: 1px solid #c9ddce;
+      border-radius: 8px;
+      background: #fff;
+      text-align: center;
+      box-shadow: 0 18px 50px rgba(21, 53, 31, 0.12);
+    }
+    h1 { margin: 0 0 10px; font-size: 1.35rem; }
+    p { margin: 0; color: #52665a; line-height: 1.6; }
+    a { display: inline-block; margin-top: 18px; color: #176b36; font-weight: 800; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Bağlantı yenileniyor</h1>
+  <p>Eski yönlendirme, çerez ve site önbelleği temizleniyor. Ana sayfa birazdan yeniden açılacak.</p>
+  <a href="/">Ana sayfayı aç</a>
+</main>
+<script>
+  (function () {
+    "use strict";
+    try { localStorage.clear(); } catch (error) {}
+    try { sessionStorage.clear(); } catch (error) {}
+
+    var cleanup = [];
+    if (window.caches && caches.keys) {
+      cleanup.push(caches.keys().then(function (keys) {
+        return Promise.all(keys.map(function (key) { return caches.delete(key); }));
+      }));
+    }
+    if (navigator.serviceWorker && navigator.serviceWorker.getRegistrations) {
+      cleanup.push(navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        return Promise.all(registrations.map(function (registration) { return registration.unregister(); }));
+      }));
+    }
+
+    Promise.allSettled(cleanup).then(function () {
+      window.setTimeout(function () { window.location.replace('/?cache-reset=1'); }, 700);
+    });
+  })();
+</script>
+</body>
+</html>

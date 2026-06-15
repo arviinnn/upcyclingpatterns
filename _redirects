@@ -1,0 +1,105 @@
+# =====================================================================
+#  _redirects — Upcycling Patterns
+#  Erasmus+ KA210-SCH Project
+# ---------------------------------------------------------------------
+#  PRIMARY redirect rules live in netlify.toml.
+#  This file is a defence-in-depth fallback so the site behaves
+#  correctly even if the .toml file is ignored or fails to parse.
+#
+#  Where this file and netlify.toml define the same rule, netlify.toml wins.
+#
+#  Format:
+#    <from>  <to>  <status>  [force]
+#
+#  Status meanings:
+#    200 = rewrite. URL stays the same, content comes from <to>.
+#    301 = permanent redirect.
+#    302 = temporary redirect.
+#    404 = serve the <to> page with a 404 status.
+#
+#  IMPORTANT:
+#    Do NOT redirect /admin/config.yml or /admin/config.yaml.
+#    Decap CMS must read /admin/config.yml directly.
+# =====================================================================
+
+
+# Netlify automatically handles HTTPS and apex/www canonical-domain
+# redirects. Keep host redirects out of this file to prevent cached 301 loops.
+
+# Serve www directly. Canonical metadata still points search engines to apex.
+https://www.upcyclingpatterns.com/*  /:splat                                   200!
+
+
+# ---------------------------------------------------------------------
+#  CLEAN ROOT
+#  Direct /index.html should become /
+# ---------------------------------------------------------------------
+/index.html                          /                                          301
+/manifest.webmanifest                /manifest.json                            301
+/reset-browser                       /reset-browser.html                       200
+
+
+# ---------------------------------------------------------------------
+#  TURKISH PATH
+#  Same static homepage. Language is detected client-side by script.js.
+# ---------------------------------------------------------------------
+/tr                                  /tr/                                      301
+/tr/                                 /index.html                                200
+
+
+# ---------------------------------------------------------------------
+#  ADMIN PANEL
+#  Ensure /admin always lands on /admin/
+# ---------------------------------------------------------------------
+/admin                               /admin/                                    301
+
+
+# ---------------------------------------------------------------------
+#  IMPORTANT CMS NOTE
+# ---------------------------------------------------------------------
+# Do NOT add these rules:
+#
+# /admin/config.yml                  /admin/                                    301
+# /admin/config.yaml                 /admin/                                    301
+#
+# These rules break Decap CMS because the editor must fetch:
+# /admin/config.yml
+#
+# If this file is redirected to /admin/, the CMS receives HTML instead
+# of YAML and the admin panel may fail to load.
+
+
+# ---------------------------------------------------------------------
+#  LEGAL / INFO PAGE ALIASES
+# ---------------------------------------------------------------------
+/privacy                             /privacy-policy.html                       301
+/privacy/                            /privacy-policy.html                       301
+
+/cookies                             /cookie-policy.html                        301
+/cookies/                            /cookie-policy.html                        301
+
+/terms                               /terms.html                                301
+/terms/                              /terms.html                                301
+
+/accessibility                       /accessibility.html                        301
+/accessibility/                      /accessibility.html                        301
+
+/funding                             /funding-disclaimer.html                   301
+/funding/                            /funding-disclaimer.html                   301
+
+
+# ---------------------------------------------------------------------
+#  COMMON CRAWLER / ATTACK PROBES
+#  Return clean 404 instead of letting them pass through the site.
+# ---------------------------------------------------------------------
+/wp-admin/*                          /404.html                                  404
+/wp-login.php                        /404.html                                  404
+/.env                                /404.html                                  404
+/.git/*                              /404.html                                  404
+
+
+# ---------------------------------------------------------------------
+#  CUSTOM 404
+#  This must remain the LAST rule.
+# ---------------------------------------------------------------------
+/*                                   /404.html                                  404

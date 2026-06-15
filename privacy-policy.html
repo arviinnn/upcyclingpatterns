@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <title id="pageTitle">Privacy Policy | Upcycling Patterns</title>
+
+    <meta
+            id="metaDescription"
+            name="description"
+            content="Privacy Policy for the Upcycling Patterns Erasmus+ KA210-SCH project website."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="googlebot" content="index, follow" />
+    <meta name="bingbot" content="index, follow" />
+
+    <meta name="theme-color" content="#2f7a43" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1912" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="format-detection" content="telephone=no, email=no, address=no" />
+    <meta name="application-name" content="Upcycling Patterns" />
+    <meta name="apple-mobile-web-app-title" content="UpCyc" />
+
+    <!-- Defence-in-depth headers. Real headers should also live in netlify.toml. -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+
+    <link rel="canonical" href="https://upcyclingpatterns.com/privacy-policy.html" />
+    <link rel="alternate" hreflang="en" href="https://upcyclingpatterns.com/privacy-policy.html" />
+    <link rel="alternate" hreflang="tr" href="https://upcyclingpatterns.com/privacy-policy.html?lang=tr" />
+    <link rel="alternate" hreflang="x-default" href="https://upcyclingpatterns.com/privacy-policy.html" />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Privacy Policy | Upcycling Patterns" />
+    <meta property="og:description" content="How the Upcycling Patterns project website handles visitor information." />
+    <meta property="og:url" content="https://upcyclingpatterns.com/privacy-policy.html" />
+    <meta property="og:site_name" content="Upcycling Patterns" />
+    <meta property="og:image" content="https://upcyclingpatterns.com/og-image.png" />
+    <meta property="og:image:secure_url" content="https://upcyclingpatterns.com/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Upcycling Patterns — Erasmus+ KA210-SCH project visual" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="tr_TR" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Privacy Policy | Upcycling Patterns" />
+    <meta name="twitter:description" content="How the Upcycling Patterns project website handles visitor information." />
+    <meta name="twitter:image" content="https://upcyclingpatterns.com/og-image.png" />
+    <meta name="twitter:image:alt" content="Upcycling Patterns — Erasmus+ KA210-SCH project visual" />
+
+    <!-- Early theme detection (no FOUC) — syncs with main site's siteTheme key. -->
+    <script>
+        (function () {
+            "use strict";
+
+            try {
+                var savedTheme = localStorage.getItem("siteTheme");
+                var prefersDark = window.matchMedia &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+                var theme =
+                    savedTheme === "dark" || savedTheme === "light"
+                        ? savedTheme
+                        : prefersDark
+                            ? "dark"
+                            : "light";
+
+                document.documentElement.setAttribute("data-theme", theme);
+            } catch (error) {
+                document.documentElement.setAttribute("data-theme", "light");
+            }
+        })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,500;9..144,700&display=swap"
+    />
+
+    <style>
+        :root {
+            --primary: #2f7a43;
+            --primary-dark: #215732;
+            --primary-deeper: #1a4225;
+            --accent: #b8ff7a;
+            --accent-bright: #95f053;
+            --text-main: #0f1b14;
+            --text-soft: #5a6b60;
+            --text-muted: #7a8b80;
+            --bg-1: #f8fcf8;
+            --bg-2: #eef6ef;
+            --card: rgba(255, 255, 255, 0.78);
+            --border: rgba(47, 122, 67, 0.12);
+            --shadow: 0 24px 70px rgba(15, 27, 20, 0.12);
+            --display-font: "Fraunces", Georgia, serif;
+            --body-font: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        :root[data-theme="dark"] {
+            --primary: #57b26c;
+            --primary-dark: #95f053;
+            --primary-deeper: #b8ff7a;
+            --text-main: #f0f7f1;
+            --text-soft: #b8c5bb;
+            --text-muted: #8a9b8e;
+            --bg-1: #0a120d;
+            --bg-2: #0f1912;
+            --card: rgba(20, 32, 24, 0.72);
+            --border: rgba(184, 255, 122, 0.10);
+            --shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: var(--body-font);
+            color: var(--text-main);
+            line-height: 1.7;
+            background:
+                    radial-gradient(circle at top left, rgba(87, 178, 108, 0.16), transparent 28%),
+                    radial-gradient(circle at bottom right, rgba(184, 255, 122, 0.18), transparent 30%),
+                    linear-gradient(180deg, var(--bg-1), var(--bg-2));
+            padding: 40px 18px 60px;
+            transition: background 0.4s ease, color 0.3s ease;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        :root[data-theme="dark"] body {
+            background:
+                    radial-gradient(circle at top left, rgba(87, 178, 108, 0.10), transparent 35%),
+                    radial-gradient(circle at bottom right, rgba(184, 255, 122, 0.06), transparent 35%),
+                    linear-gradient(180deg, var(--bg-1), var(--bg-2));
+        }
+
+        a {
+            color: inherit;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .page {
+            width: min(100%, 980px);
+            margin: 0 auto;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 28px;
+        }
+
+        .header-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .top-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--primary-dark);
+            font-weight: 700;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 999px;
+            border: 1.5px solid var(--border);
+            transition: all 0.25s ease;
+        }
+
+        .top-link:hover,
+        .top-link:focus-visible {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+            transform: translateY(-1px);
+            outline: none;
+        }
+
+        :root[data-theme="dark"] .top-link {
+            color: var(--accent-bright);
+        }
+
+        :root[data-theme="dark"] .top-link:hover,
+        :root[data-theme="dark"] .top-link:focus-visible {
+            background: var(--accent-bright);
+            color: #0a120d;
+            border-color: var(--accent-bright);
+        }
+
+        .lang-switch {
+            display: inline-flex;
+            gap: 4px;
+            padding: 4px;
+            border-radius: 999px;
+            background: var(--card);
+            border: 1.5px solid var(--border);
+        }
+
+        .lang-btn {
+            min-width: 38px;
+            height: 32px;
+            border: none;
+            border-radius: 999px;
+            background: transparent;
+            color: var(--text-soft);
+            font-size: 0.8rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .lang-btn:hover {
+            color: var(--primary);
+        }
+
+        .lang-btn.active {
+            color: #fff;
+            background: linear-gradient(135deg, var(--primary), #57b26c);
+        }
+
+        :root[data-theme="dark"] .lang-btn.active {
+            color: #0a120d;
+            background: linear-gradient(135deg, var(--accent-bright), var(--accent));
+        }
+
+        .theme-toggle {
+            width: 42px;
+            height: 42px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1.5px solid var(--border);
+            background: var(--card);
+            border-radius: 999px;
+            cursor: pointer;
+            color: var(--primary-dark);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover,
+        .theme-toggle:focus-visible {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        :root[data-theme="dark"] .theme-toggle {
+            color: var(--accent-bright);
+            border-color: rgba(184, 255, 122, 0.20);
+        }
+
+        .theme-toggle svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        :root[data-theme="dark"] .theme-icon-sun,
+        :root:not([data-theme="dark"]) .theme-icon-moon {
+            display: none;
+        }
+
+        .card {
+            padding: clamp(28px, 5vw, 56px);
+            border: 1px solid var(--border);
+            border-radius: 32px;
+            background: var(--card);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        h1 {
+            font-family: var(--display-font);
+            margin-bottom: 12px;
+            font-size: clamp(2.2rem, 5vw, 3.6rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            color: var(--primary-deeper);
+        }
+
+        .intro {
+            margin-bottom: 34px;
+            color: var(--text-soft);
+            font-size: 1.05rem;
+            max-width: 70ch;
+        }
+
+        h2 {
+            font-family: var(--display-font);
+            margin: 36px 0 12px;
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: -0.01em;
+        }
+
+        p {
+            margin-bottom: 14px;
+            color: var(--text-soft);
+        }
+
+        ul {
+            margin: 10px 0 18px 24px;
+            color: var(--text-soft);
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        strong {
+            color: var(--text-main);
+        }
+
+        .email {
+            color: var(--primary-dark);
+            font-weight: 700;
+            text-decoration: none;
+            border-bottom: 1px dashed var(--primary);
+        }
+
+        .email:hover,
+        .email:focus-visible {
+            border-bottom-style: solid;
+            outline: none;
+        }
+
+        :root[data-theme="dark"] .email {
+            color: var(--accent-bright);
+        }
+
+        .related-links {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .related-links a {
+            font-size: 0.9rem;
+            color: var(--text-soft);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .related-links a:hover,
+        .related-links a:focus-visible {
+            color: var(--primary);
+            outline: none;
+        }
+
+        :root[data-theme="dark"] .related-links a:hover,
+        :root[data-theme="dark"] .related-links a:focus-visible {
+            color: var(--accent-bright);
+        }
+
+        .footer-note {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 24px 14px 42px;
+            }
+
+            .card {
+                border-radius: 24px;
+            }
+
+            .page-header {
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        @media print {
+            .page-header,
+            .related-links {
+                display: none !important;
+            }
+
+            .card {
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                background: #fff !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<main class="page">
+    <header class="page-header">
+        <a class="top-link" href="/" id="topLink">
+            <span aria-hidden="true">←</span>
+            <span id="topLinkText">Back to Homepage</span>
+        </a>
+
+        <div class="header-actions">
+            <div class="lang-switch" role="group" aria-label="Language Switcher">
+                <button type="button" class="lang-btn active" data-lang="en" aria-pressed="true" aria-label="Switch to English">EN</button>
+                <button type="button" class="lang-btn" data-lang="tr" aria-pressed="false" aria-label="Türkçe'ye geç">TR</button>
+            </div>
+
+            <button
+                    class="theme-toggle"
+                    type="button"
+                    id="themeToggle"
+                    aria-label="Switch theme"
+                    aria-pressed="false"
+            >
+                <svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                </svg>
+
+                <svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <article class="card">
+        <h1 id="title">Privacy Policy</h1>
+
+        <p class="intro" id="intro">
+            This Privacy Policy explains how the Upcycling Patterns Erasmus+ KA210-SCH project website handles visitor information.
+        </p>
+
+        <h2 id="s1">1. About This Website</h2>
+        <p id="s1p">
+            Upcycling Patterns is an Erasmus+ KA210-SCH project focused on sustainability, environmental awareness, climate responsibility, and upcycling.
+        </p>
+
+        <h2 id="s2">2. Information We May Collect</h2>
+        <p id="s2p">
+            This website may collect limited information when visitors use the contact form or interact with the website.
+        </p>
+
+        <ul>
+            <li id="s2l1">Name and surname</li>
+            <li id="s2l2">Email address</li>
+            <li id="s2l3">Message subject</li>
+            <li id="s2l4">Message content</li>
+            <li id="s2l5">Selected language and theme preferences, stored locally in your browser only</li>
+        </ul>
+
+        <h2 id="s3">3. How We Use Information</h2>
+        <p id="s3p">
+            Information sent through the contact form is used only to respond to messages, project-related questions, or partnership communication. It is never sold, shared with advertisers, or used for any commercial purpose.
+        </p>
+
+        <h2 id="s4">4. Contact Form</h2>
+        <p id="s4p">
+            The contact form uses Web3Forms, a third-party form delivery service, to route messages to the project email address. Submitted information is transmitted over HTTPS and is not used for advertising.
+        </p>
+
+        <h2 id="s5">5. Local Storage</h2>
+        <p id="s5p">
+            The website stores your language preference, theme preference, and cookie notice choice in your browser's local storage. This data stays on your device. No tracking cookies or analytics services are currently used by this website.
+        </p>
+
+        <h2 id="s6">6. Photos and Project Media</h2>
+        <p id="s6p">
+            Project photos, videos, and visual materials may be published for Erasmus+ dissemination and visibility purposes. Personal data and student images are used only with appropriate school permissions and in line with applicable data protection rules.
+        </p>
+
+        <h2 id="s7">7. Data Protection</h2>
+        <p id="s7p">
+            We aim to respect <strong id="s7strong1">GDPR</strong> <span id="s7mid">and</span> <strong id="s7strong2">KVKK</strong> <span id="s7end">principles by collecting only necessary information and using it only for project communication and dissemination purposes. You may request the deletion of any personal data we hold by contacting us.</span>
+        </p>
+
+        <h2 id="s8">8. External Links</h2>
+        <p id="s8p">
+            This website may include links to social media platforms or partner institutions. We are not responsible for the privacy practices, content, or security of external websites.
+        </p>
+
+        <h2 id="s9">9. Your Rights</h2>
+        <p id="s9p">
+            You have the right to request access to, correction of, or deletion of any personal data we hold about you. To exercise these rights, please contact us at the address below.
+        </p>
+
+        <h2 id="s10">10. Contact</h2>
+        <p id="s10p">
+            <span id="s10pText">For privacy-related questions or data requests, you can contact us at:</span>
+            <a class="email" href="mailto:upcyclingpatterns@gmail.com">upcyclingpatterns@gmail.com</a>
+        </p>
+
+        <div class="related-links" aria-label="Related pages">
+            <a href="/cookie-policy.html" id="relCookie">Cookie Policy →</a>
+            <a href="/" id="relHome">Homepage →</a>
+        </div>
+
+        <p class="footer-note">
+            <span id="footerUpdated">Last updated: 7 June 2026</span>
+            <span>© 2025–2027 Upcycling Patterns</span>
+        </p>
+    </article>
+</main>
+
+<script>
+    (function () {
+        "use strict";
+
+        var SUPPORTED = ["en", "tr"];
+        var DEFAULT_LANG = "en";
+        var STORAGE_KEY = "siteLanguage";
+        var THEME_KEY = "siteTheme";
+
+        var dict = {
+            en: {
+                pageTitle: "Privacy Policy | Upcycling Patterns",
+                metaDescription: "Privacy Policy for the Upcycling Patterns Erasmus+ KA210-SCH project website.",
+                ogDescription: "How the Upcycling Patterns project website handles visitor information.",
+                ogLocale: "en_US",
+                topLinkText: "Back to Homepage",
+                title: "Privacy Policy",
+                intro: "This Privacy Policy explains how the Upcycling Patterns Erasmus+ KA210-SCH project website handles visitor information.",
+                s1: "1. About This Website",
+                s1p: "Upcycling Patterns is an Erasmus+ KA210-SCH project focused on sustainability, environmental awareness, climate responsibility, and upcycling.",
+                s2: "2. Information We May Collect",
+                s2p: "This website may collect limited information when visitors use the contact form or interact with the website.",
+                s2l1: "Name and surname",
+                s2l2: "Email address",
+                s2l3: "Message subject",
+                s2l4: "Message content",
+                s2l5: "Selected language and theme preferences, stored locally in your browser only",
+                s3: "3. How We Use Information",
+                s3p: "Information sent through the contact form is used only to respond to messages, project-related questions, or partnership communication. It is never sold, shared with advertisers, or used for any commercial purpose.",
+                s4: "4. Contact Form",
+                s4p: "The contact form uses Web3Forms, a third-party form delivery service, to route messages to the project email address. Submitted information is transmitted over HTTPS and is not used for advertising.",
+                s5: "5. Local Storage",
+                s5p: "The website stores your language preference, theme preference, and cookie notice choice in your browser's local storage. This data stays on your device. No tracking cookies or analytics services are currently used by this website.",
+                s6: "6. Photos and Project Media",
+                s6p: "Project photos, videos, and visual materials may be published for Erasmus+ dissemination and visibility purposes. Personal data and student images are used only with appropriate school permissions and in line with applicable data protection rules.",
+                s7: "7. Data Protection",
+                s7prefix: "We aim to respect ",
+                s7strong1: "GDPR",
+                s7mid: "and",
+                s7strong2: "KVKK",
+                s7end: "principles by collecting only necessary information and using it only for project communication and dissemination purposes. You may request the deletion of any personal data we hold by contacting us.",
+                s8: "8. External Links",
+                s8p: "This website may include links to social media platforms or partner institutions. We are not responsible for the privacy practices, content, or security of external websites.",
+                s9: "9. Your Rights",
+                s9p: "You have the right to request access to, correction of, or deletion of any personal data we hold about you. To exercise these rights, please contact us at the address below.",
+                s10: "10. Contact",
+                s10pText: "For privacy-related questions or data requests, you can contact us at:",
+                relCookie: "Cookie Policy →",
+                relHome: "Homepage →",
+                footerUpdated: "Last updated: 7 June 2026",
+                themeToLight: "Switch to light mode",
+                themeToDark: "Switch to dark mode"
+            },
+            tr: {
+                pageTitle: "Gizlilik Politikası | Upcycling Patterns",
+                metaDescription: "Upcycling Patterns Erasmus+ KA210-SCH proje web sitesi için Gizlilik Politikası.",
+                ogDescription: "Upcycling Patterns proje web sitesinin ziyaretçi bilgilerini nasıl işlediği hakkında bilgi.",
+                ogLocale: "tr_TR",
+                topLinkText: "Ana Sayfaya Dön",
+                title: "Gizlilik Politikası",
+                intro: "Bu Gizlilik Politikası, Upcycling Patterns Erasmus+ KA210-SCH proje web sitesinin ziyaretçi bilgilerini nasıl ele aldığını açıklar.",
+                s1: "1. Bu Web Sitesi Hakkında",
+                s1p: "Upcycling Patterns; sürdürülebilirlik, çevre bilinci, iklim sorumluluğu ve ileri dönüşüme odaklanan bir Erasmus+ KA210-SCH projesidir.",
+                s2: "2. Toplayabileceğimiz Bilgiler",
+                s2p: "Ziyaretçiler iletişim formunu kullandığında veya web sitesiyle etkileşime girdiğinde bu web sitesi sınırlı bilgi toplayabilir.",
+                s2l1: "Ad ve soyad",
+                s2l2: "E-posta adresi",
+                s2l3: "Mesaj konusu",
+                s2l4: "Mesaj içeriği",
+                s2l5: "Seçilen dil ve tema tercihleri, yalnızca tarayıcınızda yerel olarak saklanır",
+                s3: "3. Bilgileri Nasıl Kullanıyoruz",
+                s3p: "İletişim formu aracılığıyla gönderilen bilgiler yalnızca mesajlara, projeyle ilgili sorulara veya ortaklık iletişimine yanıt vermek için kullanılır. Asla satılmaz, reklam verenlerle paylaşılmaz veya herhangi bir ticari amaçla kullanılmaz.",
+                s4: "4. İletişim Formu",
+                s4p: "İletişim formu, mesajları proje e-posta adresine yönlendirmek için üçüncü taraf bir form iletim hizmeti olan Web3Forms'u kullanır. Gönderilen bilgiler HTTPS üzerinden iletilir ve reklam için kullanılmaz.",
+                s5: "5. Yerel Depolama",
+                s5p: "Web sitesi; dil tercihinizi, tema tercihinizi ve çerez bildirimi seçiminizi tarayıcınızın yerel depolama alanında saklar. Bu veriler cihazınızda kalır. Bu web sitesi şu anda izleme çerezleri veya analitik hizmetleri kullanmamaktadır.",
+                s6: "6. Fotoğraflar ve Proje Medyası",
+                s6p: "Proje fotoğrafları, videoları ve görsel materyalleri Erasmus+ yaygınlaştırma ve görünürlük amaçlarıyla yayımlanabilir. Kişisel veriler ve öğrenci görüntüleri yalnızca uygun okul izinleriyle ve yürürlükteki veri koruma kurallarına uygun olarak kullanılır.",
+                s7: "7. Veri Koruması",
+                s7prefix: "",
+                s7strong1: "GDPR",
+                s7mid: "ve",
+                s7strong2: "KVKK",
+                s7end: "ilkelerine; yalnızca gerekli bilgileri toplayarak ve bunları yalnızca proje iletişimi ve yaygınlaştırma amaçları için kullanarak saygı göstermeyi amaçlıyoruz. Sahip olduğumuz kişisel verilerinizin silinmesini bizimle iletişime geçerek talep edebilirsiniz.",
+                s8: "8. Harici Bağlantılar",
+                s8p: "Bu web sitesi, sosyal medya platformlarına veya ortak kurumlara bağlantılar içerebilir. Harici web sitelerinin gizlilik uygulamalarından, içeriğinden veya güvenliğinden sorumlu değiliz.",
+                s9: "9. Haklarınız",
+                s9p: "Hakkınızda tuttuğumuz kişisel verilere erişme, düzeltme veya silme talebinde bulunma hakkına sahipsiniz. Bu hakları kullanmak için lütfen aşağıdaki adresten bizimle iletişime geçin.",
+                s10: "10. İletişim",
+                s10pText: "Gizlilikle ilgili sorularınız veya veri talepleriniz için bizimle şu adresten iletişime geçebilirsiniz:",
+                relCookie: "Çerez Politikası →",
+                relHome: "Ana Sayfa →",
+                footerUpdated: "Son güncelleme: 7 Haziran 2026",
+                themeToLight: "Açık moda geç",
+                themeToDark: "Koyu moda geç"
+            }
+        };
+
+        function safeGet(key) {
+            try {
+                return localStorage.getItem(key);
+            } catch (error) {
+                return null;
+            }
+        }
+
+        function safeSet(key, value) {
+            try {
+                localStorage.setItem(key, value);
+            } catch (error) {
+                /* localStorage unavailable */
+            }
+        }
+
+        function detectLang() {
+            try {
+                var urlLang = new URLSearchParams(window.location.search).get("lang");
+                if (urlLang && SUPPORTED.indexOf(urlLang.toLowerCase()) !== -1) {
+                    return urlLang.toLowerCase();
+                }
+            } catch (error) {
+                /* older browsers */
+            }
+
+            var storedLang = safeGet(STORAGE_KEY);
+            if (storedLang && SUPPORTED.indexOf(storedLang) !== -1) {
+                return storedLang;
+            }
+
+            var browserLang = ((navigator.language || navigator.userLanguage || "en") + "").toLowerCase();
+            return browserLang.indexOf("tr") === 0 ? "tr" : DEFAULT_LANG;
+        }
+
+        function setText(id, value) {
+            var el = document.getElementById(id);
+            if (el && typeof value === "string") {
+                el.textContent = value;
+            }
+        }
+
+        function setMeta(selector, attr, value) {
+            var el = document.querySelector(selector);
+            if (el && typeof value === "string") {
+                el.setAttribute(attr, value);
+            }
+        }
+
+        function rebuildSection7(d) {
+            var p = document.getElementById("s7p");
+            if (!p) return;
+
+            p.textContent = "";
+
+            if (d.s7prefix) {
+                p.appendChild(document.createTextNode(d.s7prefix));
+            }
+
+            var strong1 = document.createElement("strong");
+            strong1.id = "s7strong1";
+            strong1.textContent = d.s7strong1;
+            p.appendChild(strong1);
+
+            p.appendChild(document.createTextNode(" " + d.s7mid + " "));
+
+            var strong2 = document.createElement("strong");
+            strong2.id = "s7strong2";
+            strong2.textContent = d.s7strong2;
+            p.appendChild(strong2);
+
+            p.appendChild(document.createTextNode(" " + d.s7end));
+        }
+
+        function getTheme() {
+            return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+        }
+
+        function currentDict() {
+            var currentLang = safeGet(STORAGE_KEY);
+            return dict[SUPPORTED.indexOf(currentLang) !== -1 ? currentLang : DEFAULT_LANG];
+        }
+
+        function updateThemeButton(theme, d) {
+            var themeBtn = document.getElementById("themeToggle");
+            if (!themeBtn) return;
+            d = d || currentDict();
+            themeBtn.setAttribute("aria-label", theme === "dark" ? d.themeToLight : d.themeToDark);
+            themeBtn.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
+        }
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute("data-theme", theme);
+            safeSet(THEME_KEY, theme);
+            updateThemeButton(theme);
+        }
+
+        function applyLang(lang, updateUrl) {
+            var selectedLang = SUPPORTED.indexOf(lang) !== -1 ? lang : DEFAULT_LANG;
+            var d = dict[selectedLang];
+
+            document.documentElement.lang = selectedLang;
+            document.documentElement.dir = "ltr";
+            document.title = d.pageTitle;
+
+            setMeta('#metaDescription', 'content', d.metaDescription);
+            setMeta('meta[property="og:title"]', 'content', d.pageTitle);
+            setMeta('meta[property="og:description"]', 'content', d.ogDescription);
+            setMeta('meta[property="og:locale"]', 'content', d.ogLocale);
+            setMeta('meta[name="twitter:title"]', 'content', d.pageTitle);
+            setMeta('meta[name="twitter:description"]', 'content', d.ogDescription);
+
+            setText("topLinkText", d.topLinkText);
+            setText("title", d.title);
+            setText("intro", d.intro);
+            setText("s1", d.s1);
+            setText("s1p", d.s1p);
+            setText("s2", d.s2);
+            setText("s2p", d.s2p);
+            setText("s2l1", d.s2l1);
+            setText("s2l2", d.s2l2);
+            setText("s2l3", d.s2l3);
+            setText("s2l4", d.s2l4);
+            setText("s2l5", d.s2l5);
+            setText("s3", d.s3);
+            setText("s3p", d.s3p);
+            setText("s4", d.s4);
+            setText("s4p", d.s4p);
+            setText("s5", d.s5);
+            setText("s5p", d.s5p);
+            setText("s6", d.s6);
+            setText("s6p", d.s6p);
+            setText("s7", d.s7);
+            rebuildSection7(d);
+            setText("s8", d.s8);
+            setText("s8p", d.s8p);
+            setText("s9", d.s9);
+            setText("s9p", d.s9p);
+            setText("s10", d.s10);
+            setText("s10pText", d.s10pText);
+            setText("relCookie", d.relCookie);
+            setText("relHome", d.relHome);
+            setText("footerUpdated", d.footerUpdated);
+
+            var topLink = document.getElementById("topLink");
+            var relHome = document.getElementById("relHome");
+            if (topLink) topLink.setAttribute("href", selectedLang === "tr" ? "/tr/" : "/");
+            if (relHome) relHome.setAttribute("href", selectedLang === "tr" ? "/tr/" : "/");
+
+            var buttons = document.querySelectorAll(".lang-btn");
+            for (var i = 0; i < buttons.length; i++) {
+                var active = buttons[i].getAttribute("data-lang") === selectedLang;
+                buttons[i].classList.toggle("active", active);
+                buttons[i].setAttribute("aria-pressed", active ? "true" : "false");
+            }
+
+            safeSet(STORAGE_KEY, selectedLang);
+            updateThemeButton(getTheme(), d);
+
+            if (updateUrl && window.history && window.history.replaceState) {
+                try {
+                    var url = new URL(window.location.href);
+                    if (selectedLang === "tr") {
+                        url.searchParams.set("lang", "tr");
+                    } else {
+                        url.searchParams.delete("lang");
+                    }
+                    window.history.replaceState({}, "", url.toString());
+                } catch (error) {
+                    /* URL API unavailable */
+                }
+            }
+        }
+
+        function bind() {
+            var langBtns = document.querySelectorAll(".lang-btn");
+            for (var i = 0; i < langBtns.length; i++) {
+                (function (btn) {
+                    btn.addEventListener("click", function () {
+                        applyLang(btn.getAttribute("data-lang"), true);
+                    });
+                })(langBtns[i]);
+            }
+
+            var themeBtn = document.getElementById("themeToggle");
+            if (themeBtn) {
+                themeBtn.addEventListener("click", function () {
+                    setTheme(getTheme() === "dark" ? "light" : "dark");
+                });
+            }
+
+            window.addEventListener("storage", function (event) {
+                if (event.key === STORAGE_KEY && event.newValue && SUPPORTED.indexOf(event.newValue) !== -1) {
+                    applyLang(event.newValue, false);
+                }
+                if (event.key === THEME_KEY && (event.newValue === "dark" || event.newValue === "light")) {
+                    document.documentElement.setAttribute("data-theme", event.newValue);
+                    updateThemeButton(event.newValue);
+                }
+            });
+        }
+
+        function init() {
+            applyLang(detectLang(), false);
+            updateThemeButton(getTheme());
+            bind();
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", init, { once: true });
+        } else {
+            init();
+        }
+    })();
+</script>
+</body>
+</html>
