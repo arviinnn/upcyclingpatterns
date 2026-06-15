@@ -1,0 +1,52 @@
+{
+  "items": [
+    {
+      "country_en": "Türkiye",
+      "country_tr": "Türkiye",
+      "countryCode": "TR",
+      "school": "MEV Koleji Özel Basınköy Anadolu Lisesi",
+      "city": "Istanbul",
+      "role_en": "Coordinating institution",
+      "role_tr": "Koordinatör kurum",
+      "logo": "/images/logos/partners/mev-koleji.png",
+      "website": "",
+      "email": "upcyclingpatterns@gmail.com"
+    },
+    {
+      "country_en": "North Macedonia",
+      "country_tr": "Kuzey Makedonya",
+      "countryCode": "MK",
+      "school": "OEMUC \"SV. NAUM OHRIDSKI\"",
+      "city": "Ohrid",
+      "role_en": "Project partner",
+      "role_tr": "Proje ortağı",
+      "logo": "/images/logos/partners/ohrid.png",
+      "website": "",
+      "email": ""
+    },
+    {
+      "country_en": "Lithuania",
+      "country_tr": "Litvanya",
+      "countryCode": "LT",
+      "school": "Vilniaus automechanikos ir verslo mokykla",
+      "city": "Vilnius",
+      "role_en": "Project partner",
+      "role_tr": "Proje ortağı",
+      "logo": "/images/logos/partners/vilnius.png",
+      "website": "",
+      "email": ""
+    },
+    {
+      "country_en": "Poland",
+      "country_tr": "Polonya",
+      "countryCode": "PL",
+      "school": "Zespół Szkół Samochodowych im. Tadeusza Tańskiego",
+      "city": "Włocławek",
+      "role_en": "Project partner",
+      "role_tr": "Proje ortağı",
+      "logo": "/images/logos/partners/poland.png",
+      "website": "",
+      "email": ""
+    }
+  ]
+}

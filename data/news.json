@@ -1,0 +1,46 @@
+{
+  "items": [
+    {
+      "year": "2026",
+      "title_en": "Kick-off Meeting Completed",
+      "title_tr": "Açılış Toplantısı Tamamlandı",
+      "summary_en": "Partner schools met to finalize the work plan, responsibilities, and dissemination goals.",
+      "summary_tr": "Ortak okullar çalışma planı, sorumluluklar ve yaygınlaştırma hedeflerini netleştirmek için bir araya geldi.",
+      "content_en": "",
+      "content_tr": "",
+      "image": "",
+      "alt_en": "Kick-off meeting of partner schools",
+      "alt_tr": "Ortak okulların açılış toplantısı",
+      "featured": true,
+      "url": ""
+    },
+    {
+      "year": "2026",
+      "title_en": "Student Workshop Series Started",
+      "title_tr": "Öğrenci Atölye Serisi Başladı",
+      "summary_en": "Students began hands-on activities focused on transforming waste materials into creative products.",
+      "summary_tr": "Öğrenciler, atık malzemeleri yaratıcı ürünlere dönüştürmeye odaklanan uygulamalı etkinliklere başladı.",
+      "content_en": "",
+      "content_tr": "",
+      "image": "",
+      "alt_en": "Students working on upcycling activities",
+      "alt_tr": "İleri dönüşüm etkinlikleri üzerinde çalışan öğrenciler",
+      "featured": false,
+      "url": ""
+    },
+    {
+      "year": "2026",
+      "title_en": "Dissemination Materials Published",
+      "title_tr": "Yaygınlaştırma Materyalleri Paylaşıldı",
+      "summary_en": "Digital content and visual project outputs were shared with the wider school community.",
+      "summary_tr": "Dijital içerikler ve görsel proje çıktıları daha geniş okul topluluğuyla paylaşıldı.",
+      "content_en": "",
+      "content_tr": "",
+      "image": "",
+      "alt_en": "Project dissemination materials",
+      "alt_tr": "Proje yaygınlaştırma materyalleri",
+      "featured": false,
+      "url": ""
+    }
+  ]
+}

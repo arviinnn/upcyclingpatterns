@@ -1,0 +1,58 @@
+{
+  "items": [
+    {
+      "title_en": "Project Launch",
+      "title_tr": "Proje Baslangici",
+      "text_en": "Kick-off meetings, planning, coordination, and role distribution among partners.",
+      "text_tr": "Baslangic toplantilari, planlama, koordinasyon ve partnerler arasinda gorev paylasimi.",
+      "phase": "planning",
+      "date": "2025-09",
+      "icon": "01"
+    },
+    {
+      "title_en": "Research & Preparation",
+      "title_tr": "Arastirma ve Hazirlik",
+      "text_en": "Students and teachers investigate sustainability topics, waste materials, and local practices.",
+      "text_tr": "Ogrenciler ve ogretmenler surdurulebilirlik konularini, atik malzemeleri ve yerel uygulamalari arastirir.",
+      "phase": "research",
+      "date": "2025-10",
+      "icon": "02"
+    },
+    {
+      "title_en": "Workshops & Production",
+      "title_tr": "Atolyeler ve Uretim",
+      "text_en": "Hands-on activities, design tasks, upcycling products, and collaborative classroom practices.",
+      "text_tr": "Uygulamali etkinlikler, tasarim gorevleri, ileri donusum urunleri ve ortak sinif uygulamalari.",
+      "phase": "production",
+      "date": "2026-01",
+      "icon": "03"
+    },
+    {
+      "title_en": "Mobility & Exchange",
+      "title_tr": "Hareketlilik ve Degisim",
+      "text_en": "Partner visits, intercultural learning, peer interaction, and shared implementation experiences.",
+      "text_tr": "Partner ziyaretleri, kulturler arasi ogrenme, akran etkilesimi ve ortak uygulama deneyimleri.",
+      "phase": "mobility",
+      "date": "2026-04",
+      "icon": "04"
+    },
+    {
+      "title_en": "Dissemination",
+      "title_tr": "Yayginlastirma",
+      "text_en": "Sharing project outputs through digital media, school presentations, and public communication.",
+      "text_tr": "Proje ciktilarinin dijital medya, okul sunumlari ve kamu iletisimi araciligiyla paylasilmasi.",
+      "phase": "dissemination",
+      "date": "2026-10",
+      "icon": "05"
+    },
+    {
+      "title_en": "Evaluation & Legacy",
+      "title_tr": "Degerlendirme ve Kalici Etki",
+      "text_en": "Impact review, documentation, reflection, and long-term use of project materials.",
+      "text_tr": "Etki degerlendirmesi, belgeleme, yansitma ve proje materyallerinin uzun vadeli kullanimi.",
+      "phase": "legacy",
+      "date": "2027-08",
+      "icon": "06"
+    }
+  ]
+}

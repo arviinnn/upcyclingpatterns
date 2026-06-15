@@ -1,0 +1,29 @@
+{
+  "projectName": "Upcycling Patterns",
+  "projectShortName": "UpCyc",
+  "projectEmail": "upcyclingpatterns@gmail.com",
+  "coordinator": "MEV Koleji Özel Basınköy Anadolu Lisesi",
+  "coordinatorCity": "Istanbul",
+  "coordinatorCountry_en": "Türkiye",
+  "coordinatorCountry_tr": "Türkiye",
+  "startDate": "2025-09-01",
+  "endDate": "2027-08-31",
+  "heroImage": "/images/hero/hero.webp",
+  "web3formsKey": "d1ccc863-13a2-4ab6-ad6d-cd276763dcc5",
+  "seo": {
+    "title_en": "Upcycling Patterns | Erasmus+ KA210-SCH",
+    "title_tr": "Upcycling Patterns | Erasmus+ KA210-SCH",
+    "description_en": "Upcycling Patterns is an Erasmus+ KA210-SCH project focused on sustainability, environmental awareness, climate responsibility, and upcycling through international school collaboration.",
+    "description_tr": "Upcycling Patterns, uluslararasi okul is birligiyle surdurulebilirlik, cevre bilinci, iklim sorumlulugu ve ileri donusume odaklanan bir Erasmus+ KA210-SCH projesidir.",
+    "image": "/og-image.png",
+    "imageAlt_en": "Upcycling Patterns project visual with sustainability, upcycling and partner countries",
+    "imageAlt_tr": "Surdurulebilirlik, ileri donusum ve ortak ulkeleri gosteren Upcycling Patterns proje gorseli"
+  },
+  "social": {
+    "instagram": "https://www.instagram.com/upcycling_patterns/",
+    "x": "https://x.com/UPatternsKA210",
+    "youtube": "https://www.youtube.com/@upcyclingpatterns",
+    "linkedin": "https://www.linkedin.com/company/upcycling-patterns-ka210/",
+    "facebook": ""
+  }
+}

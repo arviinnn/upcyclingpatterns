@@ -1,0 +1,32 @@
+{
+  "items": [
+    {
+      "question_en": "What is Upcycling Patterns?",
+      "question_tr": "Upcycling Patterns nedir?",
+      "answer_en": "It is an Erasmus+ KA210-SCH school partnership project focused on sustainability, climate awareness, and creative reuse.",
+      "answer_tr": "Sürdürülebilirlik, iklim farkındalığı ve yaratıcı yeniden kullanıma odaklanan Erasmus+ KA210-SCH okul ortaklığı projesidir.",
+      "category": "general"
+    },
+    {
+      "question_en": "Who are the project partners?",
+      "question_tr": "Proje ortakları kimlerdir?",
+      "answer_en": "The project includes partner schools from Türkiye, North Macedonia, Lithuania, and Poland.",
+      "answer_tr": "Projede Türkiye, Kuzey Makedonya, Litvanya ve Polonya'dan ortak okullar yer almaktadır.",
+      "category": "partners"
+    },
+    {
+      "question_en": "What kinds of activities are included?",
+      "question_tr": "Hangi tür faaliyetler yer alıyor?",
+      "answer_en": "Workshops, research, mobility meetings, student production, digital dissemination, and collaborative learning activities.",
+      "answer_tr": "Atölyeler, araştırma, hareketlilik toplantıları, öğrenci üretimi, dijital yaygınlaştırma ve iş birlikçi öğrenme etkinlikleri.",
+      "category": "students"
+    },
+    {
+      "question_en": "How long does the project last?",
+      "question_tr": "Proje ne kadar sürüyor?",
+      "answer_en": "The project duration is 24 months, from 01 September 2025 to 31 August 2027.",
+      "answer_tr": "Proje süresi 24 aydır; 01 Eylül 2025 ile 31 Ağustos 2027 arasındadır.",
+      "category": "general"
+    }
+  ]
+}

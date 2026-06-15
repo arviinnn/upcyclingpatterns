@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+      "type": "youtube",
+      "image": "",
+      "youtubeUrl": "https://youtu.be/D1fjOEujwgw",
+      "caption_en": "Workshop Activities",
+      "caption_tr": "Atölye Etkinlikleri",
+      "alt_en": "Workshop activities video for the Upcycling Patterns project",
+      "alt_tr": "Upcycling Patterns projesi atölye etkinlikleri videosu",
+      "category": "workshops"
+    },
+    {
+      "type": "image",
+      "image": "/images/gallery/team-collaboration.jpg",
+      "youtubeUrl": "",
+      "caption_en": "Team Collaboration",
+      "caption_tr": "Ekip İş Birliği",
+      "alt_en": "Team collaboration photo for the Upcycling Patterns project",
+      "alt_tr": "Upcycling Patterns projesi ekip iş birliği fotoğrafı",
+      "category": "team"
+    },
+    {
+      "type": "youtube",
+      "image": "",
+      "youtubeUrl": "https://youtu.be/BSiDfplhAxc",
+      "caption_en": "Partner Meetings",
+      "caption_tr": "Ortak Toplantıları",
+      "alt_en": "Partner meetings video for the Upcycling Patterns project",
+      "alt_tr": "Upcycling Patterns projesi ortak toplantıları videosu",
+      "category": "meetings"
+    }
+  ]
+}

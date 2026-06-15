@@ -1,0 +1,36 @@
+{
+  "official": [
+    {
+      "title_en": "Türkiye Europe",
+      "title_tr": "Türkiye Avrupa",
+      "image": "/images/logos/official/turkiyeavrupa.jpeg",
+      "alt_en": "Türkiye Avrupa logo",
+      "alt_tr": "Türkiye Avrupa logosu",
+      "wide": false
+    },
+    {
+      "title_en": "Turkish National Agency",
+      "title_tr": "Türkiye Ulusal Ajansı",
+      "image": "/images/logos/official/turkiye-ulusal-ajansi.png",
+      "alt_en": "Türkiye National Agency logo",
+      "alt_tr": "Türkiye Ulusal Ajansı logosu",
+      "wide": false
+    },
+    {
+      "title_en": "Funded by the European Union",
+      "title_tr": "Avrupa Birliği tarafından finanse edilmektedir",
+      "image": "/images/logos/official/funded.png",
+      "alt_en": "Funded by the European Union logo",
+      "alt_tr": "Avrupa Birliği tarafından finanse edilmektedir logosu",
+      "wide": true
+    },
+    {
+      "title_en": "Upcycling Patterns",
+      "title_tr": "Upcycling Patterns",
+      "image": "/images/logos/official/logo-sozlu.png",
+      "alt_en": "Upcycling Patterns project logo",
+      "alt_tr": "Upcycling Patterns proje logosu",
+      "wide": false
+    }
+  ]
+}

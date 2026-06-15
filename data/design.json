@@ -1,0 +1,29 @@
+{
+  "layout": {
+    "heroHeightDesktop": 90,
+    "heroHeightTablet": 96,
+    "heroHeightMobile": 92,
+    "heroTopCrop": -5,
+    "heroImageHeightDesktop": 110,
+    "heroObjectPositionDesktop": "center 45%",
+    "heroObjectPositionTablet": "62% center",
+    "heroObjectPositionMobile": "68% center",
+    "sectionDensity": "compact",
+    "containerWidth": 1240,
+    "cardRadius": 8,
+    "footerLogoDesktopHeight": 78,
+    "footerLogoWideDesktopHeight": 80,
+    "footerLogoMobileHeight": 58,
+    "footerLogoWideMobileHeight": 62
+  },
+  "hotspots": {
+    "turkiyeX": 79,
+    "turkiyeY": 78,
+    "northMacedoniaX": 66.3,
+    "northMacedoniaY": 80.5,
+    "lithuaniaX": 69.4,
+    "lithuaniaY": 43.5,
+    "polandX": 64.7,
+    "polandY": 55
+  }
+}

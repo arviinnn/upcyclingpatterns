@@ -1,0 +1,56 @@
+{
+  "items": [
+    {
+      "title_en": "Coordinator Preparation",
+      "title_tr": "Koordinator Hazirligi",
+      "hostCountry_en": "Türkiye",
+      "hostCountry_tr": "Türkiye",
+      "hostCity": "Istanbul",
+      "hostSchool": "MEV Koleji Ozel Basinkoy Anadolu Lisesi",
+      "startDate": "2025-09-01",
+      "endDate": "2025-12-31",
+      "status": "planned",
+      "focus_en": "Project launch, shared planning, communication routines, and first classroom activities.",
+      "focus_tr": "Proje baslangici, ortak planlama, iletisim duzeni ve ilk sinif etkinlikleri."
+    },
+    {
+      "title_en": "North Macedonia Mobility",
+      "title_tr": "Kuzey Makedonya Hareketliligi",
+      "hostCountry_en": "North Macedonia",
+      "hostCountry_tr": "Kuzey Makedonya",
+      "hostCity": "Ohrid",
+      "hostSchool": "OEMUC SV Naum Ohridski",
+      "startDate": "2026-04-01",
+      "endDate": "2026-04-30",
+      "status": "planned",
+      "focus_en": "Intercultural exchange, student collaboration, and applied upcycling workshops.",
+      "focus_tr": "Kulturler arasi degisim, ogrenci is birligi ve uygulamali ileri donusum atolyeleri."
+    },
+    {
+      "title_en": "Lithuania Mobility",
+      "title_tr": "Litvanya Hareketliligi",
+      "hostCountry_en": "Lithuania",
+      "hostCountry_tr": "Litvanya",
+      "hostCity": "Vilnius",
+      "hostSchool": "Vilniaus automechanikos ir verslo mokykla",
+      "startDate": "2026-10-01",
+      "endDate": "2026-10-31",
+      "status": "planned",
+      "focus_en": "Technical creativity, reuse culture, product design, and project documentation.",
+      "focus_tr": "Teknik yaraticilik, yeniden kullanim kulturu, urun tasarimi ve proje belgeleme."
+    },
+    {
+      "title_en": "Poland Mobility",
+      "title_tr": "Polonya Hareketliligi",
+      "hostCountry_en": "Poland",
+      "hostCountry_tr": "Polonya",
+      "hostCity": "Wloclawek",
+      "hostSchool": "Zespol Szkol Samochodowych im. Tadeusza Tanskiego",
+      "startDate": "2027-03-01",
+      "endDate": "2027-03-31",
+      "status": "planned",
+      "focus_en": "Final workshops, dissemination practice, evaluation, and legacy planning.",
+      "focus_tr": "Final atolyeler, yayginlastirma uygulamalari, degerlendirme ve kalicilik planlamasi."
+    }
+  ]
+}

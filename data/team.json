@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "name": "Project Coordinator",
+      "role_en": "Coordination and communication",
+      "role_tr": "Koordinasyon ve iletisim",
+      "institution": "MEV Koleji Ozel Basinkoy Anadolu Lisesi",
+      "country_en": "Türkiye",
+      "country_tr": "Türkiye",
+      "email": "",
+      "photo": "",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "name": "Partner School Team",
+      "role_en": "Workshops, mobility, dissemination and classroom implementation",
+      "role_tr": "Atolyeler, hareketlilik, yayginlastirma ve sinif uygulamalari",
+      "institution": "Partner institutions",
+      "country_en": "Europe",
+      "country_tr": "Avrupa",
+      "email": "",
+      "photo": "",
+      "alt_en": "",
+      "alt_tr": ""
+    }
+  ]
+}
