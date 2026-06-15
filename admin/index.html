@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="tr" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <title>Yönetim Paneli · Upcycling Patterns</title>
+  <meta name="description" content="Upcycling Patterns içerik yönetim paneli." />
+
+  <!-- Search engines must NEVER index the admin panel -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet" />
+
+  <meta name="theme-color" content="#2f7a43" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#0f1912" media="(prefers-color-scheme: dark)" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="format-detection" content="telephone=no, email=no, address=no" />
+  <meta name="application-name" content="Upcycling Patterns Admin" />
+  <meta name="apple-mobile-web-app-title" content="UpCyc Admin" />
+
+  <!--
+    Defence-in-depth security headers.
+    The real CSP for /admin/* lives in netlify.toml; these meta-equiv
+    headers only help in non-Netlify previews and local development.
+  -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta
+          http-equiv="Permissions-Policy"
+          content="camera=(), microphone=(), geolocation=(), payment=(), usb=(), accelerometer=(), gyroscope=(), magnetometer=(), interest-cohort=()"
+  />
+
+  <link rel="canonical" href="https://upcyclingpatterns.com/admin/" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+  <!-- Early theme sync (no FOUC) — matches the main site's siteTheme key -->
+  <script>
+    (function () {
+      try {
+        if (/^#\/(?:collections|entries)(?:\/|$)/.test(window.location.hash)) {
+          window.history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+        var saved = localStorage.getItem("siteTheme");
+        var prefersDark = window.matchMedia &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var theme = (saved === "dark" || saved === "light")
+                ? saved
+                : (prefersDark ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+  </script>
+
+  <!-- Netlify Identity widget (handles login & invites) -->
+  <script defer src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+  <style>
+    :root {
+      --brand:        #2f7a43;
+      --brand-light:  #57b26c;
+      --brand-deep:   #1a4225;
+      --secondary:    #174ea6;
+      --accent:       #b8ff7a;
+      --gold:         #f4b740;
+      --bg:           #f4f9f4;
+      --bg-1:         #f8fcf8;
+      --bg-2:         #eef6ef;
+      --text:         #0f1b14;
+      --muted:        #5a6b60;
+      --card:         rgba(255, 255, 255, 0.85);
+      --card-border:  rgba(47, 122, 67, 0.12);
+      --shadow:       0 24px 60px rgba(15, 27, 20, 0.10);
+      --danger:       #b42318;
+      --danger-soft:  rgba(180, 35, 24, 0.08);
+    }
+
+    html[data-theme="dark"] {
+      --bg:           #0a120d;
+      --bg-1:         #0a120d;
+      --bg-2:         #0f1912;
+      --text:         #f0f7f1;
+      --muted:        #b8c5bb;
+      --card:         rgba(20, 32, 24, 0.82);
+      --card-border:  rgba(184, 255, 122, 0.16);
+      --shadow:       0 24px 60px rgba(0, 0, 0, 0.45);
+      --brand-deep:   #d4f5dd;
+      --danger-soft:  rgba(255, 120, 110, 0.10);
+    }
+
+    *,
+    *::before,
+    *::after { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    /* Splash shown while Decap CMS is loading */
+    .cms-splash {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      background:
+              linear-gradient(90deg, rgba(23, 78, 166, 0.055) 1px, transparent 1px),
+              radial-gradient(circle at 24% 18%, rgba(87, 178, 108, 0.18), transparent 36%),
+              radial-gradient(circle at 78% 76%, rgba(244, 183, 64, 0.16), transparent 34%),
+              linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      background-size: 42px 42px, auto, auto, auto;
+      z-index: 999;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+
+    html[data-theme="dark"] .cms-splash {
+      background:
+              linear-gradient(90deg, rgba(244, 183, 64, 0.045) 1px, transparent 1px),
+              radial-gradient(circle at 24% 18%, rgba(87, 178, 108, 0.10), transparent 36%),
+              radial-gradient(circle at 78% 76%, rgba(244, 183, 64, 0.08), transparent 34%),
+              linear-gradient(180deg, var(--bg-1), var(--bg-2));
+      background-size: 42px 42px, auto, auto, auto;
+    }
+
+    .cms-splash.is-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .cms-splash-card {
+      text-align: center;
+      padding: 32px;
+      background: var(--card);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 8px;
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow);
+      max-width: 460px;
+      width: calc(100% - 32px);
+    }
+
+    .cms-splash-logo {
+      width: 64px;
+      height: 64px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin: 0 auto 20px;
+      box-shadow: 0 6px 20px rgba(47, 122, 67, 0.25);
+      display: block;
+    }
+
+    .cms-splash-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--brand-deep);
+      letter-spacing: -0.02em;
+      margin: 0 0 6px;
+    }
+
+    .cms-splash-subtitle {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin: 0 0 22px;
+      line-height: 1.5;
+    }
+
+    .cms-splash-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      margin: -6px 0 20px;
+    }
+
+    .cms-splash-chip {
+      min-height: 26px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 9px;
+      border: 1px solid rgba(47, 122, 67, 0.14);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.62);
+      color: var(--brand-deep);
+      font-size: 0.72rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    html[data-theme="dark"] .cms-splash-chip {
+      border-color: rgba(248, 255, 249, 0.14);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+    }
+
+    .cms-splash-spinner {
+      width: 36px;
+      height: 36px;
+      margin: 0 auto;
+      border: 3px solid rgba(47, 122, 67, 0.15);
+      border-top-color: var(--brand);
+      border-radius: 50%;
+      animation: cms-spin 0.9s linear infinite;
+    }
+
+    @keyframes cms-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .cms-splash-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 22px;
+    }
+
+    .cms-splash-btn {
+      display: inline-block;
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--brand-deep);
+      text-decoration: none;
+      border: 1.5px solid rgba(47, 122, 67, 0.25);
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+      font-family: inherit;
+    }
+
+    .cms-splash-btn:hover,
+    .cms-splash-btn:focus-visible {
+      background: var(--brand);
+      color: #fff;
+      border-color: var(--brand);
+      outline: none;
+    }
+
+    .cms-splash-btn:focus-visible {
+      box-shadow: 0 0 0 3px rgba(87, 178, 108, 0.35);
+    }
+
+    .admin-health-alert {
+      position: fixed;
+      z-index: 2147483647;
+      right: 16px;
+      bottom: 16px;
+      width: min(440px, calc(100vw - 32px));
+      padding: 12px 14px;
+      border: 1px solid rgba(180, 35, 24, 0.28);
+      border-radius: 8px;
+      background: #fff6f4;
+      color: #6f1d17;
+      box-shadow: 0 18px 44px rgba(70, 20, 15, 0.22);
+      font: 600 14px/1.45 Inter, system-ui, sans-serif;
+    }
+
+    .admin-health-alert[hidden] { display: none !important; }
+
+    .admin-translation-status {
+      position: fixed;
+      z-index: 2147483646;
+      left: 50%;
+      top: 12px;
+      transform: translateX(-50%);
+      width: max-content;
+      max-width: calc(100vw - 24px);
+      padding: 9px 12px;
+      border: 1px solid rgba(47, 122, 67, 0.25);
+      border-radius: 8px;
+      background: #f4fff5;
+      color: #164522;
+      box-shadow: 0 10px 30px rgba(15, 27, 20, 0.16);
+      font: 700 13px/1.35 Inter, system-ui, sans-serif;
+    }
+
+    .admin-translation-status[hidden] { display: none !important; }
+
+    .admin-quick-nav {
+      position: fixed;
+      z-index: 2147483600;
+      right: 12px;
+      top: 12px;
+      display: flex;
+      gap: 6px;
+      padding: 6px;
+      border: 1px solid rgba(47, 122, 67, 0.18);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: 0 12px 34px rgba(15, 27, 20, 0.15);
+      backdrop-filter: blur(14px);
+    }
+
+    .admin-quick-nav[hidden] { display: none !important; }
+
+    .admin-quick-nav a {
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7px 10px;
+      border-radius: 6px;
+      color: #173d22;
+      font: 800 12px/1 Inter, system-ui, sans-serif;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .admin-quick-nav a:hover,
+    .admin-quick-nav a:focus-visible {
+      background: #e8f7eb;
+      outline: 2px solid rgba(47, 122, 67, 0.25);
+      outline-offset: 1px;
+    }
+
+    .admin-health-alert a {
+      display: inline-block;
+      margin-left: 8px;
+      color: #174ea6;
+      font-weight: 800;
+      text-decoration: underline;
+    }
+
+    html[data-theme="dark"] .admin-health-alert {
+      border-color: rgba(255, 130, 115, 0.42);
+      background: #281412;
+      color: #ffd9d4;
+    }
+
+    /* Error state */
+    .cms-splash[data-state="error"] .cms-splash-spinner {
+      display: none;
+    }
+
+    .cms-splash-error {
+      display: none;
+      margin: 12px 0 0;
+      padding: 12px 14px;
+      background: var(--danger-soft);
+      border: 1px solid rgba(180, 35, 24, 0.22);
+      border-radius: 8px;
+      color: var(--danger);
+      font-size: 0.88rem;
+      line-height: 1.5;
+      text-align: left;
+    }
+
+    .cms-splash[data-state="error"] .cms-splash-error {
+      display: block;
+    }
+
+    .cms-splash[data-state="error"] .cms-splash-subtitle {
+      display: none;
+    }
+
+    /* No-script fallback */
+    .cms-noscript {
+      max-width: 480px;
+      margin: 40px auto;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: var(--text);
+      box-shadow: var(--shadow);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cms-splash-spinner { animation: none; }
+      .cms-splash { transition: none; }
+      .cms-splash-btn { transition: none; }
+    }
+
+    @media (max-width: 720px) {
+      #nc-root,
+      #nc-root > div,
+      #nc-root main,
+      #nc-root [role="main"] {
+        width: 100% !important;
+        max-width: 100vw !important;
+        min-width: 0 !important;
+      }
+
+      #nc-root { padding-bottom: 68px; overflow-x: hidden; }
+      #nc-root * { min-width: 0; }
+      #nc-root input,
+      #nc-root textarea,
+      #nc-root select { max-width: 100% !important; font-size: 16px !important; }
+      #nc-root img,
+      #nc-root video { max-width: 100% !important; height: auto; }
+      #nc-root button { max-width: 100%; white-space: normal; }
+
+      .admin-quick-nav {
+        inset: auto 6px 6px;
+        top: auto;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 4px;
+        padding: 5px;
+      }
+
+      .admin-quick-nav a {
+        min-height: 42px;
+        padding: 6px 3px;
+        font-size: 10px;
+        line-height: 1.15;
+        text-align: center;
+        white-space: normal;
+      }
+
+      .admin-translation-status { top: 6px; font-size: 12px; text-align: center; }
+      .cms-splash { padding: 10px; }
+      .cms-splash-card { width: calc(100% - 20px); padding: 22px 16px; }
+      .cms-splash-logo { width: 54px; height: 54px; margin-bottom: 14px; }
+      .cms-splash-title { font-size: 1.25rem; }
+      .cms-splash-subtitle { margin-bottom: 16px; font-size: 0.88rem; }
+      .cms-splash-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      .cms-splash-btn { min-height: 38px; padding: 8px 10px; font-size: 0.82rem; }
+      .admin-health-alert { right: 8px; bottom: 66px; width: calc(100vw - 16px); font-size: 12px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<noscript>
+  <div class="cms-noscript" role="alert">
+    <h1 style="margin:0 0 10px;font-size:1.2rem;color:var(--brand-deep);">JavaScript gerekli</h1>
+    <p style="margin:0 0 12px;">Upcycling Patterns yönetim panelinin çalışması için JavaScript açık olmalıdır.</p>
+    <p style="margin:0;"><a href="/" style="color:var(--brand);font-weight:700;">← Siteye dön</a></p>
+  </div>
+</noscript>
+
+<!-- Loading splash -->
+<div class="cms-splash" id="cmsSplash" role="status" aria-live="polite" aria-busy="true">
+  <div class="cms-splash-card">
+    <img
+            src="/images/branding/logo.jpeg"
+            alt="Upcycling Patterns"
+            class="cms-splash-logo"
+            width="64"
+            height="64"
+            decoding="async"
+    />
+    <h1 class="cms-splash-title" id="cmsSplashTitle">Yönetim Paneli</h1>
+    <p class="cms-splash-subtitle" id="cmsSplashSubtitle">Editör yükleniyor, lütfen bekleyin…</p>
+    <div class="cms-splash-meta" aria-label="Yönetim paneli özellikleri">
+      <span class="cms-splash-chip">Kolay yayınlama</span>
+      <span class="cms-splash-chip">Telefon yüklemesi</span>
+      <span class="cms-splash-chip">Otomatik çeviri</span>
+    </div>
+    <div class="cms-splash-spinner" aria-hidden="true"></div>
+    <div class="cms-splash-error" id="cmsSplashError" role="alert"></div>
+    <div class="cms-splash-actions">
+      <a href="/" class="cms-splash-btn cms-splash-back">← Siteye dön</a>
+      <button type="button" class="cms-splash-btn" id="cmsRetryBtn" hidden>Tekrar dene</button>
+    </div>
+  </div>
+</div>
+
+<div class="admin-health-alert" id="adminHealthAlert" role="alert" hidden>
+  <span id="adminHealthMessage">Editör bağlantısının yenilenmesi gerekiyor.</span>
+  <a href="/admin/recover.html">Oturumu sıfırla</a>
+</div>
+
+<div class="admin-translation-status" id="adminTranslationStatus" role="status" aria-live="polite" hidden></div>
+
+<nav class="admin-quick-nav" id="adminQuickNav" aria-label="Hızlı içerik menüsü" hidden>
+  <a href="#/collections/gallery/entries/gallery_items">Galeri</a>
+  <a href="#/collections/news/entries/news_items">Haber</a>
+  <a href="#/collections/outputs/entries/output_items">Dosya</a>
+  <a href="#/collections/faq/entries/faq_items">SSS</a>
+  <a href="/" target="_blank" rel="noopener">Site</a>
+</nav>
+
+<!--
+  Decap CMS bundle.
+  We try the primary CDN (unpkg). If it fails to load within a short
+  window, we fall back to jsDelivr automatically so the admin panel
+  is not single-point-of-failure on one CDN.
+
+  Version is pinned exactly so an upstream release cannot change the
+  editor behavior without being tested with this project first.
+-->
+<script>
+  (function () {
+    'use strict';
+
+    var PRIMARY_CDN  = 'https://unpkg.com/decap-cms@3.14.0/dist/decap-cms.js';
+    var FALLBACK_CDN = 'https://cdn.jsdelivr.net/npm/decap-cms@3.14.0/dist/decap-cms.js';
+    var loadedAny = false;
+    var CMS_LOAD_TIMEOUT_MS = 12000;
+
+    function loadScript(src, onLoad, onError) {
+      var s = document.createElement('script');
+      var settled = false;
+      var timeoutId = 0;
+
+      function finish(didLoad) {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timeoutId);
+        s.onload = null;
+        s.onerror = null;
+        if (!didLoad && s.parentNode) s.parentNode.removeChild(s);
+        if (didLoad) {
+          loadedAny = true;
+          if (onLoad) onLoad();
+        } else if (onError) {
+          onError();
+        }
+      }
+
+      s.src = src;
+      s.async = false;
+      s.onload = function () { finish(true); };
+      s.onerror = function () { finish(false); };
+      timeoutId = setTimeout(function () { finish(false); }, CMS_LOAD_TIMEOUT_MS);
+      document.head.appendChild(s);
+    }
+
+    var DEFAULT_ONLY_FIELDS = {
+      type: true,
+      category: true,
+      phase: true,
+      status: true,
+      role: true,
+      countryCode: true,
+      featured: true,
+      wide: true,
+      icon: true,
+      displayOrder: true,
+      order: true,
+      sortOrder: true,
+      position: true,
+      date: true,
+      uploadDate: true,
+      publishDate: true,
+      publishedAt: true,
+      createdAt: true,
+      year: true
+    };
+
+    function hasEditorContent(value, key) {
+      if (DEFAULT_ONLY_FIELDS[key]) return false;
+      if (value === null || typeof value === 'undefined') return false;
+      if (typeof value === 'string') return value.trim().length > 0;
+      if (typeof value === 'number') return Number.isFinite(value);
+      if (typeof value === 'boolean') return value;
+      if (Array.isArray(value)) {
+        return value.some(function (item) { return hasEditorContent(item, ''); });
+      }
+      if (typeof value === 'object') {
+        return Object.keys(value).some(function (childKey) {
+          return hasEditorContent(value[childKey], childKey);
+        });
+      }
+      return false;
+    }
+
+    function removeEmptyEditorRows(value) {
+      if (Array.isArray(value)) {
+        return value
+          .map(removeEmptyEditorRows)
+          .filter(function (item) {
+            return typeof item !== 'object' || item === null || hasEditorContent(item, '');
+          });
+      }
+      if (value && typeof value === 'object') {
+        return Object.keys(value).reduce(function (result, key) {
+          result[key] = removeEmptyEditorRows(value[key]);
+          return result;
+        }, {});
+      }
+      return value;
+    }
+
+    function removeEmptyImmutableRows(value) {
+      if (!value || typeof value !== 'object') return value;
+
+      // Immutable List exposes push(); Immutable Map does not.
+      if (typeof value.push === 'function' && typeof value.filter === 'function') {
+        return value
+          .map(removeEmptyImmutableRows)
+          .filter(function (item) {
+            var plainItem = item && typeof item.toJS === 'function' ? item.toJS() : item;
+            return typeof plainItem !== 'object' || plainItem === null || hasEditorContent(plainItem, '');
+          });
+      }
+
+      if (typeof value.keySeq === 'function' && typeof value.set === 'function') {
+        return value.withMutations(function (result) {
+          value.keySeq().forEach(function (key) {
+            result.set(key, removeEmptyImmutableRows(value.get(key)));
+          });
+        });
+      }
+
+      return value;
+    }
+
+    function todayIsoDate() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function applyAutomaticFields(value) {
+      if (Array.isArray(value)) {
+        value.forEach(applyAutomaticFields);
+        return value;
+      }
+      if (!value || typeof value !== 'object') return value;
+
+      Object.keys(value).forEach(function (key) { applyAutomaticFields(value[key]); });
+
+      if (Object.prototype.hasOwnProperty.call(value, 'youtubeUrl')) {
+        value.type = String(value.youtubeUrl || '').trim() ? 'youtube' : 'image';
+      }
+      if (Object.prototype.hasOwnProperty.call(value, 'category') && !String(value.category || '').trim()) {
+        value.category = 'other';
+      }
+      if (Object.prototype.hasOwnProperty.call(value, 'year') && !String(value.year || '').trim()) {
+        value.year = String(new Date().getFullYear());
+      }
+      if (Object.prototype.hasOwnProperty.call(value, 'date') && !String(value.date || '').trim()) {
+        value.date = todayIsoDate();
+      }
+      if (Object.prototype.hasOwnProperty.call(value, 'featured')) value.featured = true;
+
+      var turkishTitle = String(value.title_tr || value.caption_tr || value.question_tr || '').trim();
+      if (Object.prototype.hasOwnProperty.call(value, 'alt_tr') && !String(value.alt_tr || '').trim()) {
+        value.alt_tr = turkishTitle || 'Upcycling Patterns proje görseli';
+      } else if (Object.prototype.hasOwnProperty.call(value, 'alt') && !String(value.alt || '').trim()) {
+        value.alt = turkishTitle || 'Upcycling Patterns proje görseli';
+      }
+      if (Object.prototype.hasOwnProperty.call(value, 'summary_tr') && !String(value.summary_tr || '').trim()) {
+        value.summary_tr = turkishTitle;
+      }
+      if (Object.prototype.hasOwnProperty.call(value, 'content_tr') && !String(value.content_tr || '').trim()) {
+        value.content_tr = String(value.summary_tr || turkishTitle).trim();
+      }
+      if (Object.prototype.hasOwnProperty.call(value, 'description_tr') && !String(value.description_tr || '').trim()) {
+        value.description_tr = turkishTitle;
+      }
+
+      return value;
+    }
+
+    function collectTranslationPairs(value, path, pairs) {
+      if (Array.isArray(value)) {
+        value.forEach(function (item, index) { collectTranslationPairs(item, path.concat(index), pairs); });
+        return pairs;
+      }
+      if (!value || typeof value !== 'object') return pairs;
+
+      Object.keys(value).forEach(function (key) {
+        var item = value[key];
+        if (/_tr$/.test(key) && typeof item === 'string' && item.trim()) {
+          var englishKey = key.replace(/_tr$/, '_en');
+          pairs.push({ text: item.trim(), object: value, englishKey: englishKey, path: path.concat(englishKey) });
+        }
+        collectTranslationPairs(item, path.concat(key), pairs);
+      });
+      return pairs;
+    }
+
+    function currentIdentityToken() {
+      var identity = window.netlifyIdentity;
+      var user = identity && identity.currentUser && identity.currentUser();
+      if (!user || typeof user.jwt !== 'function') return Promise.resolve('');
+      return user.jwt().catch(function () { return ''; });
+    }
+
+    function requestTranslations(texts) {
+      if (!texts.length) return Promise.resolve([]);
+      return currentIdentityToken().then(function (token) {
+        var headers = { 'Content-Type': 'application/json', Accept: 'application/json' };
+        if (token) headers.Authorization = 'Bearer ' + token;
+        return fetch('/.netlify/functions/translate', {
+          method: 'POST',
+          cache: 'no-store',
+          credentials: 'same-origin',
+          headers: headers,
+          body: JSON.stringify({ texts: texts })
+        });
+      }).then(function (response) {
+        return response.json().catch(function () { return {}; }).then(function (body) {
+          if (!response.ok || !body.ok || !Array.isArray(body.translations)) {
+            if (response.status === 401 || response.status === 403) {
+              throw new Error('Çeviri için yönetim paneline yeniden giriş yapmanız gerekiyor.');
+            }
+            if (body.code === 'translation_not_configured') {
+              throw new Error('DeepL anahtarı Netlify ortam değişkenlerinde tanımlı değil.');
+            }
+            if (response.status === 422) {
+              throw new Error('Çevrilecek içerik DeepL sınırlarını aşıyor.');
+            }
+            throw new Error('DeepL çeviri hizmetine şu anda ulaşılamıyor.');
+          }
+          return body.translations;
+        });
+      });
+    }
+
+    function translatePairs(pairs) {
+      var unique = [];
+      var byText = Object.create(null);
+      pairs.forEach(function (pair) {
+        if (!byText[pair.text]) {
+          byText[pair.text] = { text: pair.text, pairs: [] };
+          unique.push(byText[pair.text]);
+        }
+        byText[pair.text].pairs.push(pair);
+      });
+
+      var chunks = [];
+      var chunk = [];
+      var chunkLength = 0;
+      var tooLong = false;
+      unique.forEach(function (item) {
+        if (item.text.length > 5000) {
+          tooLong = true;
+          return;
+        }
+        if (chunk.length && (chunk.length >= 40 || chunkLength + item.text.length > 28000)) {
+          chunks.push(chunk);
+          chunk = [];
+          chunkLength = 0;
+        }
+        chunk.push(item);
+        chunkLength += item.text.length;
+      });
+      if (tooLong) return Promise.reject(new Error('Çevrilecek alan 5000 karakter sınırını aşıyor.'));
+      if (chunk.length) chunks.push(chunk);
+
+      return chunks.reduce(function (promise, chunk) {
+        return promise.then(function () {
+          return requestTranslations(chunk.map(function (item) { return item.text; })).then(function (translations) {
+            if (translations.length !== chunk.length) {
+              throw new Error('Çeviri hizmeti eksik sonuç döndürdü.');
+            }
+            chunk.forEach(function (item, itemIndex) {
+              var translated = String(translations[itemIndex] || '').trim();
+              if (!translated) throw new Error('Çeviri hizmeti boş sonuç döndürdü.');
+              item.pairs.forEach(function (pair) {
+                pair.object[pair.englishKey] = translated;
+              });
+            });
+          });
+        });
+      }, Promise.resolve());
+    }
+
+    function applyPlainValues(immutable, plain) {
+      return immutable.withMutations(function (result) {
+        function walk(value, path) {
+          if (Array.isArray(value)) {
+            value.forEach(function (item, index) { walk(item, path.concat(index)); });
+          } else if (value && typeof value === 'object') {
+            Object.keys(value).forEach(function (key) { walk(value[key], path.concat(key)); });
+          } else {
+            result.setIn(path, value);
+          }
+        }
+        walk(plain, []);
+      });
+    }
+
+    function showTranslationStatus(message) {
+      var status = document.getElementById('adminTranslationStatus');
+      if (!status) return;
+      status.textContent = message;
+      status.hidden = false;
+    }
+
+    function hideTranslationStatus() {
+      var status = document.getElementById('adminTranslationStatus');
+      if (status) status.hidden = true;
+    }
+
+    function prepareEditorData(data) {
+      var cleaned = removeEmptyImmutableRows(data);
+      var plain = applyAutomaticFields(cleaned.toJS());
+      var pairs = collectTranslationPairs(plain, [], []);
+
+      showTranslationStatus('İngilizce çeviri ve otomatik alanlar hazırlanıyor…');
+      return translatePairs(pairs).then(function () {
+        hideTranslationStatus();
+        hideHealthAlert();
+        return applyPlainValues(cleaned, plain);
+      }).catch(function (error) {
+        hideTranslationStatus();
+        showHealthAlert((error && error.message ? error.message : 'Otomatik çeviri tamamlanamadı.') + ' İçerik kaydedilmedi; bağlantıyı kontrol edip tekrar deneyin.');
+        throw error;
+      });
+    }
+
+    function registerEditorGuards() {
+      if (!window.CMS || typeof window.CMS.registerEventListener !== 'function') return;
+
+      window.CMS.registerEventListener({
+        name: 'preSave',
+        handler: function (event) {
+          var entry = event && event.entry;
+          var data = entry && typeof entry.get === 'function' ? entry.get('data') : null;
+          if (!data || typeof data.toJS !== 'function' || typeof data.clear !== 'function') return;
+
+          return prepareEditorData(data);
+        }
+      });
+    }
+
+    window.__upcycCMSRemoveEmptyRows = removeEmptyEditorRows;
+    window.__upcycCMSApplyAutomaticFields = applyAutomaticFields;
+    window.__upcycCMSCollectTranslationPairs = collectTranslationPairs;
+    window.__upcycCMSPrepareEditorData = prepareEditorData;
+
+    loadScript(PRIMARY_CDN, registerEditorGuards, function () {
+      // Primary failed → try fallback.
+      loadScript(FALLBACK_CDN, registerEditorGuards, function () {
+        // Both failed.
+        showError(
+                'Editör yüklenemedi.',
+                'Yönetim paneli dosyaları indirilemedi. İnternet bağlantısını kontrol edip tekrar deneyin.'
+        );
+      });
+    });
+
+    // Keep references in case we need to expose them.
+    window.__upcycCMSBootstrap = { primary: PRIMARY_CDN, fallback: FALLBACK_CDN };
+
+    // ─── Splash + UI controller ──────────────────────────────────────
+    var splash       = document.getElementById('cmsSplash');
+    var splashErr    = document.getElementById('cmsSplashError');
+    var splashTitle  = document.getElementById('cmsSplashTitle');
+    var splashSub    = document.getElementById('cmsSplashSubtitle');
+    var retryBtn     = document.getElementById('cmsRetryBtn');
+    var healthAlert  = document.getElementById('adminHealthAlert');
+    var healthText   = document.getElementById('adminHealthMessage');
+
+    function showHealthAlert(message) {
+      if (!healthAlert) return;
+      if (healthText) healthText.textContent = message;
+      healthAlert.hidden = false;
+    }
+
+    function hideHealthAlert() {
+      if (healthAlert) healthAlert.hidden = true;
+    }
+
+    window.addEventListener('offline', function () {
+      showHealthAlert('Internet connection lost. Your entry has not been saved yet.');
+    });
+    window.addEventListener('online', hideHealthAlert);
+    window.addEventListener('unhandledrejection', function (event) {
+      var reason = event && event.reason;
+      var message = reason && reason.message ? reason.message : String(reason || '');
+      if (/failed to fetch|networkerror|load failed/i.test(message)) {
+        showHealthAlert('The save request could not reach Git Gateway. Reset the session, sign in again, then retry the save.');
+      }
+    });
+
+    /*
+     * Phone photos can be much larger than a Git-backed CMS commit should be.
+     * Optimize oversized JPG/PNG/WebP files before Decap sees the change event.
+     * Existing small files, PDFs and other document uploads are untouched.
+     */
+    var optimizedInputs = typeof WeakSet === 'function' ? new WeakSet() : null;
+    var IMAGE_TARGET_BYTES = 900 * 1024;
+    var IMAGE_MAX_DIMENSION = 1800;
+
+    function optimizedFileName(name) {
+      var base = String(name || 'gallery-image').replace(/\.[^.]+$/, '');
+      base = base.normalize ? base.normalize('NFKD') : base;
+      base = base.replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/^-+|-+$/g, '');
+      return (base || 'gallery-image') + '.webp';
+    }
+
+    function canvasBlob(canvas, quality) {
+      return new Promise(function (resolve, reject) {
+        canvas.toBlob(function (blob) {
+          if (blob) resolve(blob);
+          else reject(new Error('Tarayıcı bu görseli optimize edemedi.'));
+        }, 'image/webp', quality);
+      });
+    }
+
+    function loadImageFile(file) {
+      return new Promise(function (resolve, reject) {
+        var image = new Image();
+        var objectUrl = URL.createObjectURL(file);
+        image.onload = function () {
+          URL.revokeObjectURL(objectUrl);
+          resolve(image);
+        };
+        image.onerror = function () {
+          URL.revokeObjectURL(objectUrl);
+          reject(new Error('Seçilen görsel okunamadı.'));
+        };
+        image.src = objectUrl;
+      });
+    }
+
+    function optimizeImageFile(file) {
+      return loadImageFile(file).then(function (image) {
+        var scale = Math.min(1, IMAGE_MAX_DIMENSION / Math.max(image.naturalWidth, image.naturalHeight));
+        var canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+        canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+        var context = canvas.getContext('2d', { alpha: true });
+        if (!context) throw new Error('Bu tarayıcı görsel optimizasyonunu desteklemiyor.');
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+        var qualities = [0.84, 0.72, 0.60];
+        var index = 0;
+        function encodeNext() {
+          return canvasBlob(canvas, qualities[index]).then(function (blob) {
+            if (blob.size <= IMAGE_TARGET_BYTES || index === qualities.length - 1) return blob;
+            index += 1;
+            return encodeNext();
+          });
+        }
+        return encodeNext();
+      }).then(function (blob) {
+        return new File([blob], optimizedFileName(file.name), {
+          type: 'image/webp',
+          lastModified: Date.now()
+        });
+      });
+    }
+
+    document.addEventListener('change', function (event) {
+      var input = event.target;
+      if (!input || input.tagName !== 'INPUT' || input.type !== 'file' || !input.files || input.files.length !== 1) return;
+      if (optimizedInputs && optimizedInputs.has(input)) {
+        optimizedInputs.delete(input);
+        return;
+      }
+
+      var file = input.files[0];
+      var isImage = /^image\//i.test(file.type);
+      var isBrowserReadyFormat = /^image\/(?:jpeg|png|webp)$/i.test(file.type);
+      if (!isImage || /image\/(?:gif|svg\+xml)/i.test(file.type)) return;
+      if (isBrowserReadyFormat && file.size <= IMAGE_TARGET_BYTES) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      if (event.stopImmediatePropagation) event.stopImmediatePropagation();
+      showHealthAlert('Large image detected. Optimizing it before upload...');
+
+      optimizeImageFile(file).then(function (optimizedFile) {
+        var transfer = new DataTransfer();
+        transfer.items.add(optimizedFile);
+        input.files = transfer.files;
+        if (optimizedInputs) optimizedInputs.add(input);
+        hideHealthAlert();
+        input.dispatchEvent(new Event('change', { bubbles: true }));
+      }).catch(function (error) {
+        input.value = '';
+        showHealthAlert(error.message + ' Telefonunuzdan JPG, PNG veya WebP olarak tekrar seçin.');
+      });
+    }, true);
+
+    function hideSplash() {
+      if (!splash) return;
+      splash.classList.add('is-hidden');
+      splash.setAttribute('aria-busy', 'false');
+      setTimeout(function () {
+        if (splash && splash.parentNode) splash.parentNode.removeChild(splash);
+      }, 600);
+    }
+
+    function showError(title, message) {
+      if (!splash) return;
+      splash.setAttribute('data-state', 'error');
+      splash.setAttribute('aria-busy', 'false');
+      if (splashTitle) splashTitle.textContent = title;
+      if (splashErr)   splashErr.textContent  = message;
+      if (retryBtn)    retryBtn.hidden        = false;
+    }
+
+    function checkAdminConfig() {
+      if (!window.fetch) return;
+      fetch('/admin/config.yml', {
+        cache: 'no-store',
+        credentials: 'same-origin',
+        headers: { Accept: 'text/yaml,text/plain,*/*' }
+      })
+        .then(function (response) {
+          if (!response.ok) {
+            throw new Error('admin/config.yml HTTP ' + response.status + ' hatası verdi.');
+          }
+          return response.text();
+        })
+        .then(function (text) {
+          var trimmed = (text || '').trim();
+          if (!trimmed || trimmed.charAt(0) === '<' || trimmed.indexOf('backend:') === -1) {
+            throw new Error('admin/config.yml geçerli bir Decap CMS ayar dosyası değil.');
+          }
+        })
+        .catch(function (error) {
+          showError(
+            'Yönetim ayarları okunamadı.',
+            '/admin/config.yml YAML olarak okunamadığı için editör başlatılmadı. Yönlendirme, başlık ve yayın dosyalarını kontrol edin. Ayrıntı: ' + error.message
+          );
+        });
+    }
+
+    checkAdminConfig();
+
+    if (retryBtn) {
+      retryBtn.addEventListener('click', function () { window.location.reload(); });
+    }
+
+    // ─── Detect CMS mount ────────────────────────────────────────────
+    // Decap mounts its React root into the body. We watch for one of
+    // several markers and tear the splash down when any appear.
+    //
+    // 15s is long enough for slower school networks to download the CMS
+    // bundle but short enough that a stuck user gets feedback.
+    var splashTimeout = setTimeout(function () {
+      if (loadedAny) {
+        // Bundle loaded but UI never mounted → likely a config error.
+        showError(
+                'Editör başlatılamadı.',
+                'CMS yüklendi ancak başlatılamadı. admin/config.yml, Netlify Identity ve Git Gateway ayarlarını kontrol edin.'
+        );
+      } else {
+        showError(
+                'Editör geç yükleniyor.',
+                'CMS henüz yüklenmedi. CDN engellenmiş veya internet bağlantısı yavaş olabilir.'
+        );
+      }
+    }, 15000);
+
+    function isCmsMounted() {
+      return (
+              document.getElementById('nc-root') ||
+              document.querySelector('[class*="App"]') ||
+              document.querySelector('.cms-editor-active') ||
+              document.querySelector('[class*="CollectionsPanel"]')
+      );
+    }
+
+    var observer = new MutationObserver(function () {
+      if (isCmsMounted()) {
+        clearTimeout(splashTimeout);
+        hideSplash();
+        observer.disconnect();
+      }
+    });
+
+    if (document.body) {
+      observer.observe(document.body, { childList: true, subtree: true });
+    } else {
+      document.addEventListener('DOMContentLoaded', function () {
+        observer.observe(document.body, { childList: true, subtree: true });
+      });
+    }
+
+    // ─── Netlify Identity wiring ─────────────────────────────────────
+    // The widget script loads with `defer`, so it may not be ready
+    // immediately. Poll up to 8 seconds before giving up — long enough
+    // for slow mobile networks and older devices to finish parsing the
+    // widget bundle.
+    var identityPollAttempts = 0;
+    var IDENTITY_MAX_ATTEMPTS = 80; // 80 × 100 ms = 8 s
+    var identityPoll = setInterval(function () {
+      identityPollAttempts++;
+      if (window.netlifyIdentity) {
+        clearInterval(identityPoll);
+        wireIdentity(window.netlifyIdentity);
+      } else if (identityPollAttempts >= IDENTITY_MAX_ATTEMPTS) {
+        clearInterval(identityPoll);
+        if (window.console && console.warn) {
+          console.warn('[admin] Netlify Identity widget did not load. Check CSP and ad/content blockers.');
+        }
+      }
+    }, 100);
+
+    function setQuickNavVisible(visible) {
+      var quickNav = document.getElementById('adminQuickNav');
+      if (quickNav) quickNav.hidden = !visible;
+    }
+
+    function wireIdentity(id) {
+      function verifySession(user) {
+        if (!user || typeof user.jwt !== 'function') return Promise.resolve(false);
+        return user.jwt(true).then(function (token) {
+          return fetch('/.netlify/git/settings', {
+            method: 'GET',
+            cache: 'no-store',
+            headers: { Authorization: 'Bearer ' + token, Accept: 'application/json' }
+          });
+        }).then(function (response) {
+          if (response.status === 401 || response.status === 403) {
+            throw new Error('Yönetim paneli oturumunuzun süresi dolmuş.');
+          }
+          if (!response.ok) throw new Error('İçerik bağlantısı HTTP ' + response.status + ' hatası verdi.');
+          hideHealthAlert();
+          return true;
+        }).catch(function (error) {
+          setQuickNavVisible(false);
+          showHealthAlert(error.message + ' Oturumu sıfırlayıp tekrar giriş yapın.');
+          return false;
+        });
+      }
+
+      // After-login redirect (e.g. accepting an invite from the main site).
+      id.on('init', function (user) {
+        setQuickNavVisible(false);
+        if (user) {
+          verifySession(user).then(function (isValid) {
+            setQuickNavVisible(isValid);
+          });
+        } else {
+          id.on('login', function () {
+            var currentUser = id.currentUser && id.currentUser();
+            verifySession(currentUser).then(function (isValid) {
+              if (isValid) document.location.replace('/admin/');
+            });
+          });
+        }
+      });
+
+      // After-logout: send the editor back to the homepage.
+      id.on('logout', function () {
+        setQuickNavVisible(false);
+        document.location.replace('/');
+      });
+
+      // Surface unexpected errors instead of failing silently.
+      id.on('error', function (err) {
+        if (window.console && console.error) console.error('[admin] Identity error:', err);
+      });
+
+      // Close handler — placeholder for future UX work.
+      id.on('close', function () { /* no-op */ });
+
+      // Explicit init — some browsers / blockers prevent auto-init.
+      // Safe to call: the widget guards against double-init internally.
+      try { id.init(); } catch (e) { /* noop */ }
+    }
+  })();
+</script>
+</body>
+</html>

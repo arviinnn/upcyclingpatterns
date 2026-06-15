@@ -1,0 +1,1545 @@
+# =====================================================================
+#  Decap CMS Configuration — Upcycling Patterns
+#  Erasmus+ KA210-SCH Project
+# ---------------------------------------------------------------------
+#  This file powers the /admin/ panel.
+#
+#  Netlify setup checklist:
+#    1. Netlify Site → Identity → Enable Identity
+#    2. Identity → Registration → Invite only
+#    3. Identity → Services → Git Gateway → Enable Git Gateway
+#    4. Identity → Invite users → invite editor emails
+#
+#  Important:
+#    • /admin/config.yml must stay directly readable.
+#    • Do not redirect /admin/config.yml to /admin/.
+#    • images/uploads/ must exist in the GitHub repository.
+#    • Keep images/uploads/.gitkeep so Git tracks the folder.
+#
+#  Publishing note:
+#    • Omitting publish_mode uses Decap's direct-to-main default.
+#    • This avoids temporary branches and pull requests for routine edits.
+#    • Each save triggers the normal Netlify production deploy.
+# =====================================================================
+
+
+# ---------------------------------------------------------------------
+#  BACKEND
+# ---------------------------------------------------------------------
+backend:
+  name: git-gateway
+  branch: main
+  commit_messages:
+    create: 'Create {{collection}} "{{slug}}" — by {{author-login}}'
+    update: 'Update {{collection}} "{{slug}}" — by {{author-login}}'
+    delete: 'Delete {{collection}} "{{slug}}" — by {{author-login}}'
+    uploadMedia: 'Upload media "{{path}}" — by {{author-login}}'
+    deleteMedia: 'Delete media "{{path}}" — by {{author-login}}'
+
+
+# ---------------------------------------------------------------------
+#  PUBLISH MODE
+# ---------------------------------------------------------------------
+# Direct mode is intentionally used for this small editor team. Editorial
+# workflow creates a branch and pull request for every unpublished entry;
+# that adds several network operations and was causing fragile save/upload
+# behavior. With publish_mode omitted, Decap commits only the file being
+# edited directly to main.
+
+
+# ---------------------------------------------------------------------
+#  LOCAL DEVELOPMENT
+# ---------------------------------------------------------------------
+# Local testing only — uncomment when running `npx decap-server`:
+#   npx decap-server
+#   then open http://localhost:8080/admin/
+# IMPORTANT: keep this commented out in production. When set to true,
+# Decap CMS will try to talk to http://localhost:8081 before Git Gateway
+# and editors will see "Failed to load entries" errors on the live site.
+# local_backend: true
+
+
+# ---------------------------------------------------------------------
+#  MEDIA / UPLOADS
+# ---------------------------------------------------------------------
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+# Decap's built-in media library is enabled by media_folder/public_folder.
+# Do not add a top-level `media_library` block unless it also declares a
+# custom provider `name`; an unnamed block makes the whole admin panel fail.
+
+
+# ---------------------------------------------------------------------
+#  SITE IDENTITY
+# ---------------------------------------------------------------------
+site_url: "https://upcyclingpatterns.com"
+display_url: "https://upcyclingpatterns.com"
+logo_url: "/images/branding/logo.jpeg"
+locale: "tr"
+
+
+# ---------------------------------------------------------------------
+#  SLUG RULES
+# ---------------------------------------------------------------------
+slug:
+  encoding: "ascii"
+  clean_accents: true
+  sanitize_replacement: "-"
+
+
+# ---------------------------------------------------------------------
+#  EDITOR SETTINGS
+# ---------------------------------------------------------------------
+editor:
+  preview: false
+
+search: true
+show_preview_links: false
+
+
+# =====================================================================
+#  REUSABLE FIELD ANCHORS
+# =====================================================================
+
+_cover_image: &cover_image
+  label: "Fotoğraf Yükle"
+  name: "image"
+  widget: "image"
+  required: false
+  hint: "Telefondan fotoğraf seçebilirsiniz. Görsel otomatik optimize edilir ve standart kart ölçüsünde gösterilir."
+  media_library:
+    config:
+      max_file_size: 2097152
+      allowed_extensions:
+        - jpg
+        - jpeg
+        - png
+        - webp
+
+_section_image: &section_image
+  label: "İsteğe bağlı kart görseli"
+  name: "image"
+  widget: "image"
+  required: false
+  hint: "Optional. Upload from the media library; no code or file path needed. Standard: 1200x800 px (3:2) or 1200x750 px (16:10), JPG/WebP preferred, under 2 MB."
+  media_library:
+    config:
+      max_file_size: 2097152
+      allowed_extensions:
+        - jpg
+        - jpeg
+        - png
+        - webp
+
+_section_alt: &section_alt
+  label: "Görsel açıklaması (Türkçe)"
+  name: "alt_tr"
+  widget: "string"
+  required: false
+  hint: "Boş bırakırsanız Türkçe başlıktan otomatik hazırlanır; İngilizcesi DeepL ile oluşturulur."
+  pattern:
+    - '^(|.{2,200})$'
+    - "Boş bırakın veya 2-200 karakter yazın."
+
+_section_alt_en: &section_alt_en
+  label: "Görsel açıklaması (otomatik İngilizce)"
+  name: "alt_en"
+  widget: "hidden"
+  required: false
+
+_section_card_fields: &section_card_fields
+  - label: "Title (English)"
+    name: "title_en"
+    widget: "hidden"
+    required: false
+  - label: "Başlık"
+    name: "title_tr"
+    widget: "string"
+    required: false
+    pattern:
+      - '^(|.{2,140})$'
+      - "Empty or 2-140 characters."
+
+  - label: "Text (English)"
+    name: "text_en"
+    widget: "hidden"
+    required: false
+  - label: "Metin"
+    name: "text_tr"
+    widget: "text"
+    required: false
+    pattern:
+      - '^(|[\s\S]{5,700})$'
+      - "Empty or 5-700 characters."
+
+  - <<: *section_image
+
+  - <<: *section_alt_en
+
+  - <<: *section_alt
+
+  - label: "İsteğe bağlı simge"
+    name: "icon"
+    widget: "string"
+    required: false
+    hint: "Optional short icon or emoji. If empty, the site uses an automatic number where needed."
+    pattern:
+      - '^(|.{1,12})$'
+      - "Empty or 1-12 characters."
+
+  - label: "Görüntüleme sırası"
+    name: "displayOrder"
+    widget: "number"
+    value_type: "int"
+    required: false
+    min: 1
+    max: 999
+    hint: "Optional manual order. Lower numbers appear first. Leave empty to let the site use newest-first date ordering."
+
+  - label: "Yayın / yükleme tarihi"
+    name: "date"
+    widget: "datetime"
+    date_format: "YYYY-MM-DD"
+    time_format: false
+    format: "YYYY-MM-DD"
+    picker_utc: true
+    required: false
+    hint: "Used for automatic newest-first ordering when Display Order is empty."
+
+_iso_date: &iso_date
+  widget: "datetime"
+  required: false
+  date_format: "YYYY-MM-DD"
+  time_format: false
+  format: "YYYY-MM-DD"
+  picker_utc: true
+
+_https_url: &https_url
+  widget: "string"
+  required: false
+  pattern:
+    - '^(|https:\/\/[^\s]+)$'
+    - "Must be empty or a full https:// URL."
+
+_youtube_url: &youtube_url
+  widget: "string"
+  required: false
+  hint: "Paste a YouTube link. The site automatically turns it into the same standard 16:9 video card used in the Media Hub."
+  pattern:
+    - '^(|https?:\/\/(www\.)?(youtube\.com\/watch\?v=|youtube\.com\/embed\/|youtu\.be\/)[A-Za-z0-9_-]+([&?][^\s]*)?)$'
+    - "Must be empty or a valid YouTube URL."
+
+_display_order: &display_order
+  label: "Görüntüleme sırası"
+  name: "displayOrder"
+  widget: "number"
+  value_type: "int"
+  required: false
+  min: 1
+  max: 999
+  hint: "Optional manual order. Lower numbers appear first. Leave empty to let the site use newest-first date ordering."
+
+_publish_date: &publish_date
+  label: "Yayın / yükleme tarihi"
+  name: "date"
+  <<: *iso_date
+  required: false
+  hint: "Used for automatic newest-first ordering when Display Order is empty."
+
+_email_field: &email_field
+  widget: "string"
+  required: false
+  pattern:
+    - '^(|[^\s@]+@[^\s@]+\.[^\s@]{2,})$'
+    - "Must be empty or a valid email address."
+
+
+# =====================================================================
+#  COLLECTIONS
+# =====================================================================
+collections:
+
+  # -------------------------------------------------------------------
+  #  1. SITE SETTINGS
+  # -------------------------------------------------------------------
+  - name: "site_settings"
+    label: "Gelişmiş - Site Ayarları"
+    description: "Proje bilgileri, iletişim, ana görsel ve sosyal bağlantılar. Türkçe alanları düzenleyin; İngilizce otomatik hazırlanır."
+    editor:
+      preview: false
+    files:
+      - name: "general"
+        label: "Genel bilgiler"
+        file: "data/site.json"
+        format: "json"
+        fields:
+          - label: "Proje adı"
+            name: "projectName"
+            widget: "string"
+            required: false
+            default: "Upcycling Patterns"
+            pattern:
+              - '^.{2,80}$'
+              - "2–80 characters."
+
+          - label: "Proje kısa adı"
+            name: "projectShortName"
+            widget: "string"
+            required: false
+            default: "UpCyc"
+            pattern:
+              - '^.{2,30}$'
+              - "2–30 characters."
+
+          - label: "Proje e-postası"
+            name: "projectEmail"
+            <<: *email_field
+            default: "upcyclingpatterns@gmail.com"
+
+          - label: "Koordinatör kurum"
+            name: "coordinator"
+            widget: "string"
+            required: false
+            default: "MEV Koleji Özel Basınköy Anadolu Lisesi"
+            pattern:
+              - '^.{2,150}$'
+              - "2–150 characters."
+
+          - label: "Koordinatör şehir"
+            name: "coordinatorCity"
+            widget: "string"
+            required: false
+            default: "Istanbul"
+            pattern:
+              - '^.{2,80}$'
+              - "2–80 characters."
+
+          - label: "Koordinatör ülke (otomatik İngilizce)"
+            name: "coordinatorCountry_en"
+            widget: "hidden"
+            required: false
+
+          - label: "Koordinatör ülke"
+            name: "coordinatorCountry_tr"
+            widget: "string"
+            required: false
+            default: "Türkiye"
+            pattern:
+              - '^.{2,80}$'
+              - "2–80 characters."
+
+          - label: "Proje başlangıç tarihi"
+            name: "startDate"
+            <<: *iso_date
+            default: "2025-09-01"
+
+          - label: "Proje bitiş tarihi"
+            name: "endDate"
+            <<: *iso_date
+            default: "2027-08-31"
+
+          - label: "Ana sayfa kapak görseli"
+            name: "heroImage"
+            widget: "image"
+            required: false
+            hint: "Homepage hero. Standard: 1600x1067 px (3:2), JPG/WebP preferred, under 1 MB, important content centered."
+            media_library:
+              config:
+                max_file_size: 1048576
+                allowed_extensions:
+                  - jpg
+                  - jpeg
+                  - png
+                  - webp
+
+          - label: "SEO ve sosyal paylaşım"
+            name: "seo"
+            widget: "object"
+            required: false
+            collapsed: true
+            summary: "Browser title, Google description and share image"
+            fields:
+              - label: "Page Title (English)"
+                name: "title_en"
+                widget: "hidden"
+                required: false
+                default: "Upcycling Patterns | Erasmus+ KA210-SCH"
+              - label: "Sayfa başlığı"
+                name: "title_tr"
+                widget: "string"
+                required: false
+                default: "Upcycling Patterns | Erasmus+ KA210-SCH"
+                pattern:
+                  - '^(|.{8,90})$'
+                  - "Empty or 8-90 characters."
+
+              - label: "Meta Description (English)"
+                name: "description_en"
+                widget: "hidden"
+                required: false
+                default: "Upcycling Patterns is an Erasmus+ KA210-SCH project focused on sustainability, environmental awareness, climate responsibility, and upcycling through international school collaboration."
+              - label: "Google açıklaması"
+                name: "description_tr"
+                widget: "text"
+                required: false
+                pattern:
+                  - '^(|[\s\S]{40,220})$'
+                  - "Empty or 40-220 characters."
+
+              - label: "Sosyal paylaşım görseli"
+                name: "image"
+                widget: "image"
+                required: false
+                hint: "Open Graph / Twitter image. Recommended: 1200x630 px."
+                media_library:
+                  config:
+                    max_file_size: 2097152
+                    allowed_extensions:
+                      - jpg
+                      - jpeg
+                      - png
+                      - webp
+
+              - label: "Share Image Alt Text (English)"
+                name: "imageAlt_en"
+                widget: "hidden"
+                required: false
+              - label: "Paylaşım görseli açıklaması"
+                name: "imageAlt_tr"
+                widget: "string"
+                required: false
+                pattern:
+                  - '^(|.{2,200})$'
+                  - "Empty or 2-200 characters."
+
+          - label: "Web3Forms Access Key"
+            name: "web3formsKey"
+            widget: "string"
+            required: false
+            hint: "Optional. The live form also has the key in index.html/script.js."
+            pattern:
+              - '^(|[a-zA-Z0-9-]{20,100})$'
+              - "Must be empty or a Web3Forms access key."
+
+          - label: "Sosyal medya"
+            name: "social"
+            widget: "object"
+            required: false
+            collapsed: true
+            summary: "Project social media links"
+            fields:
+              - label: "Instagram URL"
+                name: "instagram"
+                <<: *https_url
+                default: "https://www.instagram.com/upcycling_patterns/"
+
+              - label: "X / Twitter URL"
+                name: "x"
+                <<: *https_url
+                default: "https://x.com/UPatternsKA210"
+
+              - label: "YouTube URL"
+                name: "youtube"
+                widget: "string"
+                required: false
+                default: "https://www.youtube.com/@upcyclingpatterns"
+                pattern:
+                  - '^(|https?:\/\/[^\s]+)$'
+                  - "Must be empty or a full http:// or https:// URL."
+
+              - label: "LinkedIn URL"
+                name: "linkedin"
+                <<: *https_url
+                default: "https://www.linkedin.com/company/upcycling-patterns-ka210/"
+
+              - label: "Facebook URL"
+                name: "facebook"
+                <<: *https_url
+
+
+  # -------------------------------------------------------------------
+  #  2. EDITABLE SITE TEXT
+  # -------------------------------------------------------------------
+  - name: "site_text"
+    label: "Gelişmiş - Site Yazıları"
+    description: "Menü, giriş alanı ve alt bölüm yazıları. Yalnızca Türkçe alanları düzenleyin."
+    files:
+      - name: "main_text"
+        label: "Ana site yazıları"
+        file: "data/content.json"
+        format: "json"
+        fields:
+          - label: "Düzenlenebilir yazılar"
+            name: "labels"
+            widget: "object"
+            required: false
+            collapsed: false
+            fields:
+              - { label: "Navigation Home (English)", name: "navHome_en", widget: "hidden", required: false }
+              - { label: "Menü: Ana sayfa", name: "navHome_tr", widget: "string", required: false }
+              - { label: "Navigation About (English)", name: "navAbout_en", widget: "hidden", required: false }
+              - { label: "Menü: Hakkında", name: "navAbout_tr", widget: "string", required: false }
+              - { label: "Navigation Explore (English)", name: "navExplore_en", widget: "hidden", required: false }
+              - { label: "Menü: Keşfet", name: "navExplore_tr", widget: "string", required: false }
+              - { label: "Navigation Partners (English)", name: "navPartners_en", widget: "hidden", required: false }
+              - { label: "Menü: Ortaklar", name: "navPartners_tr", widget: "string", required: false }
+              - { label: "Navigation Media (English)", name: "navMedia_en", widget: "hidden", required: false }
+              - { label: "Menü: Medya", name: "navMedia_tr", widget: "string", required: false }
+              - { label: "Navigation FAQ (English)", name: "navFaq_en", widget: "hidden", required: false }
+              - { label: "Menü: SSS", name: "navFaq_tr", widget: "string", required: false }
+              - { label: "Navigation Contact (English)", name: "navContact_en", widget: "hidden", required: false }
+              - { label: "Menü: İletişim", name: "navContact_tr", widget: "string", required: false }
+              - { label: "Hero eyebrow (English)", name: "heroEyebrow_en", widget: "hidden", required: false }
+              - { label: "Kapak üst başlığı", name: "heroEyebrow_tr", widget: "string", required: false }
+              - { label: "Hero title line 1 (English)", name: "heroTitleMain_en", widget: "hidden", required: false }
+              - { label: "Kapak başlığı 1. satır", name: "heroTitleMain_tr", widget: "string", required: false }
+              - { label: "Hero title line 2 (English)", name: "heroTitleAccent_en", widget: "hidden", required: false }
+              - { label: "Kapak başlığı 2. satır", name: "heroTitleAccent_tr", widget: "string", required: false }
+              - { label: "Primary button (English)", name: "heroBtnPrimary_en", widget: "hidden", required: false }
+              - { label: "Birinci kapak düğmesi", name: "heroBtnPrimary_tr", widget: "string", required: false }
+              - { label: "Secondary button (English)", name: "heroBtnSecondary_en", widget: "hidden", required: false }
+              - { label: "İkinci kapak düğmesi", name: "heroBtnSecondary_tr", widget: "string", required: false }
+              - { label: "3R item 1 (English)", name: "heroProofOne_en", widget: "hidden", required: false }
+              - { label: "3R maddesi 1", name: "heroProofOne_tr", widget: "string", required: false }
+              - { label: "3R item 2 (English)", name: "heroProofTwo_en", widget: "hidden", required: false }
+              - { label: "3R maddesi 2", name: "heroProofTwo_tr", widget: "string", required: false }
+              - { label: "3R item 3 (English)", name: "heroProofThree_en", widget: "hidden", required: false }
+              - { label: "3R maddesi 3", name: "heroProofThree_tr", widget: "string", required: false }
+              - { label: "Snapshot tag (English)", name: "snapshotTag_en", widget: "hidden", required: false }
+              - { label: "Proje özeti etiketi", name: "snapshotTag_tr", widget: "string", required: false }
+              - { label: "Snapshot title (English)", name: "snapshotTitle_en", widget: "hidden", required: false }
+              - { label: "Proje özeti başlığı", name: "snapshotTitle_tr", widget: "string", required: false }
+              - { label: "Progress label (English)", name: "pulseLabel_en", widget: "hidden", required: false }
+              - { label: "İlerleme etiketi", name: "pulseLabel_tr", widget: "string", required: false }
+              - { label: "Progress complete text (English)", name: "pulseComplete_en", widget: "hidden", required: false }
+              - { label: "İlerleme tamamlandı yazısı", name: "pulseComplete_tr", widget: "string", required: false }
+              - { label: "Countries label (English)", name: "statCountries_en", widget: "hidden", required: false }
+              - { label: "Ülke sayısı etiketi", name: "statCountries_tr", widget: "string", required: false }
+              - { label: "Months label (English)", name: "statMonths_en", widget: "hidden", required: false }
+              - { label: "Ay sayısı etiketi", name: "statMonths_tr", widget: "string", required: false }
+              - { label: "Project end label (English)", name: "statProjectEnd_en", widget: "hidden", required: false }
+              - { label: "Proje bitiş etiketi", name: "statProjectEnd_tr", widget: "string", required: false }
+              - { label: "Official logos title (English)", name: "footerOfficialTitle_en", widget: "hidden", required: false }
+              - { label: "Resmî logolar başlığı", name: "footerOfficialTitle_tr", widget: "string", required: false }
+              - { label: "Partner logos title (English)", name: "footerPartnersTitle_en", widget: "hidden", required: false }
+              - { label: "Ortak logolar başlığı", name: "footerPartnersTitle_tr", widget: "string", required: false }
+              - { label: "Footer project line (English)", name: "footerProject_en", widget: "hidden", required: false }
+              - { label: "Alt bilgi proje satırı", name: "footerProject_tr", widget: "string", required: false }
+              - { label: "Footer copyright (English)", name: "footerCopy_en", widget: "hidden", required: false }
+              - { label: "Alt bilgi telif yazısı", name: "footerCopy_tr", widget: "string", required: false }
+
+
+  # -------------------------------------------------------------------
+  #  3. FOOTER LOGOS
+  # -------------------------------------------------------------------
+  - name: "footer_logos"
+    label: "Logolar"
+    description: "Resmî proje, destek ve ortak okul logolarını yönetin."
+    files:
+      - name: "official_logos"
+        label: "Resmî proje ve destek logoları"
+        file: "data/logos.json"
+        format: "json"
+        fields:
+          - label: "Resmî logolar"
+            name: "official"
+            widget: "list"
+            required: false
+            label_singular: "Resmî logo"
+            summary: "{{fields.title_tr}}"
+            collapsed: true
+            minimize_collapsed: true
+            min: 0
+            max: 12
+            fields:
+              - label: "Başlık (otomatik İngilizce)"
+                name: "title_en"
+                widget: "hidden"
+                required: false
+              - label: "Başlık"
+                name: "title_tr"
+                widget: "string"
+                required: false
+                pattern:
+                  - '^.{2,100}$'
+                  - "2-100 characters."
+              - label: "Logo görseli"
+                name: "image"
+                widget: "image"
+                required: false
+                hint: "Transparent PNG/WebP or clean JPG preferred. Keep the logo centered."
+                media_library:
+                  config:
+                    max_file_size: 2097152
+                    allowed_extensions:
+                      - jpg
+                      - jpeg
+                      - png
+                      - webp
+              - label: "Alt text (English)"
+                name: "alt_en"
+                widget: "hidden"
+                required: false
+              - label: "Logo açıklaması"
+                name: "alt_tr"
+                widget: "string"
+                required: false
+                pattern:
+                  - '^(|.{2,200})$'
+                  - "Empty or 2-200 characters."
+              - label: "Geniş logo"
+                name: "wide"
+                widget: "boolean"
+                default: false
+                required: false
+                hint: "Turn on for long horizontal logos such as EU funding marks."
+
+              - <<: *display_order
+
+
+  # -------------------------------------------------------------------
+  #  4. DESIGN SETTINGS
+  # -------------------------------------------------------------------
+  - name: "design_settings"
+    label: "Gelişmiş - Tasarım Ayarları"
+    description: "Görsel boyutları ve sayfa ölçüleri. Günlük içerik eklerken bu bölüme girmeniz gerekmez."
+    files:
+      - name: "layout"
+        label: "Layout, Hero and Logo Sizes"
+        file: "data/design.json"
+        format: "json"
+        fields:
+          - label: "Layout"
+            name: "layout"
+            widget: "object"
+            required: false
+            collapsed: false
+            fields:
+              - label: "Desktop Hero Height (svh)"
+                name: "heroHeightDesktop"
+                widget: "number"
+                required: false
+                value_type: "int"
+                min: 84
+                max: 100
+                step: 1
+                default: 90
+                hint: "Controls the first-screen hero height on desktop. Lower values show the next section sooner."
+
+              - label: "Tablet Hero Height (svh)"
+                name: "heroHeightTablet"
+                widget: "number"
+                required: false
+                value_type: "int"
+                min: 88
+                max: 104
+                step: 1
+                default: 96
+
+              - label: "Mobile Hero Height (svh)"
+                name: "heroHeightMobile"
+                widget: "number"
+                required: false
+                value_type: "int"
+                min: 90
+                max: 108
+                step: 1
+                default: 92
+                hint: "Keep this under 100 if the hero feels too tall on phones."
+
+              - label: "Hero Top Crop (%)"
+                name: "heroTopCrop"
+                widget: "number"
+                required: false
+                value_type: "float"
+                min: -12
+                max: 2
+                step: 0.5
+                default: -5
+                hint: "Negative values pull the image upward and crop a little from the top."
+
+              - label: "Desktop Hero Image Height (%)"
+                name: "heroImageHeightDesktop"
+                widget: "number"
+                required: false
+                value_type: "int"
+                min: 100
+                max: 118
+                step: 1
+                default: 110
+
+              - label: "Desktop Hero Image Position"
+                name: "heroObjectPositionDesktop"
+                widget: "string"
+                required: false
+                default: "center 45%"
+                hint: "CSS object-position, for example center 45% or 58% center."
+                pattern:
+                  - '^(left|right|center|top|bottom|[0-9]{1,3}(\.[0-9]+)?%)( (left|right|center|top|bottom|[0-9]{1,3}(\.[0-9]+)?%))?$'
+                  - "Use one or two CSS position tokens."
+
+              - label: "Tablet Hero Image Position"
+                name: "heroObjectPositionTablet"
+                widget: "string"
+                required: false
+                default: "62% center"
+                pattern:
+                  - '^(left|right|center|top|bottom|[0-9]{1,3}(\.[0-9]+)?%)( (left|right|center|top|bottom|[0-9]{1,3}(\.[0-9]+)?%))?$'
+                  - "Use one or two CSS position tokens."
+
+              - label: "Mobile Hero Image Position"
+                name: "heroObjectPositionMobile"
+                widget: "string"
+                required: false
+                default: "68% center"
+                pattern:
+                  - '^(left|right|center|top|bottom|[0-9]{1,3}(\.[0-9]+)?%)( (left|right|center|top|bottom|[0-9]{1,3}(\.[0-9]+)?%))?$'
+                  - "Use one or two CSS position tokens."
+
+              - label: "Page Section Density"
+                name: "sectionDensity"
+                widget: "select"
+                required: false
+                default: "compact"
+                options:
+                  - label: "Compact"
+                    value: "compact"
+                  - label: "Balanced"
+                    value: "balanced"
+                  - label: "Spacious"
+                    value: "spacious"
+
+              - label: "Container Width (px)"
+                name: "containerWidth"
+                widget: "number"
+                required: false
+                value_type: "int"
+                min: 1080
+                max: 1440
+                step: 20
+                default: 1240
+
+              - label: "Card Radius (px)"
+                name: "cardRadius"
+                widget: "number"
+                required: false
+                value_type: "int"
+                min: 6
+                max: 18
+                step: 1
+                default: 8
+
+              - label: "Footer Logo Height Desktop (px)"
+                name: "footerLogoDesktopHeight"
+                widget: "number"
+                required: false
+                value_type: "int"
+                min: 56
+                max: 96
+                step: 2
+                default: 78
+
+              - label: "Footer Wide Logo Height Desktop (px)"
+                name: "footerLogoWideDesktopHeight"
+                widget: "number"
+                required: false
+                value_type: "int"
+                min: 60
+                max: 104
+                step: 2
+                default: 80
+
+              - label: "Footer Logo Height Mobile (px)"
+                name: "footerLogoMobileHeight"
+                widget: "number"
+                required: false
+                value_type: "int"
+                min: 44
+                max: 76
+                step: 2
+                default: 58
+
+              - label: "Footer Wide Logo Height Mobile (px)"
+                name: "footerLogoWideMobileHeight"
+                widget: "number"
+                required: false
+                value_type: "int"
+                min: 48
+                max: 82
+                step: 2
+                default: 62
+
+          - label: "Country Hotspots"
+            name: "hotspots"
+            widget: "object"
+            required: false
+            collapsed: true
+            hint: "X and Y are percentages across the hero map. Use these if a country label needs a tiny alignment fix."
+            fields:
+              - { label: "Türkiye X (%)", name: "turkiyeX", widget: "number", value_type: "float", min: 0, max: 100, step: 0.1, default: 79, required: false }
+              - { label: "Türkiye Y (%)", name: "turkiyeY", widget: "number", value_type: "float", min: 0, max: 100, step: 0.1, default: 78, required: false }
+              - { label: "North Macedonia X (%)", name: "northMacedoniaX", widget: "number", value_type: "float", min: 0, max: 100, step: 0.1, default: 66.3, required: false }
+              - { label: "North Macedonia Y (%)", name: "northMacedoniaY", widget: "number", value_type: "float", min: 0, max: 100, step: 0.1, default: 80.5, required: false }
+              - { label: "Lithuania X (%)", name: "lithuaniaX", widget: "number", value_type: "float", min: 0, max: 100, step: 0.1, default: 69.4, required: false }
+              - { label: "Lithuania Y (%)", name: "lithuaniaY", widget: "number", value_type: "float", min: 0, max: 100, step: 0.1, default: 43.5, required: false }
+              - { label: "Poland X (%)", name: "polandX", widget: "number", value_type: "float", min: 0, max: 100, step: 0.1, default: 64.7, required: false }
+              - { label: "Poland Y (%)", name: "polandY", widget: "number", value_type: "float", min: 0, max: 100, step: 0.1, default: 55, required: false }
+
+
+  # -------------------------------------------------------------------
+  #  5. PROJECT TIMELINE
+  # -------------------------------------------------------------------
+  - name: "project_timeline"
+    label: "Proje Zaman Çizelgesi"
+    description: "Edit the Explore > Timeline cards from a dedicated data file."
+    files:
+      - name: "timeline_items"
+        label: "Timeline Items"
+        file: "data/timeline.json"
+        format: "json"
+        fields:
+          - label: "Timeline Items"
+            name: "items"
+            widget: "list"
+            required: false
+            label_singular: "Timeline item"
+            summary: "{{fields.icon}} · {{fields.title_en}}"
+            collapsed: true
+            minimize_collapsed: true
+            min: 0
+            max: 4
+            fields:
+              - { label: "Adım numarası / simge", name: "icon", widget: "string", default: "01", required: false }
+              - { label: "Title (English)", name: "title_en", widget: "hidden", required: false }
+              - { label: "Başlık", name: "title_tr", widget: "string", required: false }
+              - { label: "Text (English)", name: "text_en", widget: "hidden", required: false }
+              - { label: "Metin", name: "text_tr", widget: "text", required: false }
+              - label: "Phase"
+                name: "phase"
+                widget: "select"
+                required: false
+                default: "planning"
+                options:
+                  - { label: "Planning", value: "planning" }
+                  - { label: "Research", value: "research" }
+                  - { label: "Production", value: "production" }
+                  - { label: "Mobility", value: "mobility" }
+                  - { label: "Dissemination", value: "dissemination" }
+                  - { label: "Legacy", value: "legacy" }
+              - label: "Tarih / ay etiketi"
+                name: "date"
+                widget: "string"
+                required: false
+                hint: "Use YYYY-MM for a month or YYYY-MM-DD for an exact date."
+                pattern:
+                  - '^(|[0-9]{4}-[0-9]{2}(-[0-9]{2})?)$'
+                  - "Empty, YYYY-MM, or YYYY-MM-DD."
+
+              - <<: *display_order
+
+
+  # -------------------------------------------------------------------
+  #  6. MOBILITY VISITS
+  # -------------------------------------------------------------------
+  - name: "mobility"
+    label: "Hareketlilik Ziyaretleri"
+    description: "Hareketlilik ziyaretlerini Türkçe girin; İngilizce metinler otomatik hazırlanır."
+    files:
+      - name: "mobility_items"
+        label: "Hareketlilik ziyaretleri"
+        file: "data/mobility.json"
+        format: "json"
+        fields:
+          - label: "Ziyaretler"
+            name: "items"
+            widget: "list"
+            required: false
+            label_singular: "Hareketlilik ziyareti"
+            summary: "{{fields.hostCountry_tr}} · {{fields.hostCity}} · {{fields.status}}"
+            collapsed: true
+            minimize_collapsed: true
+            add_to_top: true
+            min: 0
+            max: 50
+            fields:
+              - { label: "Title (English)", name: "title_en", widget: "hidden", required: false }
+              - { label: "Başlık", name: "title_tr", widget: "string", required: false }
+              - { label: "Ev sahibi ülke (otomatik İngilizce)", name: "hostCountry_en", widget: "hidden", required: false }
+              - { label: "Ev sahibi ülke", name: "hostCountry_tr", widget: "string", required: false }
+              - { label: "Ev sahibi şehir", name: "hostCity", widget: "string", required: false }
+              - { label: "Ev sahibi okul", name: "hostSchool", widget: "string", required: false }
+              - label: "Başlangıç tarihi"
+                name: "startDate"
+                <<: *iso_date
+                required: false
+              - label: "Bitiş tarihi"
+                name: "endDate"
+                <<: *iso_date
+                required: false
+              - label: "Durum"
+                name: "status"
+                widget: "select"
+                required: false
+                default: "planned"
+                options:
+                  - { label: "Planlandı", value: "planned" }
+                  - { label: "Devam ediyor", value: "in-progress" }
+                  - { label: "Tamamlandı", value: "completed" }
+                  - { label: "İptal edildi", value: "cancelled" }
+              - { label: "Focus (English)", name: "focus_en", widget: "hidden", required: false }
+              - { label: "Odak ve açıklama", name: "focus_tr", widget: "text", required: false }
+
+
+  # -------------------------------------------------------------------
+  #  7. PROJECT TEAM
+  # -------------------------------------------------------------------
+  - name: "team"
+    label: "Proje Ekibi"
+    description: "Proje ekibindeki kişileri ve görevlerini yönetin."
+    files:
+      - name: "team_items"
+        label: "Ekip üyeleri"
+        file: "data/team.json"
+        format: "json"
+        fields:
+          - label: "Ekip üyeleri"
+            name: "items"
+            widget: "list"
+            required: false
+            label_singular: "Ekip üyesi"
+            summary: "{{fields.name}} · {{fields.institution}}"
+            collapsed: true
+            minimize_collapsed: true
+            add_to_top: true
+            min: 0
+            max: 80
+            fields:
+              - { label: "Ad soyad", name: "name", widget: "string", required: false }
+              - { label: "Role (English)", name: "role_en", widget: "hidden", required: false }
+              - { label: "Görev", name: "role_tr", widget: "string", required: false }
+              - { label: "Kurum", name: "institution", widget: "string", required: false }
+              - { label: "Ülke (otomatik İngilizce)", name: "country_en", widget: "hidden", required: false }
+              - { label: "Ülke", name: "country_tr", widget: "string", required: false }
+              - label: "Email"
+                name: "email"
+                <<: *email_field
+              - label: "Fotoğraf"
+                name: "photo"
+                widget: "image"
+                required: false
+                media_library:
+                  config:
+                    max_file_size: 2097152
+                    allowed_extensions:
+                      - jpg
+                      - jpeg
+                      - png
+                      - webp
+              - { label: "Fotoğraf açıklaması (otomatik İngilizce)", name: "alt_en", widget: "hidden", required: false }
+              - { label: "Fotoğraf açıklaması", name: "alt_tr", widget: "string", required: false }
+
+
+  # -------------------------------------------------------------------
+  #  8. HOMEPAGE SECTIONS
+  # -------------------------------------------------------------------
+  - name: "homepage_sections"
+    label: "Gelişmiş - Ana Sayfa Bölümleri"
+    label_singular: "Ana sayfa bölümü"
+    description: "Hakkında ve Keşfet kartlarını Türkçe düzenleyin; İngilizce metinler otomatik hazırlanır."
+    files:
+      - name: "homepage_cards"
+        label: "Hakkında ve Keşfet kartları"
+        file: "data/sections.json"
+        format: "json"
+        fields:
+          - label: "Hakkında kartları"
+            name: "aboutCards"
+            widget: "list"
+            required: false
+            label_singular: "Hakkında kartı"
+            summary: "{{fields.title_tr}}"
+            collapsed: true
+            minimize_collapsed: true
+            min: 0
+            max: 12
+            fields: *section_card_fields
+
+          - label: "Misyon şeridi"
+            name: "missionItems"
+            widget: "list"
+            required: false
+            label_singular: "Misyon maddesi"
+            summary: "{{fields.title_tr}}"
+            collapsed: true
+            minimize_collapsed: true
+            min: 0
+            max: 8
+            fields: *section_card_fields
+
+          - label: "Keşfet - Hedefler"
+            name: "goals"
+            widget: "list"
+            required: false
+            label_singular: "Hedef"
+            summary: "{{fields.title_tr}}"
+            collapsed: true
+            minimize_collapsed: true
+            min: 0
+            max: 4
+            fields: *section_card_fields
+
+          - label: "Keşfet - Zaman çizelgesi"
+            name: "timeline"
+            widget: "list"
+            required: false
+            label_singular: "Zaman adımı"
+            summary: "{{fields.title_tr}}"
+            collapsed: true
+            minimize_collapsed: true
+            min: 0
+            max: 4
+            fields: *section_card_fields
+
+          - label: "Keşfet - Etkinlikler"
+            name: "activities"
+            widget: "list"
+            required: false
+            label_singular: "Etkinlik"
+            summary: "{{fields.title_tr}}"
+            collapsed: true
+            minimize_collapsed: true
+            min: 0
+            max: 4
+            fields: *section_card_fields
+
+          - label: "Keşfet - Sonuçlar"
+            name: "results"
+            widget: "list"
+            required: false
+            label_singular: "Sonuç"
+            summary: "{{fields.title_tr}}"
+            collapsed: true
+            minimize_collapsed: true
+            min: 0
+            max: 4
+            fields: *section_card_fields
+
+          - label: "Keşfet - Proje ayrıntıları"
+            name: "details"
+            widget: "list"
+            required: false
+            label_singular: "Proje ayrıntısı"
+            summary: "{{fields.title_tr}}"
+            collapsed: true
+            minimize_collapsed: true
+            min: 0
+            max: 4
+            fields: *section_card_fields
+
+
+  # -------------------------------------------------------------------
+  #  3. NEWS
+  # -------------------------------------------------------------------
+  - name: "news"
+    label: "Haberler"
+    label_singular: "Haber"
+    description: "Sadece Türkçe başlık ve fotoğraf ekleyin. İngilizce metin, tarih ve sıralama kaydederken otomatik hazırlanır."
+    files:
+      - name: "news_items"
+        label: "Haberler"
+        file: "data/news.json"
+        format: "json"
+        fields:
+          - label: "Haberler"
+            name: "items"
+            widget: "list"
+            required: false
+            label_singular: "Haber ekle"
+            summary: "{{fields.title_tr}}"
+            collapsed: true
+            minimize_collapsed: true
+            add_to_top: true
+            min: 0
+            max: 100
+            fields:
+              - label: "Otomatik Yıl"
+                name: "year"
+                widget: "hidden"
+                required: false
+                hint: "Short label shown on the card, e.g. 2025, March 2026."
+              - label: "Otomatik Sıra"
+                name: "displayOrder"
+                widget: "hidden"
+                required: false
+
+              - label: "Otomatik Tarih"
+                name: "date"
+                widget: "hidden"
+                required: false
+
+              - label: "Title (English)"
+                name: "title_en"
+                widget: "hidden"
+                required: false
+              - label: "Başlık"
+                name: "title_tr"
+                widget: "string"
+                required: false
+                hint: "Türkçe yazın; İngilizcesi otomatik oluşturulur."
+                pattern:
+                  - '^(|.{2,140})$'
+                  - "Empty or 2–140 characters."
+
+              - label: "Summary (English)"
+                name: "summary_en"
+                widget: "hidden"
+                required: false
+              - label: "Otomatik Türkçe Özet"
+                name: "summary_tr"
+                widget: "hidden"
+                required: false
+              - label: "Full Content (English)"
+                name: "content_en"
+                widget: "hidden"
+                required: false
+                hint: "Optional long-form article. Markdown supported."
+
+              - label: "Otomatik Türkçe İçerik"
+                name: "content_tr"
+                widget: "hidden"
+                required: false
+
+              - <<: *cover_image
+
+              - label: "Otomatik İngilizce Görsel Açıklaması"
+                name: "alt_en"
+                widget: "hidden"
+                required: false
+              - label: "Otomatik Türkçe Görsel Açıklaması"
+                name: "alt_tr"
+                widget: "hidden"
+                required: false
+                hint: "If you uploaded a cover image, describe it for screen readers."
+              - label: "Ana Sayfada Göster"
+                name: "featured"
+                widget: "hidden"
+                default: true
+                required: false
+
+              - label: "Harici Bağlantı"
+                name: "url"
+                widget: "hidden"
+                required: false
+
+
+  # -------------------------------------------------------------------
+  #  4. GALLERY — IMAGE + YOUTUBE VIDEO READY
+  # -------------------------------------------------------------------
+  - name: "gallery"
+    label: "Galeri - Fotoğraf ve YouTube"
+    label_singular: "Galeri İçeriği"
+    description: "Yalnızca Türkçe başlık yazın ve fotoğraf yükleyin veya YouTube bağlantısı yapıştırın. Diğer bütün bilgiler otomatik hazırlanır."
+    files:
+      - name: "gallery_items"
+        label: "Galeri İçerikleri"
+        file: "data/gallery.json"
+        format: "json"
+        fields:
+          - label: "Galeri İçerikleri"
+            name: "items"
+            widget: "list"
+            required: false
+            label_singular: "Fotoğraf veya video ekle"
+            summary: "{{fields.caption_tr}}"
+            collapsed: true
+            minimize_collapsed: true
+            add_to_top: true
+            min: 0
+            max: 100
+            fields:
+              - label: "Otomatik Medya Türü"
+                name: "type"
+                widget: "hidden"
+                required: false
+                default: "image"
+
+              - label: "Başlık"
+                name: "caption_tr"
+                widget: "string"
+                required: false
+                hint: "Türkçe yazın; İngilizce başlık otomatik oluşturulur."
+                pattern:
+                  - '^(|.{2,120})$'
+                  - "Boş bırakın veya 2-120 karakter yazın."
+
+              - label: "Otomatik İngilizce Başlık"
+                name: "caption_en"
+                widget: "hidden"
+                required: false
+
+              - label: "Fotoğraf Yükle"
+                name: "image"
+                widget: "image"
+                required: false
+                allow_multiple: false
+                choose_url: false
+                hint: "Telefondan fotoğraf seçebilirsiniz. Büyük fotoğraflar yüklemeden önce otomatik küçültülür."
+                media_library:
+                  config:
+                    max_file_size: 4194304
+                    allowed_extensions:
+                      - jpg
+                      - jpeg
+                      - png
+                      - webp
+
+              - label: "YouTube Bağlantısı"
+                name: "youtubeUrl"
+                <<: *youtube_url
+                hint: "Video eklemek için YouTube adresini yapıştırın. Fotoğraf ekliyorsanız boş bırakın."
+
+              - label: "Otomatik İngilizce Görsel Açıklaması"
+                name: "alt_en"
+                widget: "hidden"
+                required: false
+              - label: "Otomatik Türkçe Görsel Açıklaması"
+                name: "alt_tr"
+                widget: "hidden"
+                required: false
+                hint: "Optional but recommended for accessibility. Existing items do not need to be reopened or changed."
+              - label: "Otomatik Kategori"
+                name: "category"
+                widget: "hidden"
+                required: false
+                default: "other"
+
+              - label: "Otomatik Sıra"
+                name: "displayOrder"
+                widget: "hidden"
+                required: false
+
+              - label: "Otomatik Tarih"
+                name: "date"
+                widget: "hidden"
+                required: false
+
+
+  # -------------------------------------------------------------------
+  #  5. DOWNLOADS / OUTPUTS
+  # -------------------------------------------------------------------
+  - name: "outputs"
+    label: "Dosyalar ve Çıktılar"
+    label_singular: "Dosya"
+    description: "Türkçe başlık yazın; dosya veya fotoğraf yükleyin. İngilizce metin, tür ve tarih otomatik hazırlanır."
+    files:
+      - name: "output_items"
+        label: "Dosyalar"
+        file: "data/outputs.json"
+        format: "json"
+        fields:
+          - label: "Dosyalar"
+            name: "items"
+            widget: "list"
+            required: false
+            label_singular: "Dosya ekle"
+            summary: "{{fields.title_tr}}"
+            collapsed: true
+            minimize_collapsed: true
+            add_to_top: true
+            min: 0
+            max: 50
+            fields:
+              - label: "Title (English)"
+                name: "title_en"
+                widget: "hidden"
+                required: false
+              - label: "Başlık"
+                name: "title_tr"
+                widget: "string"
+                required: false
+                hint: "Türkçe yazın; İngilizcesi otomatik oluşturulur."
+                pattern:
+                  - '^(|.{2,120})$'
+                  - "Empty or 2–120 characters."
+
+              - label: "Description (English)"
+                name: "description_en"
+                widget: "hidden"
+                required: false
+              - label: "Otomatik Türkçe Açıklama"
+                name: "description_tr"
+                widget: "hidden"
+                required: false
+              - label: "Dosya Yükle"
+                name: "file"
+                widget: "file"
+                required: false
+                hint: "PDF, DOCX veya ZIP yükleyebilirsiniz. En fazla 25 MB."
+                media_library:
+                  config:
+                    max_file_size: 26214400
+                    allowed_extensions:
+                      - pdf
+                      - docx
+                      - zip
+
+              - <<: *cover_image
+
+              - label: "Otomatik Tür"
+                name: "type"
+                widget: "hidden"
+                required: false
+                default: "other"
+
+              - label: "Otomatik Sıra"
+                name: "displayOrder"
+                widget: "hidden"
+                required: false
+
+              - label: "Otomatik Tarih"
+                name: "date"
+                widget: "hidden"
+                required: false
+
+
+  # -------------------------------------------------------------------
+  #  6. PARTNERS
+  # -------------------------------------------------------------------
+  - name: "partners"
+    label: "Ortak Okullar"
+    label_singular: "Ortak okul"
+    description: "Ortak okulları yönetin. Koordinatör kurum ilk sırada olmalıdır."
+    files:
+      - name: "partner_items"
+        label: "Ortak okullar"
+        file: "data/partners.json"
+        format: "json"
+        fields:
+          - label: "Ortaklar"
+            name: "items"
+            widget: "list"
+            required: false
+            label_singular: "Ortak okul"
+            summary: "{{fields.country_tr}} · {{fields.school}} ({{fields.role_tr}})"
+            collapsed: true
+            minimize_collapsed: true
+            add_to_top: true
+            min: 0
+            max: 20
+            fields:
+              - label: "Ülke (otomatik İngilizce)"
+                name: "country_en"
+                widget: "hidden"
+                required: false
+
+              - label: "Ülke"
+                name: "country_tr"
+                widget: "string"
+                required: false
+                pattern:
+                  - '^.{2,60}$'
+                  - "2–60 characters."
+
+              - label: "Ülke kodu"
+                name: "countryCode"
+                widget: "select"
+                required: false
+                hint: "ISO 3166-1 alpha-2 code, used for future flag display."
+                options:
+                  - label: "Türkiye (TR)"
+                    value: "TR"
+                  - label: "North Macedonia (MK)"
+                    value: "MK"
+                  - label: "Lithuania (LT)"
+                    value: "LT"
+                  - label: "Poland (PL)"
+                    value: "PL"
+                  - label: "Romania (RO)"
+                    value: "RO"
+                  - label: "Greece (GR)"
+                    value: "GR"
+                  - label: "Bulgaria (BG)"
+                    value: "BG"
+                  - label: "Spain (ES)"
+                    value: "ES"
+                  - label: "Portugal (PT)"
+                    value: "PT"
+                  - label: "Italy (IT)"
+                    value: "IT"
+                  - label: "Germany (DE)"
+                    value: "DE"
+                  - label: "France (FR)"
+                    value: "FR"
+                  - label: "Netherlands (NL)"
+                    value: "NL"
+                  - label: "Belgium (BE)"
+                    value: "BE"
+                  - label: "Austria (AT)"
+                    value: "AT"
+                  - label: "Czechia (CZ)"
+                    value: "CZ"
+                  - label: "Slovakia (SK)"
+                    value: "SK"
+                  - label: "Hungary (HU)"
+                    value: "HU"
+                  - label: "Croatia (HR)"
+                    value: "HR"
+                  - label: "Slovenia (SI)"
+                    value: "SI"
+                  - label: "Estonia (EE)"
+                    value: "EE"
+                  - label: "Latvia (LV)"
+                    value: "LV"
+                  - label: "Finland (FI)"
+                    value: "FI"
+                  - label: "Sweden (SE)"
+                    value: "SE"
+                  - label: "Denmark (DK)"
+                    value: "DK"
+                  - label: "Norway (NO)"
+                    value: "NO"
+                  - label: "Iceland (IS)"
+                    value: "IS"
+                  - label: "Ireland (IE)"
+                    value: "IE"
+                  - label: "Malta (MT)"
+                    value: "MT"
+                  - label: "Cyprus (CY)"
+                    value: "CY"
+                  - label: "Luxembourg (LU)"
+                    value: "LU"
+                  - label: "Albania (AL)"
+                    value: "AL"
+                  - label: "Kosovo (XK)"
+                    value: "XK"
+                  - label: "Serbia (RS)"
+                    value: "RS"
+                  - label: "Montenegro (ME)"
+                    value: "ME"
+                  - label: "Bosnia & Herzegovina (BA)"
+                    value: "BA"
+
+              - label: "Okul adı"
+                name: "school"
+                widget: "string"
+                required: false
+                pattern:
+                  - '^.{2,200}$'
+                  - "2–200 characters."
+
+              - label: "Şehir"
+                name: "city"
+                widget: "string"
+                required: false
+                pattern:
+                  - '^(|.{2,80})$'
+                  - "Empty or 2–80 characters."
+
+              - label: "Rol (otomatik İngilizce)"
+                name: "role_en"
+                widget: "hidden"
+                required: false
+
+              - label: "Rol"
+                name: "role_tr"
+                widget: "select"
+                required: false
+                options:
+                  - label: "Koordinatör kurum"
+                    value: "Koordinatör kurum"
+                  - label: "Proje ortağı"
+                    value: "Proje ortağı"
+                  - label: "İlişkili ortak"
+                    value: "İlişkili ortak"
+                default: "Proje ortağı"
+
+              - <<: *display_order
+
+              - label: "Okul logosu"
+                name: "logo"
+                widget: "image"
+                required: false
+                hint: "Partner logo for records and the footer logo strip. Partner cards show the country flag only. Standard: transparent PNG/WebP when possible; square 800x800 px or wide 1200x600 px; under 1 MB."
+                media_library:
+                  config:
+                    max_file_size: 1048576
+                    allowed_extensions:
+                      - jpg
+                      - jpeg
+                      - png
+                      - webp
+
+              - label: "İnternet sitesi"
+                name: "website"
+                <<: *https_url
+
+              - label: "İletişim e-postası"
+                name: "email"
+                <<: *email_field
+
+
+  # -------------------------------------------------------------------
+  #  7. FAQ
+  # -------------------------------------------------------------------
+  - name: "faq"
+    label: "Sık Sorulan Sorular"
+    label_singular: "Soru"
+    description: "Soruyu ve cevabı yalnızca Türkçe yazın. İngilizce karşılıkları otomatik oluşturulur."
+    files:
+      - name: "faq_items"
+        label: "Sorular"
+        file: "data/faq.json"
+        format: "json"
+        fields:
+          - label: "Sorular"
+            name: "items"
+            widget: "list"
+            required: false
+            label_singular: "Soru ekle"
+            summary: "{{fields.question_tr}}"
+            collapsed: true
+            minimize_collapsed: true
+            add_to_top: true
+            min: 0
+            max: 100
+            fields:
+              - label: "Question (English)"
+                name: "question_en"
+                widget: "hidden"
+                required: false
+              - label: "Soru"
+                name: "question_tr"
+                widget: "string"
+                required: false
+                pattern:
+                  - '^(|.{5,200})$'
+                  - "Empty or 5–200 characters."
+
+              - label: "Answer (English)"
+                name: "answer_en"
+                widget: "hidden"
+                required: false
+              - label: "Cevap"
+                name: "answer_tr"
+                widget: "text"
+                required: false
+                pattern:
+                  - '^(|[\s\S]{10,1000})$'
+                  - "Empty or 10–1000 characters."
+
+              - label: "Otomatik Kategori"
+                name: "category"
+                widget: "hidden"
+                required: false
+                default: "general"
+
+              - label: "Otomatik Sıra"
+                name: "displayOrder"
+                widget: "hidden"
+                required: false
+
+              - label: "Otomatik Tarih"
+                name: "date"
+                widget: "hidden"
+                required: false
