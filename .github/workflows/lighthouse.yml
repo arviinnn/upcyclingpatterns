@@ -1,0 +1,28 @@
+name: Lighthouse
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "URL to audit, for example https://upcyclingpatterns.com/"
+        required: true
+        type: string
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: ${{ inputs.url }}
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          configPath: ./.lighthouserc.json
