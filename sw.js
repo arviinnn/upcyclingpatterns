@@ -7,15 +7,15 @@
  * - Keeps fresh content possible by using a network-first strategy for HTML pages.
  */
 
-const CACHE_VERSION = "upcycling-patterns-v1.5.1";
+const CACHE_VERSION = "upcycling-patterns-v1.5.2";
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 
 const STATIC_ASSETS = [
   "/",
   "/index.html",
-  "/style.css?v=1.5.1",
-  "/script.js?v=1.5.1",
+  "/style.css?v=1.5.2",
+  "/script.js?v=1.5.2",
   "/manifest.json",
   "/data/site.json",
   "/data/content.json",
