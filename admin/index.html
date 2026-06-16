@@ -41,8 +41,24 @@
   <script>
     (function () {
       try {
-        if (/^#\/(?:collections|entries)(?:\/|$)/.test(window.location.hash)) {
-          window.history.replaceState(null, '', window.location.pathname + window.location.search);
+        function cleanLegacyAdminHash(includeProtectedRoutes) {
+          var hash = window.location.hash || "";
+          var isIdentityHash = /^#(?:invite_token|confirmation_token|recovery_token|access_token|error)=/i.test(hash);
+          var isLegacyCmsRoute =
+                  hash === "#" ||
+                  hash === "#/" ||
+                  (includeProtectedRoutes && /^#\/(?:collections|entries)(?:\/|$)/.test(hash));
+
+          if (isLegacyCmsRoute && !isIdentityHash) {
+            window.history.replaceState(null, '', window.location.pathname + window.location.search);
+          }
+        }
+
+        cleanLegacyAdminHash(true);
+        if (window.addEventListener) {
+          window.addEventListener('hashchange', function () {
+            cleanLegacyAdminHash(false);
+          }, true);
         }
         var saved = localStorage.getItem("siteTheme");
         var prefersDark = window.matchMedia &&
@@ -482,14 +498,6 @@
 </div>
 
 <div class="admin-translation-status" id="adminTranslationStatus" role="status" aria-live="polite" hidden></div>
-
-<nav class="admin-quick-nav" id="adminQuickNav" aria-label="Hızlı içerik menüsü" hidden>
-  <a href="#/collections/gallery/entries/gallery_items">Galeri</a>
-  <a href="#/collections/news/entries/news_items">Haber</a>
-  <a href="#/collections/outputs/entries/output_items">Dosya</a>
-  <a href="#/collections/faq/entries/faq_items">SSS</a>
-  <a href="/" target="_blank" rel="noopener">Site</a>
-</nav>
 
 <!--
   Decap CMS bundle.
@@ -1097,7 +1105,7 @@
 
     function setQuickNavVisible(visible) {
       var quickNav = document.getElementById('adminQuickNav');
-      if (quickNav) quickNav.hidden = !visible;
+      if (quickNav) quickNav.hidden = true;
     }
 
     function wireIdentity(id) {
@@ -1112,6 +1120,9 @@
         }).then(function (response) {
           if (response.status === 401 || response.status === 403) {
             throw new Error('Yönetim paneli oturumunuzun süresi dolmuş.');
+          }
+          if (response.status === 404) {
+            throw new Error('Netlify Git Gateway bu site için GitHub deposunu bulamadı. Netlify Identity > Git Gateway bölümünde upcyclingpatterns deposunu yeniden bağlayın.');
           }
           if (!response.ok) throw new Error('İçerik bağlantısı HTTP ' + response.status + ' hatası verdi.');
           hideHealthAlert();
