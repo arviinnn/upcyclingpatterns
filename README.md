@@ -3,7 +3,7 @@
 **Erasmus+ KA210-SCH** · International school partnership website
 **Coordinator:** MEV Koleji Özel Basınköy Anadolu Lisesi · Istanbul, Türkiye
 **Live:** [https://upcyclingpatterns.com](https://upcyclingpatterns.com)
-**Status:** Production · v1.5.1 (June 2026)
+**Status:** Production · v1.5.2 (June 2026)
 
 ---
 
@@ -180,7 +180,7 @@ npx serve .
 
 This project follows [Semantic Versioning](https://semver.org/). See [CHANGELOG.md](./CHANGELOG.md) for the full version history.
 
-Current version: **v1.5.1** (June 2026)
+Current version: **v1.5.2** (June 2026)
 
 ---
 
