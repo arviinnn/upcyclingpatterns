@@ -7,6 +7,21 @@ This project follows [Semantic Versioning](https://semver.org/) (MAJOR.MINOR.PAT
 
 ---
 
+## [1.5.2] - 2026-06-16
+
+Admin startup and redirect-cache recovery release.
+
+### Changed
+- Removed the floating admin quick menu so Decap CMS always owns its own navigation after login.
+- Bumped the site asset and service-worker cache version to force browsers onto the current deployment.
+
+### Fixed
+- Cleared stale `#/` and old Decap collection hashes before CMS loads, preventing login-screen `Not Found` toasts.
+- Added a clear Git Gateway 404 message when Netlify Identity is connected but the GitHub repository is not available through Git Gateway.
+- Added root cache clearing headers to break stale browser redirect/cache state without deleting admin cookies.
+
+---
+
 ## [1.5.1] — 2026-06-15
 
 Admin reliability and Turkish-first automatic translation release.
