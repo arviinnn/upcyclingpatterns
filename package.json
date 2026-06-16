@@ -1,6 +1,6 @@
 {
   "name": "upcycling-patterns-site",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "private": true,
   "description": "Static Erasmus+ KA210-SCH project website with CMS data, PWA support, tests, and build helpers.",
   "engines": {
