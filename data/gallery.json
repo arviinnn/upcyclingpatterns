@@ -4,8 +4,8 @@
       "type": "youtube",
       "image": "",
       "youtubeUrl": "https://youtu.be/D1fjOEujwgw",
-      "caption_en": "Workshop Impact",
-      "caption_tr": "Atölye Etk",
+      "caption_en": "Workshop Activities",
+      "caption_tr": "Atölye Etkinlikleri",
       "alt_en": "Video of the Upcycling Patterns project workshop activities",
       "alt_tr": "Upcycling Patterns projesi atölye etkinlikleri videosu",
       "category": "workshops"
@@ -26,7 +26,7 @@
       "youtubeUrl": "https://youtu.be/BSiDfplhAxc",
       "caption_en": "Joint Meetings",
       "caption_tr": "Ortak Toplantıları",
-      "alt_en": "Video of the Upcycling Patterns project joint meetings",
+      "alt_en": "Video of the Upcycling Patterns project partner meetings",
       "alt_tr": "Upcycling Patterns projesi ortak toplantıları videosu",
       "category": "meetings"
     }
