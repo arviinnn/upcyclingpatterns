@@ -48,7 +48,7 @@ test("admin editor reaches login without a CMS configuration error", async () =>
     page.on("pageerror", (error) => consoleErrors.push(error.message));
     await mockAdminCdn(page);
     // Do not wait for CDN background traffic to become idle. The visible login
-    // or configuration error below is the authoritative admin-ready signal.
+    // prompt below is the authoritative admin-ready signal.
     await page.goto(`${server.baseUrl}/admin/#/collections/gallery/entries/gallery_items`, { waitUntil: "commit" });
     await page.waitForFunction(() => {
       const text = document.body.innerText;
@@ -57,12 +57,14 @@ test("admin editor reaches login without a CMS configuration error", async () =>
 
     const bodyText = await page.locator("body").innerText();
     assert.doesNotMatch(bodyText, /Error loading the CMS configuration|Config Errors/);
+    assert.doesNotMatch(bodyText, /Not Found/i);
     assert.match(bodyText, /Login with Netlify Identity|Netlify Identity ile Giriş/);
     assert.equal(await page.evaluate(() => location.hash), "");
     assert.equal(await page.locator("#adminQuickNav").count(), 0);
 
     await page.goto(`${server.baseUrl}/admin/#/`, { waitUntil: "commit" });
     await page.waitForFunction(() => /Login with Netlify Identity|Netlify Identity ile Giriş/.test(document.body.innerText));
+    assert.doesNotMatch(await page.locator("body").innerText(), /Not Found/i);
     assert.equal(await page.evaluate(() => location.hash), "");
     assert.equal(await page.locator("#adminQuickNav").count(), 0);
 
