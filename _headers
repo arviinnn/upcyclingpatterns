@@ -34,6 +34,7 @@
   X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
   X-Frame-Options: SAMEORIGIN
   Cache-Control: public, max-age=0, must-revalidate
+  Clear-Site-Data: "cache"
   Cross-Origin-Resource-Policy: same-site
 
 
