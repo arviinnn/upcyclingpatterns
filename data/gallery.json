@@ -2,13 +2,6 @@
   "items": [
     {
       "type": "youtube",
-      "category": "other",
-      "caption_tr": "Dünya günü",
-      "youtubeUrl": "https://www.youtube.com/watch?v=S52DW6JvWBw",
-      "caption_en": "Earth Day"
-    },
-    {
-      "type": "youtube",
       "image": "",
       "youtubeUrl": "https://youtu.be/D1fjOEujwgw",
       "caption_en": "Workshop Activities",
@@ -33,7 +26,7 @@
       "youtubeUrl": "https://youtu.be/BSiDfplhAxc",
       "caption_en": "Joint Meetings",
       "caption_tr": "Ortak Toplantıları",
-      "alt_en": "Video of the Upcycling Patterns project joint meetings",
+      "alt_en": "Video of the Upcycling Patterns project partner meetings",
       "alt_tr": "Upcycling Patterns projesi ortak toplantıları videosu",
       "category": "meetings"
     }
