@@ -278,4 +278,4 @@ These assets are included in the repository and should be pushed with the site:
 
 ---
 
-**Last updated:** 15 June 2026 · v1.5.1
+**Last updated:** 16 June 2026 · v1.5.2
