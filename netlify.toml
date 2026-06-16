@@ -166,6 +166,7 @@
   for = "/"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+    Clear-Site-Data = "\"cache\""
 
 [[headers]]
   for = "/*.html"
