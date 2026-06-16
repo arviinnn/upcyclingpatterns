@@ -59,7 +59,12 @@ test("admin editor reaches login without a CMS configuration error", async () =>
     assert.doesNotMatch(bodyText, /Error loading the CMS configuration|Config Errors/);
     assert.match(bodyText, /Login with Netlify Identity|Netlify Identity ile Giriş/);
     assert.equal(await page.evaluate(() => location.hash), "");
-    assert.equal(await page.locator("#adminQuickNav").isHidden(), true);
+    assert.equal(await page.locator("#adminQuickNav").count(), 0);
+
+    await page.goto(`${server.baseUrl}/admin/#/`, { waitUntil: "commit" });
+    await page.waitForFunction(() => /Login with Netlify Identity|Netlify Identity ile Giriş/.test(document.body.innerText));
+    assert.equal(await page.evaluate(() => location.hash), "");
+    assert.equal(await page.locator("#adminQuickNav").count(), 0);
 
     const cleanedItems = await page.evaluate(() => {
       return window.__upcycCMSRemoveEmptyRows({
