@@ -66,6 +66,7 @@
 # ---------------------------------------------------------------------
 /
   Cache-Control: public, max-age=0, must-revalidate
+  Clear-Site-Data: "cache"
 
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
