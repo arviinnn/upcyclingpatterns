@@ -1,46 +1,46 @@
 {
   "items": [
     {
-      "year": "2026",
-      "title_en": "Kick-off Meeting Completed",
+      "summary_en": "The partner schools met to clarify the work plan, responsibilities, and outreach goals.",
+      "content_tr": "Ortak okullar çalışma planı, sorumluluklar ve yaygınlaştırma hedeflerini netleştirmek için bir araya geldi.",
       "title_tr": "Açılış Toplantısı Tamamlandı",
-      "summary_en": "Partner schools met to finalize the work plan, responsibilities, and dissemination goals.",
-      "summary_tr": "Ortak okullar çalışma planı, sorumluluklar ve yaygınlaştırma hedeflerini netleştirmek için bir araya geldi.",
-      "content_en": "",
-      "content_tr": "",
-      "image": "",
-      "alt_en": "Kick-off meeting of partner schools",
-      "alt_tr": "Ortak okulların açılış toplantısı",
       "featured": true,
-      "url": ""
+      "url": "",
+      "content_en": "The partner schools met to clarify the work plan, responsibilities, and outreach goals.",
+      "title_en": "The Opening Meeting Has Concluded",
+      "alt_tr": "Ortak okulların açılış toplantısı",
+      "summary_tr": "Ortak okullar çalışma planı, sorumluluklar ve yaygınlaştırma hedeflerini netleştirmek için bir araya geldi.",
+      "image": "https://www.youtube.com/watch?v=S52DW6JvWBw",
+      "year": "2026",
+      "alt_en": "Opening ceremony for public schools"
     },
     {
-      "year": "2026",
-      "title_en": "Student Workshop Series Started",
+      "summary_en": "The students have begun hands-on activities focused on transforming waste materials into creative products.",
+      "content_tr": "Öğrenciler, atık malzemeleri yaratıcı ürünlere dönüştürmeye odaklanan uygulamalı etkinliklere başladı.",
       "title_tr": "Öğrenci Atölye Serisi Başladı",
-      "summary_en": "Students began hands-on activities focused on transforming waste materials into creative products.",
-      "summary_tr": "Öğrenciler, atık malzemeleri yaratıcı ürünlere dönüştürmeye odaklanan uygulamalı etkinliklere başladı.",
-      "content_en": "",
-      "content_tr": "",
-      "image": "",
-      "alt_en": "Students working on upcycling activities",
+      "featured": true,
+      "url": "",
+      "content_en": "The students have begun hands-on activities focused on transforming waste materials into creative products.",
+      "title_en": "The Student Workshop Series Has Begun",
       "alt_tr": "İleri dönüşüm etkinlikleri üzerinde çalışan öğrenciler",
-      "featured": false,
-      "url": ""
+      "summary_tr": "Öğrenciler, atık malzemeleri yaratıcı ürünlere dönüştürmeye odaklanan uygulamalı etkinliklere başladı.",
+      "image": "",
+      "year": "2026",
+      "alt_en": "Students working on upcycling projects"
     },
     {
-      "year": "2026",
-      "title_en": "Dissemination Materials Published",
+      "summary_en": "Digital content and visual project outputs were shared with the broader school community.",
+      "content_tr": "Dijital içerikler ve görsel proje çıktıları daha geniş okul topluluğuyla paylaşıldı.",
       "title_tr": "Yaygınlaştırma Materyalleri Paylaşıldı",
-      "summary_en": "Digital content and visual project outputs were shared with the wider school community.",
-      "summary_tr": "Dijital içerikler ve görsel proje çıktıları daha geniş okul topluluğuyla paylaşıldı.",
-      "content_en": "",
-      "content_tr": "",
-      "image": "",
-      "alt_en": "Project dissemination materials",
+      "featured": true,
+      "url": "",
+      "content_en": "Digital content and visual project outputs were shared with the broader school community.",
+      "title_en": "Outreach Materials Have Been Shared",
       "alt_tr": "Proje yaygınlaştırma materyalleri",
-      "featured": false,
-      "url": ""
+      "summary_tr": "Dijital içerikler ve görsel proje çıktıları daha geniş okul topluluğuyla paylaşıldı.",
+      "image": "",
+      "year": "2026",
+      "alt_en": "Project outreach materials"
     }
   ]
 }
