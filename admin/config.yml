@@ -112,7 +112,7 @@ _cover_image: &cover_image
   hint: "Telefondan fotoğraf seçebilirsiniz. Görsel otomatik optimize edilir ve standart kart ölçüsünde gösterilir."
   media_library:
     config:
-      max_file_size: 1048576
+      max_file_size: 524288
       allowed_extensions:
         - jpg
         - jpeg
@@ -126,10 +126,10 @@ _section_image: &section_image
   required: false
   allow_multiple: false
   choose_url: false
-  hint: "Telefondan fotoğraf seçebilirsiniz. Büyük görseller yüklemeden önce otomatik küçültülür. JPG/PNG/WebP önerilir, en fazla 1 MB."
+  hint: "Telefondan fotoğraf seçebilirsiniz. Her görsel yüklemeden önce küçük ve güvenli WebP dosyasına çevrilir."
   media_library:
     config:
-      max_file_size: 1048576
+      max_file_size: 524288
       allowed_extensions:
         - jpg
         - jpeg
@@ -275,10 +275,10 @@ collections:
   - name: "homepage_sections"
     label: "Uluslararası İş Birliğiyle Sürdürülebilirliği Öğrenmek"
     label_singular: "Ana sayfa bölümü"
-    description: "Ana sayfadaki uluslararası iş birliği ve Her Şey Tek Bir Yerde kartlarını Türkçe düzenleyin; İngilizce metinler otomatik hazırlanır."
+    description: "Ana sayfadaki uluslararası iş birliği kartlarını Türkçe düzenleyin; İngilizce metinler otomatik hazırlanır."
     files:
       - name: "homepage_cards"
-        label: "Uluslararası İş Birliği ve Her Şey Tek Bir Yerde"
+        label: "Uluslararası İş Birliğiyle Sürdürülebilirliği Öğrenmek"
         file: "data/sections.json"
         format: "json"
         fields:
@@ -306,6 +306,20 @@ collections:
             max: 8
             fields: *section_card_fields
 
+
+  # -------------------------------------------------------------------
+  #  2. EVERYTHING IN ONE PLACE
+  # -------------------------------------------------------------------
+  - name: "explore_sections"
+    label: "Her Şey Tek Bir Yerde"
+    label_singular: "Her Şey Tek Bir Yerde bölümü"
+    description: "Hedefler, takvim, faaliyetler, sonuçlar ve detaylar sekmelerini Türkçe düzenleyin. Her kartta fotoğraf veya YouTube bağlantısı kullanabilirsiniz."
+    files:
+      - name: "explore_cards"
+        label: "Her Şey Tek Bir Yerde"
+        file: "data/explore.json"
+        format: "json"
+        fields:
           - label: "Her Şey Tek Bir Yerde - Hedefler"
             name: "goals"
             widget: "list"
@@ -368,7 +382,7 @@ collections:
 
 
   # -------------------------------------------------------------------
-  #  2. GALLERY — IMAGE + YOUTUBE VIDEO READY
+  #  3. GALLERY — IMAGE + YOUTUBE VIDEO READY
   # -------------------------------------------------------------------
   - name: "gallery"
     label: "Galeri"
@@ -421,7 +435,7 @@ collections:
                 hint: "Telefondan fotoğraf seçebilirsiniz. Büyük fotoğraflar yüklemeden önce otomatik küçültülür."
                 media_library:
                   config:
-                    max_file_size: 1048576
+                    max_file_size: 524288
                     allowed_extensions:
                       - jpg
                       - jpeg
@@ -460,7 +474,7 @@ collections:
 
 
   # -------------------------------------------------------------------
-  #  3. NEWS
+  #  4. NEWS
   # -------------------------------------------------------------------
   - name: "news"
     label: "Haberler"
@@ -560,7 +574,7 @@ collections:
 
 
   # -------------------------------------------------------------------
-  #  4. DOWNLOADS / OUTPUTS
+  #  5. DOWNLOADS / OUTPUTS
   # -------------------------------------------------------------------
   - name: "outputs"
     label: "Çıktılar"
@@ -643,7 +657,7 @@ collections:
 
 
   # -------------------------------------------------------------------
-  #  5. FAQ
+  #  6. FAQ
   # -------------------------------------------------------------------
   - name: "faq"
     label: "Sık Sorulan Sorular"

@@ -775,6 +775,7 @@
             mobility: "/data/mobility.json",
             team: "/data/team.json",
             sections: "/data/sections.json",
+            explore: "/data/explore.json",
             partners: "/data/partners.json",
             gallery: "/data/gallery.json",
             news: "/data/news.json",
@@ -797,6 +798,7 @@
             mobility: [],
             team: [],
             sections: null,
+            explore: null,
             partners: [],
             gallery: [],
             news: [],
@@ -1607,7 +1609,17 @@
         }
 
         function normalizeCmsSectionList(key) {
-            const sections = cmsState.sections;
+            const exploreKeys = {
+                goals: true,
+                timeline: true,
+                activities: true,
+                results: true,
+                details: true
+            };
+            const source = exploreKeys[key] && cmsState.explore && typeof cmsState.explore === "object"
+                ? cmsState.explore
+                : cmsState.sections;
+            const sections = source && typeof source === "object" ? source : cmsState.sections;
             if (!sections || typeof sections !== "object") return [];
             const list = sections[key];
             if (!Array.isArray(list)) return [];
@@ -1788,9 +1800,10 @@
 
         function renderCmsSections() {
             const exploreLimit = 4;
-            const timelineItems = cmsState.timeline.length
-                ? cmsState.timeline
-                : normalizeCmsSectionList("timeline");
+            const exploreTimelineItems = normalizeCmsSectionList("timeline");
+            const timelineItems = exploreTimelineItems.length
+                ? exploreTimelineItems
+                : cmsState.timeline;
             renderCmsSectionList(".about-grid", filterRemovedAboutCards(normalizeCmsSectionList("aboutCards")), createAboutSectionCard);
             renderCmsSectionList(".mission-strip", normalizeCmsSectionList("missionItems"), createMissionSectionItem);
             renderCmsSectionList("#panel-goals .highlights-grid", normalizeCmsSectionList("goals"), createHighlightSectionCard, exploreLimit, { preserveNaturalOrder: true });
@@ -2301,6 +2314,7 @@
                 fetchCmsJson(CMS_DATA_PATHS.mobility),
                 fetchCmsJson(CMS_DATA_PATHS.team),
                 fetchCmsJson(CMS_DATA_PATHS.sections),
+                fetchCmsJson(CMS_DATA_PATHS.explore),
                 fetchCmsJson(CMS_DATA_PATHS.partners),
                 fetchCmsJson(CMS_DATA_PATHS.gallery),
                 fetchCmsJson(CMS_DATA_PATHS.news),
@@ -2316,11 +2330,12 @@
             cmsState.mobility = filterCmsItemsByContent(normalizeCmsItems(results[5]), "mobility");
             cmsState.team = filterCmsItemsByContent(normalizeCmsItems(results[6]), "team");
             cmsState.sections = results[7] && typeof results[7] === "object" ? results[7] : null;
-            cmsState.partners = filterCmsItemsByContent(normalizeCmsItems(results[8]), "partners");
-            cmsState.gallery = buildGalleryItems(filterCmsItemsByContent(normalizeCmsItems(results[9]), "gallery"));
-            cmsState.news = filterCmsItemsByContent(normalizeCmsItems(results[10]), "news");
-            cmsState.outputs = filterCmsItemsByContent(normalizeCmsItems(results[11]), "outputs");
-            cmsState.faq = filterCmsItemsByContent(normalizeCmsItems(results[12]), "faq");
+            cmsState.explore = results[8] && typeof results[8] === "object" ? results[8] : null;
+            cmsState.partners = filterCmsItemsByContent(normalizeCmsItems(results[9]), "partners");
+            cmsState.gallery = buildGalleryItems(filterCmsItemsByContent(normalizeCmsItems(results[10]), "gallery"));
+            cmsState.news = filterCmsItemsByContent(normalizeCmsItems(results[11]), "news");
+            cmsState.outputs = filterCmsItemsByContent(normalizeCmsItems(results[12]), "outputs");
+            cmsState.faq = filterCmsItemsByContent(normalizeCmsItems(results[13]), "faq");
             cmsState.loaded = true;
 
             applyCmsTranslationOverrides();

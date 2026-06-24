@@ -20,6 +20,7 @@ test("critical pages and assets respond successfully", async () => {
     "/data/site.json",
     "/data/design.json",
     "/data/timeline.json",
+    "/data/explore.json",
     "/data/mobility.json",
     "/data/team.json",
     "/images/hero/hero.webp"

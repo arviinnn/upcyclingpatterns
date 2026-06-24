@@ -3,7 +3,7 @@ const test = require("node:test");
 const { chromium } = require("playwright");
 const { launchBrowser, mockAdminCdn, startStaticServer } = require("./helpers/static-server");
 
-test("admin optimizes oversized phone photos before Decap receives them", async () => {
+test("admin converts every selected photo before Decap receives it", async () => {
   const server = await startStaticServer();
   const browser = await launchBrowser(chromium);
 
@@ -41,7 +41,7 @@ test("admin optimizes oversized phone photos before Decap receives them", async 
       return { size: blob.size, type: blob.type };
     });
 
-    assert.ok(before.size > 900 * 1024, "Test image must be large enough to trigger optimization.");
+    assert.ok(before.size > 900 * 1024, "Test image must be large enough to exercise compression.");
     await page.waitForFunction(() => {
       return document.querySelector("#admin-upload-test")?.files?.[0]?.type === "image/webp";
     });
@@ -54,7 +54,43 @@ test("admin optimizes oversized phone photos before Decap receives them", async 
     assert.equal(after.type, "image/webp");
     assert.match(after.name, /^[\x20-\x7E]+\.webp$/);
     assert.ok(after.size < before.size, "Optimized image must be smaller than the source image.");
-    assert.ok(after.size <= 900 * 1024, "Optimized image must stay within the safe upload target.");
+    assert.ok(after.size <= 220 * 1024, "Optimized image must stay within the safe upload target.");
+
+    const smallBefore = await page.evaluate(async () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 80;
+      canvas.height = 80;
+      const context = canvas.getContext("2d");
+      context.fillStyle = "#2f7a43";
+      context.fillRect(0, 0, 80, 80);
+      const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+      const input = document.createElement("input");
+      input.type = "file";
+      input.id = "admin-small-upload-test";
+      document.body.appendChild(input);
+
+      const transfer = new DataTransfer();
+      transfer.items.add(new File([blob], "küçük fotoğraf.png", { type: "image/png" }));
+      input.files = transfer.files;
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+
+      return { name: "küçük fotoğraf.png", size: blob.size, type: blob.type };
+    });
+
+    assert.ok(smallBefore.size < 220 * 1024, "Small test image should already be below the upload target.");
+    await page.waitForFunction(() => {
+      return document.querySelector("#admin-small-upload-test")?.files?.[0]?.type === "image/webp";
+    });
+
+    const smallAfter = await page.evaluate(() => {
+      const file = document.querySelector("#admin-small-upload-test").files[0];
+      return { name: file.name, size: file.size, type: file.type };
+    });
+
+    assert.equal(smallAfter.type, "image/webp");
+    assert.match(smallAfter.name, /^[\x20-\x7E]+\.webp$/);
+    assert.notEqual(smallAfter.name, smallBefore.name);
+    assert.ok(smallAfter.size <= 220 * 1024, "Small image must also stay within the safe upload target.");
   } finally {
     await browser.close();
     await server.close();

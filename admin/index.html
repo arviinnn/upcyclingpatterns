@@ -888,14 +888,14 @@
      * Existing small files, PDFs and other document uploads are untouched.
      */
     var optimizedInputs = typeof WeakSet === 'function' ? new WeakSet() : null;
-    var IMAGE_TARGET_BYTES = 450 * 1024;
-    var IMAGE_MAX_DIMENSION = 1400;
+    var IMAGE_TARGET_BYTES = 220 * 1024;
+    var IMAGE_MAX_DIMENSION = 1200;
 
     function optimizedFileName(name) {
       var base = String(name || 'gallery-image').replace(/\.[^.]+$/, '');
       base = base.normalize ? base.normalize('NFKD') : base;
       base = base.replace(/[\u0300-\u036f]/g, '').replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/^-+|-+$/g, '');
-      return (base || 'gallery-image') + '.webp';
+      return (base || 'gallery-image') + '-' + Date.now().toString(36) + '.webp';
     }
 
     function canvasBlob(canvas, quality) {
@@ -905,6 +905,16 @@
           else reject(new Error('Tarayıcı bu görseli optimize edemedi.'));
         }, 'image/webp', quality);
       });
+    }
+
+    function downscaleCanvas(sourceCanvas, factor) {
+      var canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(sourceCanvas.width * factor));
+      canvas.height = Math.max(1, Math.round(sourceCanvas.height * factor));
+      var context = canvas.getContext('2d', { alpha: true });
+      if (!context) throw new Error('Bu tarayıcı görsel optimizasyonunu desteklemiyor.');
+      context.drawImage(sourceCanvas, 0, 0, canvas.width, canvas.height);
+      return canvas;
     }
 
     function loadImageFile(file) {
@@ -933,16 +943,28 @@
         if (!context) throw new Error('Bu tarayıcı görsel optimizasyonunu desteklemiyor.');
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-        var qualities = [0.84, 0.72, 0.60];
-        var index = 0;
-        function encodeNext() {
-          return canvasBlob(canvas, qualities[index]).then(function (blob) {
+        var qualities = [0.78, 0.64, 0.52, 0.42, 0.34];
+        var bestBlob = null;
+
+        function encodeAtQuality(currentCanvas, index) {
+          return canvasBlob(currentCanvas, qualities[index]).then(function (blob) {
+            if (!bestBlob || blob.size < bestBlob.size) bestBlob = blob;
             if (blob.size <= IMAGE_TARGET_BYTES || index === qualities.length - 1) return blob;
-            index += 1;
-            return encodeNext();
+            return encodeAtQuality(currentCanvas, index + 1);
           });
         }
-        return encodeNext();
+
+        function encodeToTarget(currentCanvas, pass) {
+          return encodeAtQuality(currentCanvas, 0).then(function (blob) {
+            var largestSide = Math.max(currentCanvas.width, currentCanvas.height);
+            if (blob.size <= IMAGE_TARGET_BYTES || largestSide <= 420 || pass >= 6) {
+              return blob.size <= IMAGE_TARGET_BYTES ? blob : bestBlob;
+            }
+            return encodeToTarget(downscaleCanvas(currentCanvas, 0.78), pass + 1);
+          });
+        }
+
+        return encodeToTarget(canvas, 0);
       }).then(function (blob) {
         return new File([blob], optimizedFileName(file.name), {
           type: 'image/webp',
@@ -961,16 +983,17 @@
 
       var file = input.files[0];
       var isImage = /^image\//i.test(file.type);
-      var isBrowserReadyFormat = /^image\/(?:jpeg|png|webp)$/i.test(file.type);
       if (!isImage || /image\/(?:gif|svg\+xml)/i.test(file.type)) return;
-      if (isBrowserReadyFormat && file.size <= IMAGE_TARGET_BYTES) return;
 
       event.preventDefault();
       event.stopPropagation();
       if (event.stopImmediatePropagation) event.stopImmediatePropagation();
-      showHealthAlert('Fotoğraf yükleme için küçültülüyor...');
+      showHealthAlert('Fotoğraf güvenli WebP dosyasına çevriliyor...');
 
       optimizeImageFile(file).then(function (optimizedFile) {
+        if (typeof DataTransfer !== 'function') {
+          throw new Error('Tarayıcı dosya dönüştürmeyi desteklemiyor.');
+        }
         var transfer = new DataTransfer();
         transfer.items.add(optimizedFile);
         input.files = transfer.files;

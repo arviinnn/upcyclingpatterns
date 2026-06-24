@@ -1,0 +1,254 @@
+{
+  "goals": [
+    {
+      "title_en": "Increase Environmental Awareness",
+      "title_tr": "Çevre Bilincini Artırmak",
+      "text_en": "Helping students better understand climate issues, sustainability, and responsible resource use.",
+      "text_tr": "Öğrencilerin iklim sorunlarını, sürdürülebilirliği ve sorumlu kaynak kullanımını daha iyi anlamalarına yardımcı olmak.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Promote Sustainable Development Goals",
+      "title_tr": "Sürdürülebilir Kalkınma Amaçlarını Desteklemek",
+      "text_en": "Integrating sustainability concepts into school-based learning and project practice.",
+      "text_tr": "Sürdürülebilirlik kavramlarını okul temelli öğrenme ve proje uygulamalarına entegre etmek.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Encourage Active Participation",
+      "title_tr": "Aktif Katılımı Teşvik Etmek",
+      "text_en": "Enabling students to take part in research, production, workshops, and collaborative project tasks.",
+      "text_tr": "Öğrencilerin araştırma, üretim, atölye çalışmaları ve ortak proje görevlerinde aktif rol almasını sağlamak.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Strengthen International Cooperation",
+      "title_tr": "Uluslararası İş Birliğini Güçlendirmek",
+      "text_en": "Building educational bridges among partner institutions through shared activities and intercultural exchange.",
+      "text_tr": "Ortak etkinlikler ve kültürler arası değişim yoluyla partner kurumlar arasında eğitim köprüleri kurmak.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Develop Creativity",
+      "title_tr": "Yaratıcılığı Geliştirmek",
+      "text_en": "Supporting innovative thinking, artistic production, and practical problem-solving through upcycling activities.",
+      "text_tr": "İleri dönüşüm etkinlikleriyle yenilikçi düşünmeyi, sanatsal üretimi ve pratik problem çözmeyi desteklemek.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Create Long-Term Impact",
+      "title_tr": "Uzun Vadeli Etki Oluşturmak",
+      "text_en": "Establishing sustainable habits and educational resources that can continue beyond the project period.",
+      "text_tr": "Proje süresinden sonra da devam edebilecek sürdürülebilir alışkanlıklar ve eğitim kaynakları oluşturmak.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    }
+  ],
+  "timeline": [
+    {
+      "title_en": "Project Launch",
+      "title_tr": "Proje Başlangıcı",
+      "text_en": "Kick-off meetings, planning, coordination, and role distribution among partners.",
+      "text_tr": "Başlangıç toplantıları, planlama, koordinasyon ve partnerler arasında görev paylaşımı.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Research & Preparation",
+      "title_tr": "Araştırma ve Hazırlık",
+      "text_en": "Students and teachers investigate sustainability topics, waste materials, and local practices.",
+      "text_tr": "Öğrenciler ve öğretmenler sürdürülebilirlik konularını, atık malzemeleri ve yerel uygulamaları araştırır.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Workshops & Production",
+      "title_tr": "Atölyeler ve Üretim",
+      "text_en": "Hands-on activities, design tasks, upcycling products, and collaborative classroom practices.",
+      "text_tr": "Uygulamalı etkinlikler, tasarım görevleri, ileri dönüşüm ürünleri ve ortak sınıf uygulamaları.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Mobility & Exchange",
+      "title_tr": "Hareketlilik ve Değişim",
+      "text_en": "Partner visits, intercultural learning, peer interaction, and shared implementation experiences.",
+      "text_tr": "Partner ziyaretleri, kültürler arası öğrenme, akran etkileşimi ve ortak uygulama deneyimleri.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Dissemination",
+      "title_tr": "Yaygınlaştırma",
+      "text_en": "Sharing project outputs through digital media, school presentations, and public communication.",
+      "text_tr": "Proje çıktılarının dijital medya, okul sunumları ve kamu iletişimi aracılığıyla paylaşılması.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Evaluation & Legacy",
+      "title_tr": "Değerlendirme ve Kalıcı Etki",
+      "text_en": "Impact review, documentation, reflection, and long-term use of project materials.",
+      "text_tr": "Etki değerlendirmesi, belgeleme, yansıtma ve proje materyallerinin uzun vadeli kullanımı.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    }
+  ],
+  "activities": [
+    {
+      "title_en": "Student Workshops",
+      "title_tr": "Öğrenci Atölyeleri",
+      "text_en": "Creative workshops focused on reuse, redesign, and transformation of materials.",
+      "text_tr": "Malzemelerin yeniden kullanımı, yeniden tasarımı ve dönüştürülmesine odaklanan yaratıcı atölyeler.",
+      "image": "",
+      "icon": "🎨",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Teacher Collaboration",
+      "title_tr": "Öğretmen İş Birliği",
+      "text_en": "Joint planning, pedagogical exchange, and shared classroom implementation.",
+      "text_tr": "Ortak planlama, pedagojik paylaşım ve birlikte yürütülen sınıf uygulamaları.",
+      "image": "",
+      "icon": "🤝",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Mobility Meetings",
+      "title_tr": "Hareketlilik Toplantıları",
+      "text_en": "International visits and project meetings among partner schools.",
+      "text_tr": "Partner okullar arasında uluslararası ziyaretler ve proje toplantıları.",
+      "image": "",
+      "icon": "✈",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Digital Dissemination",
+      "title_tr": "Dijital Yaygınlaştırma",
+      "text_en": "Online sharing of project outcomes, videos, visual materials, and reports.",
+      "text_tr": "Proje sonuçlarının, videoların, görsel materyallerin ve raporların çevrim içi paylaşımı.",
+      "image": "",
+      "icon": "📡",
+      "alt_en": "",
+      "alt_tr": ""
+    }
+  ],
+  "results": [
+    {
+      "title_en": "Environmentally Aware Students",
+      "title_tr": "Çevreye Duyarlı Öğrenciler",
+      "text_en": "Students will develop stronger awareness of ecological issues and sustainable living practices.",
+      "text_tr": "Öğrenciler ekolojik konular ve sürdürülebilir yaşam uygulamaları hakkında daha güçlü farkındalık geliştirecek.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Upcycling Products",
+      "title_tr": "İleri Dönüşüm Ürünleri",
+      "text_en": "Creative student outputs and project-based products developed through upcycling activities.",
+      "text_tr": "İleri dönüşüm etkinlikleriyle geliştirilen yaratıcı öğrenci çıktıları ve proje tabanlı ürünler.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Educational Materials",
+      "title_tr": "Eğitim Materyalleri",
+      "text_en": "Learning resources, digital materials, guides, reports, and project documentation.",
+      "text_tr": "Öğrenme kaynakları, dijital materyaller, rehberler, raporlar ve proje dokümantasyonu.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Digital Content",
+      "title_tr": "Dijital İçerik",
+      "text_en": "Videos, presentations, visual materials, and online project resources.",
+      "text_tr": "Videolar, sunumlar, görsel materyaller ve çevrim içi proje kaynakları.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "International Experience",
+      "title_tr": "Uluslararası Deneyim",
+      "text_en": "Students and teachers gain practical experience in European cooperation and intercultural learning.",
+      "text_tr": "Öğrenciler ve öğretmenler Avrupa iş birliği ve kültürler arası öğrenme konusunda pratik deneyim kazanır.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Long-Term Educational Value",
+      "title_tr": "Uzun Vadeli Eğitim Değeri",
+      "text_en": "Project materials and sustainable practices can continue to be used after the official project period ends.",
+      "text_tr": "Proje materyalleri ve sürdürülebilir uygulamalar resmi proje dönemi bittikten sonra da kullanılmaya devam edebilir.",
+      "image": "",
+      "alt_en": "",
+      "alt_tr": ""
+    }
+  ],
+  "details": [
+    {
+      "title_en": "Project Type",
+      "title_tr": "Proje Türü",
+      "text_en": "Erasmus+ KA210-SCH\nSchool Education Small-scale Partnership",
+      "text_tr": "Erasmus+ KA210-SCH\nOkul Eğitimi Küçük Ölçekli Ortaklık",
+      "image": "",
+      "icon": "📋",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Project Duration",
+      "title_tr": "Proje Süresi",
+      "text_en": "From 01/09/2025 to 31/08/2027\nTotal duration: 24 months",
+      "text_tr": "01/09/2025 tarihinden 31/08/2027 tarihine kadar\nToplam süre: 24 ay",
+      "image": "",
+      "icon": "📅",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Methodology",
+      "title_tr": "Yöntem",
+      "text_en": "Workshops, research, applied learning, collaboration, mobility, and digital production",
+      "text_tr": "Atölyeler, araştırma, uygulamalı öğrenme, iş birliği, hareketlilik ve dijital üretim",
+      "image": "",
+      "icon": "🔬",
+      "alt_en": "",
+      "alt_tr": ""
+    },
+    {
+      "title_en": "Focus Areas",
+      "title_tr": "Odak Alanları",
+      "text_en": "Sustainability, climate awareness, creativity, reuse culture, intercultural partnership, and student-centred production.",
+      "text_tr": "Sürdürülebilirlik, iklim farkındalığı, yaratıcılık, yeniden kullanım kültürü, kültürler arası ortaklık ve öğrenci merkezli üretim.",
+      "image": "",
+      "icon": "🎯",
+      "alt_en": "",
+      "alt_tr": ""
+    }
+  ]
+}

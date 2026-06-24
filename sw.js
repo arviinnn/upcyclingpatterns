@@ -25,6 +25,7 @@ const STATIC_ASSETS = [
   "/data/mobility.json",
   "/data/team.json",
   "/data/sections.json",
+  "/data/explore.json",
   "/data/partners.json",
   "/data/gallery.json",
   "/data/news.json",
