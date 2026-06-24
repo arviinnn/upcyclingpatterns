@@ -61,20 +61,7 @@
         </image:image>
     </url>
 
-    <!-- ===============================================================
-         HOMEPAGE — Turkish version
-         =============================================================== -->
-    <url>
-        <loc>https://upcyclingpatterns.com/tr/</loc>
-        <lastmod>2026-06-14</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.95</priority>
-
-        <xhtml:link rel="alternate" hreflang="en" href="https://upcyclingpatterns.com/" />
-        <xhtml:link rel="alternate" hreflang="tr" href="https://upcyclingpatterns.com/tr/" />
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://upcyclingpatterns.com/" />
-    </url>
-
+  
     <!-- ===============================================================
          PRIVACY POLICY
          =============================================================== -->
