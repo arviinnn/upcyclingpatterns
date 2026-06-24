@@ -28,6 +28,26 @@ test("admin config and upload folder are deploy-ready", () => {
   assert.ok(fs.existsSync(keepFile), "images/uploads/.gitkeep must keep the upload folder in the repository.");
 });
 
+test("admin YAML aliases are declared before they are used", () => {
+  const config = fs.readFileSync(path.join(projectRoot, "admin", "config.yml"), "utf8");
+  const declaredAnchors = new Set();
+
+  config.split(/\r?\n/).forEach((line, index) => {
+    if (/^\s*#/.test(line)) return;
+
+    for (const match of line.matchAll(/&([A-Za-z0-9_-]+)/g)) {
+      declaredAnchors.add(match[1]);
+    }
+
+    for (const match of line.matchAll(/\*([A-Za-z0-9_-]+)/g)) {
+      assert.ok(
+        declaredAnchors.has(match[1]),
+        `YAML alias *${match[1]} is used before &${match[1]} is declared on line ${index + 1}.`
+      );
+    }
+  });
+});
+
 test("repeatable admin lists add one collapsed item without reopening old entries", () => {
   const config = fs.readFileSync(path.join(projectRoot, "admin", "config.yml"), "utf8");
   const repeatableLabels = ["Galeri İçerikleri", "Haberler", "Çıktılar", "Sorular"];

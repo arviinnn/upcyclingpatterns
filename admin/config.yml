@@ -152,6 +152,14 @@ _section_alt_en: &section_alt_en
   widget: "hidden"
   required: false
 
+_youtube_url: &youtube_url
+  widget: "string"
+  required: false
+  hint: "Paste a YouTube link. The site automatically turns it into the same standard 16:9 video card used in the Media Hub."
+  pattern:
+    - '^(|https?:\/\/(www\.)?(youtube\.com\/watch\?v=|youtube\.com\/embed\/|youtu\.be\/)[A-Za-z0-9_-]+([&?][^\s]*)?)$'
+    - "Must be empty or a valid YouTube URL."
+
 _section_card_fields: &section_card_fields
   - label: "Title (English)"
     name: "title_en"
@@ -230,14 +238,6 @@ _https_url: &https_url
   pattern:
     - '^(|https:\/\/[^\s]+)$'
     - "Must be empty or a full https:// URL."
-
-_youtube_url: &youtube_url
-  widget: "string"
-  required: false
-  hint: "Paste a YouTube link. The site automatically turns it into the same standard 16:9 video card used in the Media Hub."
-  pattern:
-    - '^(|https?:\/\/(www\.)?(youtube\.com\/watch\?v=|youtube\.com\/embed\/|youtu\.be\/)[A-Za-z0-9_-]+([&?][^\s]*)?)$'
-    - "Must be empty or a valid YouTube URL."
 
 _display_order: &display_order
   label: "Görüntüleme sırası"
