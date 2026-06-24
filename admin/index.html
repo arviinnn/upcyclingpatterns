@@ -888,8 +888,8 @@
      * Existing small files, PDFs and other document uploads are untouched.
      */
     var optimizedInputs = typeof WeakSet === 'function' ? new WeakSet() : null;
-    var IMAGE_TARGET_BYTES = 900 * 1024;
-    var IMAGE_MAX_DIMENSION = 1800;
+    var IMAGE_TARGET_BYTES = 450 * 1024;
+    var IMAGE_MAX_DIMENSION = 1400;
 
     function optimizedFileName(name) {
       var base = String(name || 'gallery-image').replace(/\.[^.]+$/, '');
@@ -968,7 +968,7 @@
       event.preventDefault();
       event.stopPropagation();
       if (event.stopImmediatePropagation) event.stopImmediatePropagation();
-      showHealthAlert('Large image detected. Optimizing it before upload...');
+      showHealthAlert('Fotoğraf yükleme için küçültülüyor...');
 
       optimizeImageFile(file).then(function (optimizedFile) {
         var transfer = new DataTransfer();

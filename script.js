@@ -829,9 +829,9 @@
             team: ["name", "role_en", "role_tr", "institution", "country_en", "country_tr", "email", "photo", "alt_en", "alt_tr"],
             partners: ["country_en", "country_tr", "school", "city", "role_en", "role_tr", "logo", "website", "email"],
             gallery: ["image", "youtubeUrl", "caption_en", "caption_tr", "alt_en", "alt_tr"],
-            news: ["title_en", "title_tr", "summary_en", "summary_tr", "content_en", "content_tr", "image", "alt_en", "alt_tr", "url"],
-            outputs: ["title_en", "title_tr", "description_en", "description_tr", "file", "image"],
-            faq: ["question_en", "question_tr", "answer_en", "answer_tr"]
+            news: ["title_en", "title_tr", "summary_en", "summary_tr", "content_en", "content_tr", "image", "youtubeUrl", "alt_en", "alt_tr", "url"],
+            outputs: ["title_en", "title_tr", "description_en", "description_tr", "file", "image", "youtubeUrl"],
+            faq: ["question_en", "question_tr", "answer_en", "answer_tr", "image", "youtubeUrl", "alt_en", "alt_tr"]
         };
 
         function filterCmsItemsByContent(items, kind) {
@@ -1616,7 +1616,8 @@
                 return Boolean(
                     getCmsText(item, "title", currentLanguage, "") ||
                     getCmsText(item, "text", currentLanguage, "") ||
-                    getSafePublicUrl(item.image)
+                    getSafePublicUrl(item.image) ||
+                    getYoutubeEmbedUrl(cleanCmsString(item.youtubeUrl))
                 );
             });
         }
@@ -1626,6 +1627,9 @@
         }
 
         function createCmsCardImage(item, fallbackAlt) {
+            const video = createCmsVideoMedia(item, fallbackAlt, "cms-card-image-wrap cms-card-video-wrap");
+            if (video) return video;
+
             const image = getSafePublicUrl(item && item.image);
             if (!image) return null;
             const alt = getCmsText(item, "alt", currentLanguage, "") || fallbackAlt || "Project image";
@@ -1641,6 +1645,43 @@
             img.height = 480;
             wrap.appendChild(img);
             return wrap;
+        }
+
+        function createCmsVideoMedia(item, fallbackTitle, className) {
+            const youtubeUrl = cleanCmsString(item && item.youtubeUrl);
+            const embedUrl = getYoutubeEmbedUrl(youtubeUrl);
+            if (!embedUrl) return null;
+
+            const title = fallbackTitle || getCmsText(item, "title", currentLanguage, "") || "Project video";
+            const wrap = document.createElement("div");
+            wrap.className = className;
+            const frame = document.createElement("iframe");
+            frame.src = embedUrl;
+            frame.title = title;
+            frame.loading = "lazy";
+            frame.referrerPolicy = "strict-origin-when-cross-origin";
+            frame.setAttribute("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
+            frame.setAttribute("allowfullscreen", "");
+            wrap.appendChild(frame);
+            return wrap;
+        }
+
+        function createCmsInlineMedia(item, fallbackAlt, wrapClass, imageClass, width, height) {
+            const video = createCmsVideoMedia(item, fallbackAlt, wrapClass + " cms-video-wrap");
+            if (video) return video;
+
+            const image = getSafePublicUrl(item && item.image);
+            if (!image) return null;
+            const alt = getCmsText(item, "alt", currentLanguage, "") || fallbackAlt || "Project image";
+            const img = document.createElement("img");
+            img.className = imageClass;
+            img.src = image;
+            img.alt = alt;
+            img.loading = "lazy";
+            img.decoding = "async";
+            img.width = width;
+            img.height = height;
+            return img;
         }
 
         function createCmsIcon(className, icon, fallback) {
@@ -1897,25 +1938,14 @@
         function createNewsCard(item) {
             const title = getCmsText(item, "title", currentLanguage, "Project update");
             const summary = getCmsText(item, "summary", currentLanguage, "") || getCmsText(item, "content", currentLanguage, "");
-            const image = getSafePublicUrl(item.image);
             const url = getSafeExternalUrl(item.url);
-            const alt = getCmsText(item, "alt", currentLanguage, "") || title;
 
             const card = document.createElement("article");
             card.className = "news-card glass-card tilt-card";
             card.setAttribute("data-cms-item", "news");
 
-            if (image) {
-                const img = document.createElement("img");
-                img.className = "news-cover";
-                img.src = image;
-                img.alt = alt;
-                img.loading = "lazy";
-                img.decoding = "async";
-                img.width = 640;
-                img.height = 360;
-                card.appendChild(img);
-            }
+            const media = createCmsInlineMedia(item, title, "news-media", "news-cover", 640, 360);
+            if (media) card.appendChild(media);
 
             card.appendChild(createTextNode("span", "news-date", cleanCmsString(item.year || item.date) || "Update"));
             card.appendChild(createTextNode("h3", "", title));
@@ -1965,23 +1995,13 @@
             const title = getCmsText(item, "title", currentLanguage, "Project output");
             const description = getCmsText(item, "description", currentLanguage, "");
             const file = getSafePublicUrl(item.file);
-            const image = getSafePublicUrl(item.image);
 
             const card = document.createElement("article");
             card.className = "output-card glass-card";
             card.setAttribute("data-cms-item", "output");
 
-            if (image) {
-                const img = document.createElement("img");
-                img.className = "output-cover";
-                img.src = image;
-                img.alt = title;
-                img.loading = "lazy";
-                img.decoding = "async";
-                img.width = 640;
-                img.height = 420;
-                card.appendChild(img);
-            }
+            const media = createCmsInlineMedia(item, title, "output-media", "output-cover", 640, 420);
+            if (media) card.appendChild(media);
 
             card.appendChild(createTextNode("div", "output-icon", getOutputIcon(item.type)));
             card.appendChild(createTextNode("h3", "", title));
@@ -2032,6 +2052,8 @@
             chevron.setAttribute("aria-hidden", "true");
             summary.appendChild(chevron);
             details.appendChild(summary);
+            const media = createCmsInlineMedia(item, question, "faq-media", "faq-cover", 640, 360);
+            if (media) details.appendChild(media);
             if (answer) details.appendChild(createTextNode("p", "", answer));
             return details;
         }

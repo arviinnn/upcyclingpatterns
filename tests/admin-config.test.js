@@ -30,15 +30,61 @@ test("admin config and upload folder are deploy-ready", () => {
 
 test("repeatable admin lists add one collapsed item without reopening old entries", () => {
   const config = fs.readFileSync(path.join(projectRoot, "admin", "config.yml"), "utf8");
-  const repeatableLabels = ["Haberler", "Galeri İçerikleri", "Dosyalar", "Sorular"];
+  const repeatableLabels = ["Galeri İçerikleri", "Haberler", "Çıktılar", "Sorular"];
 
   for (const label of repeatableLabels) {
     const start = config.indexOf(`- label: "${label}"`);
     assert.notEqual(start, -1, `${label} list must exist.`);
-    const block = config.slice(start, start + 500);
+    const block = config.slice(start, start + 1400);
     assert.match(block, /add_to_top:\s*true/, `${label} must add new entries at the top.`);
     assert.match(block, /minimize_collapsed:\s*true/, `${label} must keep old entries fully collapsed.`);
   }
+});
+
+test("admin menu is simplified to the requested public editing sections", () => {
+  const config = fs.readFileSync(path.join(projectRoot, "admin", "config.yml"), "utf8");
+  const visibleLabels = Array.from(
+    config.matchAll(/^  - name:\s*"[^"]+"\r?\n\s+label:\s*"([^"]+)"/gm),
+    (match) => match[1]
+  );
+
+  assert.deepEqual(visibleLabels, [
+    "Uluslararası İş Birliğiyle Sürdürülebilirliği Öğrenmek",
+    "Galeri",
+    "Haberler",
+    "Çıktılar",
+    "Sık Sorulan Sorular"
+  ]);
+
+  for (const removedLabel of [
+    "Logolar",
+    "Gelişmiş - Site Yazıları",
+    "Gelişmiş - Tasarım Ayarları",
+    "Hareketlilik Ziyaretleri",
+    "Proje Ekibi",
+    "Ortak Okullar"
+  ]) {
+    assert.doesNotMatch(config, new RegExp(`label:\\s*"${removedLabel}"`), `${removedLabel} must not appear in admin.`);
+  }
+});
+
+test("remaining admin sections support direct photo upload and YouTube URLs", () => {
+  const config = fs.readFileSync(path.join(projectRoot, "admin", "config.yml"), "utf8");
+
+  assert.match(config, /_section_card_fields:[\s\S]*?<<:\s*\*section_image[\s\S]*?name:\s*"youtubeUrl"/);
+
+  const collectionOrder = ["gallery", "news", "outputs", "faq"];
+  for (let i = 0; i < collectionOrder.length; i++) {
+    const name = collectionOrder[i];
+    const start = config.indexOf(`- name: "${name}"`);
+    const end = i + 1 < collectionOrder.length ? config.indexOf(`- name: "${collectionOrder[i + 1]}"`, start + 1) : config.length;
+    assert.notEqual(start, -1, `${name} collection must exist.`);
+    const block = config.slice(start, end);
+    assert.match(block, /(?:<<:\s*\*cover_image|name:\s*"image")/, `${name} must support photo upload.`);
+    assert.match(block, /name:\s*"youtubeUrl"/, `${name} must support YouTube URLs.`);
+  }
+
+  assert.doesNotMatch(config, /max_file_size:\s*(2097152|4194304)/, "image uploads should be capped before Git Gateway.");
 });
 
 test("gallery accepts an image-only entry and keeps captions optional", () => {
@@ -100,6 +146,7 @@ test("admin removes accidental blank list rows before saving", () => {
   assert.match(html, /__upcycCMSApplyAutomaticFields/);
   assert.match(html, /__upcycCMSPrepareEditorData/);
   assert.match(html, /\.netlify\/functions\/translate/);
+  assert.match(html, /IMAGE_TARGET_BYTES\s*=\s*450\s*\*\s*1024/);
   assert.doesNotMatch(html, /pair\.object\[pair\.englishKey\]\s*=\s*pair\.text/);
 });
 
