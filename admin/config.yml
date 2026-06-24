@@ -105,36 +105,16 @@ show_preview_links: false
 _cover_image: &cover_image
   label: "Fotoğraf Yükle"
   name: "image"
-  widget: "image"
+  widget: "upcyc_image"
   required: false
-  allow_multiple: false
-  choose_url: false
-  hint: "Telefondan fotoğraf seçebilirsiniz. Görsel otomatik optimize edilir ve standart kart ölçüsünde gösterilir."
-  media_library:
-    config:
-      max_file_size: 524288
-      allowed_extensions:
-        - jpg
-        - jpeg
-        - png
-        - webp
+  hint: "Telefondan fotoğraf seçebilirsiniz. Fotoğraf ayrı medya yüklemesi yapmadan küçük WebP olarak kayıt dosyasına eklenir."
 
 _section_image: &section_image
   label: "İsteğe bağlı kart görseli"
   name: "image"
-  widget: "image"
+  widget: "upcyc_image"
   required: false
-  allow_multiple: false
-  choose_url: false
-  hint: "Telefondan fotoğraf seçebilirsiniz. Her görsel yüklemeden önce küçük ve güvenli WebP dosyasına çevrilir."
-  media_library:
-    config:
-      max_file_size: 524288
-      allowed_extensions:
-        - jpg
-        - jpeg
-        - png
-        - webp
+  hint: "Telefondan fotoğraf seçebilirsiniz. Fotoğraf ayrı medya yüklemesi yapmadan küçük WebP olarak kayıt dosyasına eklenir."
 
 _section_alt: &section_alt
   label: "Görsel açıklaması (Türkçe)"
@@ -428,19 +408,9 @@ collections:
 
               - label: "Fotoğraf Yükle"
                 name: "image"
-                widget: "image"
+                widget: "upcyc_image"
                 required: false
-                allow_multiple: false
-                choose_url: false
-                hint: "Telefondan fotoğraf seçebilirsiniz. Büyük fotoğraflar yüklemeden önce otomatik küçültülür."
-                media_library:
-                  config:
-                    max_file_size: 524288
-                    allowed_extensions:
-                      - jpg
-                      - jpeg
-                      - png
-                      - webp
+                hint: "Telefondan fotoğraf seçebilirsiniz. Fotoğraf ayrı medya yüklemesi yapmadan küçük WebP olarak kayıt dosyasına eklenir."
 
               - label: "YouTube Bağlantısı"
                 name: "youtubeUrl"

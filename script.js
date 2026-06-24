@@ -966,6 +966,12 @@
         function getSafePublicUrl(value) {
             const url = cleanCmsString(value);
             if (!url) return "";
+            if (
+                url.length <= 600000 &&
+                /^data:image\/(?:webp|png|jpeg);base64,[A-Za-z0-9+/=]+$/i.test(url)
+            ) {
+                return url;
+            }
             if (/^https:\/\//i.test(url)) {
                 try {
                     const parsed = new URL(url);

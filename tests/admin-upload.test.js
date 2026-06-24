@@ -3,7 +3,7 @@ const test = require("node:test");
 const { chromium } = require("playwright");
 const { launchBrowser, mockAdminCdn, startStaticServer } = require("./helpers/static-server");
 
-test("admin converts every selected photo before Decap receives it", async () => {
+test("admin stores selected photos inline without Decap media upload", async () => {
   const server = await startStaticServer();
   const browser = await launchBrowser(chromium);
 
@@ -11,86 +11,57 @@ test("admin converts every selected photo before Decap receives it", async () =>
     const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
     await mockAdminCdn(page);
     await page.goto(`${server.baseUrl}/admin/`, { waitUntil: "commit" });
-    await page.waitForFunction(() => typeof window.__upcycCMSApplyAutomaticFields === "function");
+    await page.waitForFunction(() => typeof window.__upcycCMSOptimizeImageFileToDataUrl === "function");
 
-    const before = await page.evaluate(async () => {
-      const size = 900;
-      const canvas = document.createElement("canvas");
-      canvas.width = size;
-      canvas.height = size;
-      const context = canvas.getContext("2d");
-      const pixels = context.createImageData(size, size);
+    const result = await page.evaluate(async () => {
+      async function makeBlob(size, noisy) {
+        const canvas = document.createElement("canvas");
+        canvas.width = size;
+        canvas.height = size;
+        const context = canvas.getContext("2d");
 
-      for (let offset = 0; offset < pixels.data.length; offset += 65536) {
-        crypto.getRandomValues(pixels.data.subarray(offset, Math.min(offset + 65536, pixels.data.length)));
+        if (noisy) {
+          const pixels = context.createImageData(size, size);
+          for (let offset = 0; offset < pixels.data.length; offset += 65536) {
+            crypto.getRandomValues(pixels.data.subarray(offset, Math.min(offset + 65536, pixels.data.length)));
+          }
+          for (let alpha = 3; alpha < pixels.data.length; alpha += 4) pixels.data[alpha] = 255;
+          context.putImageData(pixels, 0, 0);
+        } else {
+          context.fillStyle = "#2f7a43";
+          context.fillRect(0, 0, size, size);
+          context.fillStyle = "#ffffff";
+          context.fillRect(12, 12, size - 24, size - 24);
+        }
+
+        return new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
       }
-      for (let alpha = 3; alpha < pixels.data.length; alpha += 4) pixels.data[alpha] = 255;
 
-      context.putImageData(pixels, 0, 0);
-      const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
-      const input = document.createElement("input");
-      input.type = "file";
-      input.id = "admin-upload-test";
-      document.body.appendChild(input);
+      const largeBlob = await makeBlob(900, true);
+      const smallBlob = await makeBlob(80, false);
+      const largeDataUrl = await window.__upcycCMSOptimizeImageFileToDataUrl(
+        new File([largeBlob], "Telefon Fotoğrafı.png", { type: "image/png" })
+      );
+      const smallDataUrl = await window.__upcycCMSOptimizeImageFileToDataUrl(
+        new File([smallBlob], "küçük fotoğraf.png", { type: "image/png" })
+      );
 
-      const transfer = new DataTransfer();
-      transfer.items.add(new File([blob], "Telefon Fotoğrafı.png", { type: "image/png" }));
-      input.files = transfer.files;
-      input.dispatchEvent(new Event("change", { bubbles: true }));
-
-      return { size: blob.size, type: blob.type };
+      return {
+        largeSourceSize: largeBlob.size,
+        smallSourceSize: smallBlob.size,
+        largeDataUrl,
+        smallDataUrl
+      };
     });
 
-    assert.ok(before.size > 900 * 1024, "Test image must be large enough to exercise compression.");
-    await page.waitForFunction(() => {
-      return document.querySelector("#admin-upload-test")?.files?.[0]?.type === "image/webp";
-    });
+    assert.ok(result.largeSourceSize > 900 * 1024, "Test image must be large enough to exercise compression.");
+    assert.ok(result.smallSourceSize < 220 * 1024, "Small test image should already be below the upload target.");
 
-    const after = await page.evaluate(() => {
-      const file = document.querySelector("#admin-upload-test").files[0];
-      return { name: file.name, size: file.size, type: file.type };
-    });
-
-    assert.equal(after.type, "image/webp");
-    assert.match(after.name, /^[\x20-\x7E]+\.webp$/);
-    assert.ok(after.size < before.size, "Optimized image must be smaller than the source image.");
-    assert.ok(after.size <= 220 * 1024, "Optimized image must stay within the safe upload target.");
-
-    const smallBefore = await page.evaluate(async () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = 80;
-      canvas.height = 80;
-      const context = canvas.getContext("2d");
-      context.fillStyle = "#2f7a43";
-      context.fillRect(0, 0, 80, 80);
-      const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
-      const input = document.createElement("input");
-      input.type = "file";
-      input.id = "admin-small-upload-test";
-      document.body.appendChild(input);
-
-      const transfer = new DataTransfer();
-      transfer.items.add(new File([blob], "küçük fotoğraf.png", { type: "image/png" }));
-      input.files = transfer.files;
-      input.dispatchEvent(new Event("change", { bubbles: true }));
-
-      return { name: "küçük fotoğraf.png", size: blob.size, type: blob.type };
-    });
-
-    assert.ok(smallBefore.size < 220 * 1024, "Small test image should already be below the upload target.");
-    await page.waitForFunction(() => {
-      return document.querySelector("#admin-small-upload-test")?.files?.[0]?.type === "image/webp";
-    });
-
-    const smallAfter = await page.evaluate(() => {
-      const file = document.querySelector("#admin-small-upload-test").files[0];
-      return { name: file.name, size: file.size, type: file.type };
-    });
-
-    assert.equal(smallAfter.type, "image/webp");
-    assert.match(smallAfter.name, /^[\x20-\x7E]+\.webp$/);
-    assert.notEqual(smallAfter.name, smallBefore.name);
-    assert.ok(smallAfter.size <= 220 * 1024, "Small image must also stay within the safe upload target.");
+    assert.match(result.largeDataUrl, /^data:image\/webp;base64,/);
+    assert.match(result.smallDataUrl, /^data:image\/webp;base64,/);
+    assert.ok(result.largeDataUrl.length <= 600000, "Large inline image must stay below the public URL safety cap.");
+    assert.ok(result.smallDataUrl.length <= 600000, "Small inline image must stay below the public URL safety cap.");
+    assert.ok(result.largeDataUrl.length < result.largeSourceSize, "Large inline image must be smaller than the source image.");
   } finally {
     await browser.close();
     await server.close();

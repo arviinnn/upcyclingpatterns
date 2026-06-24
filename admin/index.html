@@ -403,6 +403,61 @@
       line-height: 1.6;
     }
 
+    .upcyc-inline-image-widget {
+      display: grid;
+      gap: 10px;
+      max-width: 520px;
+    }
+
+    .upcyc-inline-image-widget__preview {
+      display: grid;
+      place-items: center;
+      width: 220px;
+      max-width: 100%;
+      min-height: 132px;
+      overflow: hidden;
+      border: 1px solid rgba(47, 122, 67, 0.22);
+      border-radius: 12px;
+      background: rgba(47, 122, 67, 0.06);
+      color: #5a6b60;
+      font-size: 13px;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .upcyc-inline-image-widget__preview img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 240px;
+      object-fit: contain;
+    }
+
+    .upcyc-inline-image-widget__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .upcyc-inline-image-widget__remove {
+      border: 0;
+      border-radius: 8px;
+      padding: 8px 11px;
+      background: #fee4e2;
+      color: #b42318;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .upcyc-inline-image-widget__hint {
+      margin: 0;
+      color: #5a6b60;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .cms-splash-spinner { animation: none; }
       .cms-splash { transition: none; }
@@ -831,6 +886,8 @@
     function registerEditorGuards() {
       if (!window.CMS || typeof window.CMS.registerEventListener !== 'function') return;
 
+      registerInlineImageWidget();
+
       window.CMS.registerEventListener({
         name: 'preSave',
         handler: function (event) {
@@ -973,6 +1030,99 @@
       });
     }
 
+    function readFileAsDataUrl(file) {
+      return new Promise(function (resolve, reject) {
+        var reader = new FileReader();
+        reader.onload = function () {
+          var value = typeof reader.result === 'string' ? reader.result : '';
+          if (/^data:image\/(?:webp|png|jpeg);base64,/i.test(value)) {
+            resolve(value);
+          } else {
+            reject(new Error('Fotoğraf kayıt formatına çevrilemedi.'));
+          }
+        };
+        reader.onerror = function () {
+          reject(new Error('Fotoğraf okunamadı.'));
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function optimizeImageFileToDataUrl(file) {
+      return optimizeImageFile(file).then(readFileAsDataUrl);
+    }
+
+    function registerInlineImageWidget() {
+      if (!window.CMS || typeof window.CMS.registerWidget !== 'function') return;
+      if (window.__upcycInlineImageWidgetRegistered) return;
+
+      var hyperscript = window.h || (typeof h === 'function' ? h : null) ||
+        (window.React && typeof window.React.createElement === 'function' ? window.React.createElement : null);
+      if (typeof hyperscript !== 'function') return;
+
+      function getWidgetValue(value) {
+        if (typeof value === 'string') return value;
+        if (value && typeof value.toString === 'function') return value.toString();
+        return '';
+      }
+
+      function InlineImageControl(props) {
+        var value = getWidgetValue(props.value);
+        var inputId = props.forID || 'upcyc-inline-image';
+
+        function handleFileChange(event) {
+          var input = event && event.target;
+          var file = input && input.files && input.files[0];
+          if (!file) return;
+
+          var isImage = /^image\//i.test(file.type);
+          if (!isImage || /image\/(?:gif|svg\+xml)/i.test(file.type)) {
+            if (input) input.value = '';
+            showHealthAlert('Bu alan sadece JPG, PNG veya WebP fotoğraf kabul eder.');
+            return;
+          }
+
+          showHealthAlert('Fotoğraf medya yüklemesi kullanmadan kayda eklenmek için hazırlanıyor...');
+          optimizeImageFileToDataUrl(file).then(function (dataUrl) {
+            if (typeof props.onChange === 'function') props.onChange(dataUrl);
+            if (input) input.value = '';
+            hideHealthAlert();
+          }).catch(function (error) {
+            if (input) input.value = '';
+            showHealthAlert((error && error.message ? error.message : 'Fotoğraf hazırlanamadı.') + ' JPG, PNG veya WebP olarak tekrar seçin.');
+          });
+        }
+
+        function handleRemove() {
+          if (typeof props.onChange === 'function') props.onChange('');
+        }
+
+        return hyperscript('div', { className: 'upcyc-inline-image-widget' }, [
+          hyperscript('div', { className: 'upcyc-inline-image-widget__preview' }, value
+            ? hyperscript('img', { src: value, alt: 'Seçilen fotoğraf' })
+            : 'Henüz fotoğraf seçilmedi.'),
+          hyperscript('div', { className: 'upcyc-inline-image-widget__actions' }, [
+            hyperscript('input', {
+              id: inputId,
+              type: 'file',
+              accept: 'image/jpeg,image/png,image/webp',
+              onChange: handleFileChange
+            }),
+            value ? hyperscript('button', {
+              type: 'button',
+              className: 'upcyc-inline-image-widget__remove',
+              onClick: handleRemove
+            }, 'Resmi kaldır') : null
+          ]),
+          hyperscript('p', { className: 'upcyc-inline-image-widget__hint' },
+            'Fotoğraf ayrı medya yüklemesi yapmaz; küçük WebP olarak bu kaydın içine eklenir.')
+        ]);
+      }
+
+      window.CMS.registerWidget('upcyc_image', InlineImageControl);
+      window.__upcycInlineImageWidgetRegistered = true;
+    }
+
     document.addEventListener('change', function (event) {
       var input = event.target;
       if (!input || input.tagName !== 'INPUT' || input.type !== 'file' || !input.files || input.files.length !== 1) return;
@@ -1005,6 +1155,8 @@
         showHealthAlert(error.message + ' Telefonunuzdan JPG, PNG veya WebP olarak tekrar seçin.');
       });
     }, true);
+
+    window.__upcycCMSOptimizeImageFileToDataUrl = optimizeImageFileToDataUrl;
 
     function hideSplash() {
       if (!splash) return;

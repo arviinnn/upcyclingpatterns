@@ -92,6 +92,8 @@ test("admin menu is simplified to the requested public editing sections", () => 
 test("remaining admin sections support direct photo upload and YouTube URLs", () => {
   const config = fs.readFileSync(path.join(projectRoot, "admin", "config.yml"), "utf8");
 
+  assert.match(config, /widget:\s*"upcyc_image"/, "photo fields must use the inline image widget.");
+  assert.doesNotMatch(config, /widget:\s*"image"/, "photo fields must not use Decap's media upload image widget.");
   assert.match(config, /_section_card_fields:[\s\S]*?<<:\s*\*section_image[\s\S]*?name:\s*"youtubeUrl"/);
 
   const collectionOrder = ["explore_sections", "gallery", "news", "outputs", "faq"];
@@ -101,7 +103,7 @@ test("remaining admin sections support direct photo upload and YouTube URLs", ()
     const end = i + 1 < collectionOrder.length ? config.indexOf(`- name: "${collectionOrder[i + 1]}"`, start + 1) : config.length;
     assert.notEqual(start, -1, `${name} collection must exist.`);
     const block = config.slice(start, end);
-    assert.match(block, /(?:<<:\s*\*(?:cover_image|section_image)|fields:\s*\*section_card_fields|name:\s*"image")/, `${name} must support photo upload.`);
+    assert.match(block, /(?:<<:\s*\*(?:cover_image|section_image)|fields:\s*\*section_card_fields|name:\s*"image")/, `${name} must support inline photo fields.`);
     assert.match(block, /(?:fields:\s*\*section_card_fields|name:\s*"youtubeUrl")/, `${name} must support YouTube URLs.`);
   }
 
@@ -128,7 +130,7 @@ test("daily admin forms are Turkish-first and gallery exposes only three user fi
 
   assert.match(config, /^locale:\s*"tr"$/m);
   assert.match(gallery, /name:\s*"caption_tr"[\s\S]*?widget:\s*"string"/);
-  assert.match(gallery, /name:\s*"image"[\s\S]*?widget:\s*"image"/);
+  assert.match(gallery, /name:\s*"image"[\s\S]*?widget:\s*"upcyc_image"/);
   assert.match(gallery, /name:\s*"youtubeUrl"/);
   assert.match(gallery, /name:\s*"caption_en"[\s\S]*?widget:\s*"hidden"/);
   assert.match(gallery, /name:\s*"type"[\s\S]*?widget:\s*"hidden"/);
@@ -166,9 +168,11 @@ test("admin removes accidental blank list rows before saving", () => {
   assert.match(html, /__upcycCMSRemoveEmptyRows/);
   assert.match(html, /__upcycCMSApplyAutomaticFields/);
   assert.match(html, /__upcycCMSPrepareEditorData/);
+  assert.match(html, /registerWidget\('upcyc_image'/);
+  assert.match(html, /__upcycCMSOptimizeImageFileToDataUrl/);
   assert.match(html, /\.netlify\/functions\/translate/);
   assert.match(html, /IMAGE_TARGET_BYTES\s*=\s*220\s*\*\s*1024/);
-  assert.match(html, /Fotoğraf güvenli WebP dosyasına çevriliyor/);
+  assert.match(html, /Fotoğraf medya yüklemesi kullanmadan kayda eklenmek için hazırlanıyor/);
   assert.doesNotMatch(html, /pair\.object\[pair\.englishKey\]\s*=\s*pair\.text/);
 });
 

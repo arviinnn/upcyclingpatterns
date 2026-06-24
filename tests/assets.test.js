@@ -87,6 +87,13 @@ test("CMS data local media references resolve to real files", () => {
   assert.deepEqual(missing, []);
 });
 
+test("frontend accepts compressed inline CMS image values", () => {
+  const script = fs.readFileSync(path.join(projectRoot, "script.js"), "utf8");
+
+  assert.match(script, /data:image\\\/\(\?:webp\|png\|jpeg\);base64/);
+  assert.match(script, /url\.length\s*<=\s*600000/);
+});
+
 test("HTML ids are unique within each document", () => {
   const htmlFiles = fs.readdirSync(projectRoot).filter((fileName) => fileName.endsWith(".html"));
 
