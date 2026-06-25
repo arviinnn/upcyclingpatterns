@@ -157,6 +157,16 @@
       pointer-events: none;
     }
 
+    /*
+      Netlify Identity injects its modal as an iframe with z-index: 99.
+      The custom admin splash sits above that, so first-time users could
+      click login and get a hidden form behind the splash.
+    */
+    iframe#netlify-identity-widget {
+      position: fixed !important;
+      z-index: 2147483647 !important;
+    }
+
     .cms-splash-card {
       text-align: center;
       padding: 32px;

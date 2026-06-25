@@ -184,6 +184,59 @@ test("admin opens CMS for authenticated Identity users even when Git Gateway hea
   }
 });
 
+test("admin login modal appears above the custom splash", async () => {
+  const server = await startStaticServer();
+  const browser = await launchBrowser(chromium);
+
+  try {
+    const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+    await page.route("https://identity.netlify.com/**", (route) => route.fulfill({
+      status: 200,
+      contentType: "text/javascript; charset=utf-8",
+      body: `
+        window.netlifyIdentity = {
+          handlers: {},
+          on: function (name, handler) { this.handlers[name] = handler; },
+          init: function () { if (this.handlers.init) this.handlers.init(null); },
+          currentUser: function () { return null; },
+          open: function () {
+            var frame = document.createElement("iframe");
+            frame.id = "netlify-identity-widget";
+            frame.title = "Netlify identity widget";
+            frame.style.position = "fixed";
+            frame.style.inset = "0";
+            frame.style.width = "100vw";
+            frame.style.height = "100vh";
+            frame.style.zIndex = "99";
+            frame.src = "about:blank";
+            document.body.appendChild(frame);
+          }
+        };
+      `
+    }));
+
+    await page.goto(`${server.baseUrl}/admin/`, { waitUntil: "commit" });
+    await page.waitForSelector("#cmsRetryBtn:not([hidden])");
+    assert.match(await page.locator("#cmsRetryBtn").innerText(), /Netlify Identity/);
+    await page.locator("#cmsRetryBtn").click();
+    await page.waitForSelector("iframe#netlify-identity-widget");
+
+    const layers = await page.evaluate(() => {
+      const splash = document.querySelector("#cmsSplash");
+      const frame = document.querySelector("iframe#netlify-identity-widget");
+      return {
+        splashZIndex: Number(getComputedStyle(splash).zIndex),
+        frameZIndex: Number(getComputedStyle(frame).zIndex)
+      };
+    });
+
+    assert.ok(layers.frameZIndex > layers.splashZIndex, "Identity login modal must render above the admin splash.");
+  } finally {
+    await browser.close();
+    await server.close();
+  }
+});
+
 test("Turkish homepage loads the shared application without broken assets", async () => {
   const server = await startStaticServer();
   const browser = await launchBrowser(chromium);
