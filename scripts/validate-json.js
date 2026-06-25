@@ -47,6 +47,8 @@ const listDataFiles = new Set([
 ]);
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const INLINE_IMAGE_MAX_LENGTH = 600000;
+const INLINE_IMAGE_PATTERN = /^data:image\/(?:webp|png|jpeg);base64,[A-Za-z0-9+/=]+$/i;
 
 function readJson(filePath) {
   const label = path.relative(projectRoot, filePath);
@@ -108,8 +110,9 @@ function validateOptionalHttpsUrl(value, label) {
 function validateOptionalPublicAsset(value, label) {
   if (value === undefined || value === null || value === "") return;
   assert(typeof value === "string", `${label} must be a string path.`);
+  if (value.length <= INLINE_IMAGE_MAX_LENGTH && INLINE_IMAGE_PATTERN.test(value)) return;
   if (/^https:\/\//i.test(value)) return;
-  assert(value.startsWith("/") && !value.startsWith("//"), `${label} must be root-relative or HTTPS.`);
+  assert(value.startsWith("/") && !value.startsWith("//"), `${label} must be root-relative, HTTPS, or a safe inline image.`);
   assert(!value.includes("\\"), `${label} must not contain backslashes.`);
   let decoded = value;
   try { decoded = decodeURIComponent(value); } catch (error) {}

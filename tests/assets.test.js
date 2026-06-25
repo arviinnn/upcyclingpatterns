@@ -89,9 +89,12 @@ test("CMS data local media references resolve to real files", () => {
 
 test("frontend accepts compressed inline CMS image values", () => {
   const script = fs.readFileSync(path.join(projectRoot, "script.js"), "utf8");
+  const validator = fs.readFileSync(path.join(projectRoot, "scripts", "validate-json.js"), "utf8");
 
   assert.match(script, /data:image\\\/\(\?:webp\|png\|jpeg\);base64/);
   assert.match(script, /url\.length\s*<=\s*600000/);
+  assert.match(validator, /data:image\\\/\(\?:webp\|png\|jpeg\);base64/);
+  assert.match(validator, /value\.length\s*<=\s*INLINE_IMAGE_MAX_LENGTH/);
 });
 
 test("HTML ids are unique within each document", () => {
