@@ -573,7 +573,6 @@
 
     var PRIMARY_CDN  = 'https://unpkg.com/decap-cms@3.14.0/dist/decap-cms.js';
     var FALLBACK_CDN = 'https://cdn.jsdelivr.net/npm/decap-cms@3.14.0/dist/decap-cms.js';
-    var CMS_BRANCH = 'main';
     var loadedAny = false;
     var cmsBootStarted = false;
     var splashTimeout = 0;
@@ -1350,65 +1349,72 @@
     }
 
     function wireIdentity(id) {
+      function resolveIdentityUser(providedUser) {
+        if (providedUser && typeof providedUser.jwt === 'function') {
+          return Promise.resolve(providedUser);
+        }
+
+        return new Promise(function (resolve) {
+          var attempts = 0;
+          var maxAttempts = 40;
+          var timer = setInterval(function () {
+            attempts++;
+            var currentUser = id.currentUser && id.currentUser();
+            if ((currentUser && typeof currentUser.jwt === 'function') || attempts >= maxAttempts) {
+              clearInterval(timer);
+              resolve(currentUser || null);
+            }
+          }, 100);
+        });
+      }
+
+      function checkGitGatewayHealth(token) {
+        if (!token || !window.fetch) return Promise.resolve(false);
+
+        var headers = { Authorization: 'Bearer ' + token, Accept: 'application/json' };
+        return fetch('/.netlify/git/settings', {
+          method: 'GET',
+          cache: 'no-store',
+          headers: headers
+        }).then(function (response) {
+          if (!response.ok) return false;
+          return response.json().catch(function () { return {}; }).then(function (settings) {
+            if (settings && settings.github_enabled === false) {
+              showHealthAlert('Giriş tamamlandı ancak Git Gateway içinde GitHub servisi kapalı görünüyor. Kaydetme sorun verirse Netlify Identity > Git Gateway bağlantısını kontrol edin.');
+              return false;
+            }
+            return true;
+          });
+        }).catch(function (error) {
+          if (window.console && console.warn) console.warn('[admin] Git Gateway health check skipped:', error);
+          return false;
+        });
+      }
+
       function verifySession(user) {
         if (!user || typeof user.jwt !== 'function') return Promise.resolve(false);
         return user.jwt(true).then(function (token) {
-          var headers = { Authorization: 'Bearer ' + token, Accept: 'application/json' };
-          return fetch('/.netlify/git/settings', {
-            method: 'GET',
-            cache: 'no-store',
-            headers: headers
-          }).then(function (response) {
-            return { response: response, headers: headers };
-          });
-        }).then(function (result) {
-          var response = result.response;
-          if (response.status === 401 || response.status === 403) {
-            throw new Error('Yönetim paneli oturumunuzun süresi dolmuş.');
-          }
-          if (response.status === 404) {
-            throw new Error('Netlify Git Gateway bu site için GitHub deposunu bulamadı. Netlify Identity > Git Gateway bölümünde upcyclingpatterns deposunu yeniden bağlayın.');
-          }
-          if (!response.ok) throw new Error('İçerik bağlantısı HTTP ' + response.status + ' hatası verdi.');
-          return response.json().catch(function () { return {}; }).then(function (settings) {
-            if (settings && settings.github_enabled === false) {
-              throw new Error('Netlify Git Gateway içinde GitHub servisi etkin değil. Netlify Identity > Git Gateway bölümünden GitHub bağlantısını etkinleştirin.');
-            }
-            return fetch('/.netlify/git/github/branches/' + encodeURIComponent(CMS_BRANCH), {
-              method: 'GET',
-              cache: 'no-store',
-              headers: result.headers
-            });
-          });
-        }).then(function (response) {
-          if (response.status === 401 || response.status === 403) {
-            throw new Error('Git Gateway repo izni bu kullanıcı için geçerli değil.');
-          }
-          if (response.status === 404) {
-            throw new Error('Netlify Git Gateway main branch verisini okuyamadı. Netlify Identity > Git Gateway bağlantısını arviinnn/upcyclingpatterns deposuna yeniden bağlayın.');
-          }
-          if (!response.ok) {
-            throw new Error('Git Gateway repo kontrolü HTTP ' + response.status + ' hatası verdi.');
-          }
+          if (!token) throw new Error('Oturum tokenı alınamadı.');
+          checkGitGatewayHealth(token);
           hideHealthAlert();
           return true;
         }).catch(function (error) {
           setQuickNavVisible(false);
-          showHealthAlert(error.message + ' Oturumu sıfırlayıp tekrar giriş yapın.');
+          showHealthAlert((error && error.message ? error.message : 'Oturum doğrulanamadı.') + ' Oturumu sıfırlayıp tekrar giriş yapın.');
           return false;
         });
       }
 
       function handleAuthenticatedUser(user) {
         setQuickNavVisible(false);
-        showLoading('Oturum doğrulanıyor', 'Git Gateway bağlantısı kontrol ediliyor...');
-        verifySession(user).then(function (isValid) {
+        showLoading('Oturum doğrulanıyor', 'Yönetim paneli açılıyor...');
+        resolveIdentityUser(user).then(verifySession).then(function (isValid) {
           if (isValid) {
             try { id.close(); } catch (e) { /* noop */ }
             setQuickNavVisible(true);
             startCms();
           } else {
-            showLoginPrompt('Git Gateway bağlantısı doğrulanamadı. Oturumu sıfırlayıp tekrar giriş yapın.');
+            showLoginPrompt('Giriş tamamlanamadı. Oturumu sıfırlayıp tekrar giriş yapın.');
           }
         });
       }

@@ -170,6 +170,9 @@ test("admin removes accidental blank list rows before saving", () => {
   assert.match(html, /__upcycCMSPrepareEditorData/);
   assert.match(html, /registerWidget\('upcyc_image'/);
   assert.match(html, /__upcycCMSOptimizeImageFileToDataUrl/);
+  assert.match(html, /resolveIdentityUser/);
+  assert.match(html, /checkGitGatewayHealth/);
+  assert.doesNotMatch(html, /\.netlify\/git\/github\/branches/);
   assert.match(html, /\.netlify\/functions\/translate/);
   assert.match(html, /IMAGE_TARGET_BYTES\s*=\s*220\s*\*\s*1024/);
   assert.match(html, /Fotoğraf medya yüklemesi kullanmadan kayda eklenmek için hazırlanıyor/);

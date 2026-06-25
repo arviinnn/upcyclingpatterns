@@ -104,10 +104,11 @@ test("admin editor reaches login without a CMS configuration error", async () =>
   }
 });
 
-test("admin blocks Decap when Git Gateway repo preflight fails", async () => {
+test("admin opens CMS for authenticated Identity users even when Git Gateway health check is unavailable", async () => {
   const server = await startStaticServer();
   const browser = await launchBrowser(chromium);
   let decapRequests = 0;
+  let branchRequests = 0;
 
   try {
     const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
@@ -132,18 +133,36 @@ test("admin blocks Decap when Git Gateway repo preflight fails", async () => {
       `
     }));
     await page.route("**/.netlify/git/settings", (route) => route.fulfill({
-      status: 200,
+      status: 403,
       contentType: "application/json; charset=utf-8",
-      body: JSON.stringify({ github_enabled: true })
+      body: JSON.stringify({ message: "health check unavailable for this user" })
     }));
-    await page.route("**/.netlify/git/github/branches/main", (route) => route.fulfill({
-      status: 404,
-      contentType: "application/json; charset=utf-8",
-      body: JSON.stringify({ message: "branch unavailable" })
-    }));
+    await page.route("**/.netlify/git/github/branches/main", (route) => {
+      branchRequests++;
+      return route.fulfill({
+        status: 500,
+        contentType: "application/json; charset=utf-8",
+        body: JSON.stringify({ message: "this branch preflight must not run" })
+      });
+    });
     await page.route("https://unpkg.com/decap-cms@3.14.0/**", (route) => {
       decapRequests++;
-      return route.fulfill({ status: 500, body: "" });
+      return route.fulfill({
+        status: 200,
+        contentType: "text/javascript; charset=utf-8",
+        body: `
+          window.CMS = {
+            registerEventListener: function () {},
+            registerWidget: function () {}
+          };
+          window.setTimeout(function () {
+            var root = document.createElement("div");
+            root.id = "nc-root";
+            root.textContent = "CMS loaded for authenticated user";
+            document.body.appendChild(root);
+          }, 50);
+        `
+      });
     });
     await page.route("https://cdn.jsdelivr.net/npm/decap-cms@3.14.0/**", (route) => {
       decapRequests++;
@@ -151,12 +170,14 @@ test("admin blocks Decap when Git Gateway repo preflight fails", async () => {
     });
 
     await page.goto(`${server.baseUrl}/admin/`, { waitUntil: "commit" });
-    await page.waitForFunction(() => /Git Gateway bağlantısı doğrulanamadı/.test(document.body.innerText));
+    await page.waitForFunction(() => /CMS loaded for authenticated user/.test(document.body.innerText));
 
     const bodyText = await page.locator("body").innerText();
     assert.doesNotMatch(bodyText, /Not Found/i);
-    assert.equal(decapRequests, 0);
-    assert.equal(await page.evaluate(() => Boolean(window.CMS)), false);
+    assert.doesNotMatch(bodyText, /Git Gateway bağlantısı doğrulanamadı|Giriş tamamlanamadı/);
+    assert.ok(decapRequests > 0);
+    assert.equal(branchRequests, 0);
+    assert.equal(await page.evaluate(() => Boolean(window.CMS)), true);
   } finally {
     await browser.close();
     await server.close();
